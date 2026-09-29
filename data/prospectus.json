@@ -1,0 +1,257 @@
+{
+  "filing_metadata": {
+    "company": "Anthropic, PBC",
+    "cik": "0001994821",
+    "drs_submission_date": "2026-06-01",
+    "filing_type": "Form S-1 (Confidential Draft Registration Statement under JOBS Act)",
+    "expected_public_filing": "2026-10-14",
+    "expected_ipo_window": "November 2026",
+    "ticker_symbol": "ANTH",
+    "exchange": "Nasdaq Global Select Market",
+    "lead_underwriters": [
+      "Goldman Sachs & Co. LLC",
+      "Morgan Stanley",
+      "J.P. Morgan Securities LLC"
+    ],
+    "independent_auditor": "PricewaterhouseCoopers LLP",
+    "legal_counsel": "Wilson Sonsini Goodrich & Rosati, P.C.",
+    "source_url": "https://www.sec.gov/edgar/searchedgar/companysearch",
+    "filing_index_url": "https://www.sec.gov/edgar/searchedgar/companysearch"
+  },
+  "ipo": {
+    "target_valuation_usd_trillions": 2.0,
+    "target_price_per_share_usd": 200.0,
+    "shares_offered": 125000000,
+    "total_shares_outstanding": 10000000000,
+    "gross_proceeds_usd_billions": 25.0,
+    "series_h": {
+      "date": "2026-05-15",
+      "post_money_valuation_usd_billions": 965.0,
+      "amount_raised_usd_billions": 65.0,
+      "lead_investors": ["Menlo Ventures", "Spark Capital", "Amazon", "Google Cloud"]
+    },
+    "expected_timeline": {
+      "confidential_drs_filing": "2026-06-01",
+      "public_s1_drop": "2026-10-14",
+      "roadshow_start": "2026-10-28",
+      "pricing_date": "2026-11-12",
+      "trading_start": "2026-11-13",
+      "settlement_date": "2026-11-16",
+      "exchange": "Nasdaq"
+    },
+    "multi_class_structure": {
+      "class_a_votes_per_share": 1,
+      "class_b_votes_per_share": 10,
+      "class_t_trust_shares": 1,
+      "class_b_holders": "Founders (Dario & Daniela Amodei) & early technical leadership",
+      "class_t_holder": "Long-Term Benefit Trust (LTBT)",
+      "founder_voting_power_pct": 58.4,
+      "pbc_purpose": "To responsibly develop and maintain advanced artificial intelligence for the long-term benefit of humanity, balancing commercial execution with safety."
+    },
+    "lock_up": {
+      "standard_days": 180,
+      "expiry_date": "2027-05-12",
+      "tiered_early_release": "20% unlocked following Q1 2027 earnings release if stock closes >= $250.00 (125% of IPO price) for 10 of 15 trading days."
+    }
+  },
+  "financials": {
+    "summary": {
+      "fy2025_revenue_usd_billions": 4.62,
+      "fy2025_yoy_growth_pct": 1180,
+      "fy2025_operating_loss_usd_billions": 8.24,
+      "fy2025_accounting_net_loss_usd_billions": 42.1,
+      "fy2025_noncash_derivative_charge_usd_billions": 33.86,
+      "cash_and_equivalents_usd_billions": 14.2,
+      "total_compute_commitments_usd_billions": 518.0
+    },
+    "annual": [
+      {
+        "year": 2022,
+        "revenue": 10,
+        "cogs": 25,
+        "gross_margin_pct": -150,
+        "rd_expense": 140,
+        "sm_expense": 15,
+        "ga_expense": 10,
+        "operating_income": -180,
+        "net_income": -185
+      },
+      {
+        "year": 2023,
+        "revenue": 100,
+        "cogs": 125,
+        "gross_margin_pct": -25,
+        "rd_expense": 550,
+        "sm_expense": 95,
+        "ga_expense": 110,
+        "operating_income": -780,
+        "net_income": -820
+      },
+      {
+        "year": 2024,
+        "revenue": 1050,
+        "cogs": 610,
+        "gross_margin_pct": 41.9,
+        "rd_expense": 2100,
+        "sm_expense": 480,
+        "ga_expense": 710,
+        "operating_income": -2850,
+        "net_income": -3100
+      },
+      {
+        "year": 2025,
+        "revenue": 4620,
+        "cogs": 1940,
+        "gross_margin_pct": 58.0,
+        "rd_expense": 6820,
+        "sm_expense": 1250,
+        "ga_expense": 850,
+        "operating_income": -8240,
+        "net_income": -42100
+      }
+    ],
+    "operating_expenses_2025": [
+      { "category": "Compute & Model Training", "amount_millions": 6820, "pct": 62.8 },
+      { "category": "Research & Alignment Science", "amount_millions": 2000, "pct": 18.4 },
+      { "category": "Sales & Enterprise Go-to-Market", "amount_millions": 1250, "pct": 11.5 },
+      { "category": "General, Administrative & Safety Compliance", "amount_millions": 850, "pct": 7.3 }
+    ]
+  },
+  "segments": [
+    {
+      "id": "api",
+      "name": "Claude Developer API",
+      "revenue_2025_millions": 1940,
+      "share_pct": 42.0,
+      "description": "Direct token-based access via Anthropic Console for Claude 3.5 Sonnet, Claude 3.7 Opus, and Claude 3.5 Haiku.",
+      "metrics": {
+        "monthly_active_devs": "850,000+",
+        "features": ["Prompt Caching (90% cost cut)", "Message Batches API (50% discount)", "Computer Use API"]
+      }
+    },
+    {
+      "id": "cloud",
+      "name": "Cloud Hyperscaler Alliances",
+      "revenue_2025_millions": 1663,
+      "share_pct": 36.0,
+      "description": "Managed enterprise distribution through Amazon Bedrock and Google Cloud Vertex AI with customer VPC isolation.",
+      "metrics": {
+        "hyperscalers": ["Amazon AWS Bedrock", "Google Cloud Vertex AI"],
+        "retention_rate": "178% NRR"
+      }
+    },
+    {
+      "id": "enterprise",
+      "name": "Claude Enterprise & Team SaaS",
+      "revenue_2025_millions": 647,
+      "share_pct": 14.0,
+      "description": "Enterprise workspace subscription seats, Claude Code autonomous CLI agents, Artifacts collaborative work, 500k context windows.",
+      "metrics": {
+        "enterprise_customers": "3,400+",
+        "features": ["Claude Code agent", "Single Sign-On & SCIM", "Admin governance console"]
+      }
+    },
+    {
+      "id": "consumer",
+      "name": "Claude Pro Consumer Subscriptions",
+      "revenue_2025_millions": 370,
+      "share_pct": 8.0,
+      "description": "$20/month subscription providing priority access to frontier reasoning models for individual professionals and developers.",
+      "metrics": {
+        "subscribers": "1.5M+",
+        "churn_rate": "<3.2% monthly"
+      }
+    }
+  ],
+  "compute": {
+    "total_obligations_usd_billions": 518.0,
+    "timeframe": "10 years (2026–2036)",
+    "partners": [
+      {
+        "name": "Amazon AWS",
+        "details": "Multi-gigawatt dedicated data center footprint; primary training deployment on custom AWS Trainium 2 & 3 silicon clusters and Project Rainier."
+      },
+      {
+        "name": "Google Cloud",
+        "details": "Google TPU v5p and next-generation TPU v6 pods for high-throughput multimodal pre-training and alignment experiments."
+      }
+    ],
+    "scaling_trajectory": {
+      "claude_3_5": "10^26 FLOPs",
+      "claude_4_frontier": ">10^27 FLOPs",
+      "claude_5_nextgen": ">10^28 FLOPs"
+    }
+  },
+  "customers": [
+    { "name": "Pfizer", "use_case": "Biomedical hypothesis synthesis and literature review", "tier": "Enterprise" },
+    { "name": "Bridgewater Associates", "use_case": "Systematic macroeconomic analysis and market signals", "tier": "Enterprise" },
+    { "name": "Boston Consulting Group (BCG)", "use_case": "Firmwide strategic analysis and report generation", "tier": "Enterprise" },
+    { "name": "GitLab", "use_case": "Powering GitLab Duo code completion and vulnerability remediation", "tier": "Strategic Partner" },
+    { "name": "Jane Street", "use_case": "Quantitative code transformation and statistical tooling", "tier": "Enterprise" },
+    { "name": "Salesforce", "use_case": "Agentforce customer support and autonomous CRM workflows", "tier": "Strategic Partner & Investor" },
+    { "name": "GitHub", "use_case": "Copilot multi-model reasoning and Claude 3.5 Sonnet coding", "tier": "Cloud Customer" },
+    { "name": "Robinhood", "use_case": "Customer service intelligence and compliance review", "tier": "Enterprise" }
+  ],
+  "governance": {
+    "entity_type": "Delaware Public Benefit Corporation (PBC)",
+    "specific_public_benefit": "To responsibly develop and maintain advanced artificial intelligence for the long-term benefit of humanity.",
+    "long_term_benefit_trust": {
+      "structure": "Delaware Purpose Trust",
+      "shares_held": "1 Class T Share (no economic interest)",
+      "authority": "Right to elect and remove directors, scaling to an absolute board majority upon reaching critical frontier AI thresholds (ASL-3/ASL-4).",
+      "trustees": [
+        "Jason Matheny (RAND Corporation CEO)",
+        "Paul Christiano (Alignment Research Center)",
+        "Kanika Bahl (Evidence Action CEO)",
+        "Neil Buddy Shah (Clinton Health Access Initiative CEO)",
+        "Zach Robinson (Effective Ventures)"
+      ]
+    },
+    "leadership": [
+      { "name": "Dario Amodei, Ph.D.", "role": "Co-founder & Chief Executive Officer", "bio": "Former VP of Research at OpenAI; led GPT-2, GPT-3, and early RLHF alignment work." },
+      { "name": "Daniela Amodei", "role": "Co-founder & President", "bio": "Former VP of Operations at OpenAI; oversees business, operations, and policy scaling." },
+      { "name": "Jared Kaplan, Ph.D.", "role": "Co-founder & Chief Science Officer", "bio": "Theoretical physicist; pioneer of neural scaling laws that underpin modern LLMs." },
+      { "name": "Chris Olah", "role": "Co-founder & Lead Researcher", "bio": "Pioneer in mechanistic interpretability and monosemantic feature dictionary learning." },
+      { "name": "Jack Clark", "role": "Co-founder & Head of Policy", "bio": "Former Strategy Director at OpenAI; co-chair of the AI Index and OECD expert." }
+    ]
+  },
+  "risk_factors": [
+    {
+      "title": "Enormous Compute Commitments ($518 Billion)",
+      "description": "We have entered into long-term, non-cancelable infrastructure commitments totaling $518 billion. If inference or training efficiency gains drastically reduce compute requirements, or if revenue fails to scale, these commitments could severely strain liquidity."
+    },
+    {
+      "title": "Public Benefit Fiduciary Duty & Safety Pause Authority",
+      "description": "As a Delaware PBC, our directors must balance financial return with our public benefit purpose. Furthermore, our Long-Term Benefit Trust holds powers to intervene or pause model deployment if safety thresholds in our Responsible Scaling Policy (RSP) are breached."
+    },
+    {
+      "title": "Single-Source Cloud and Silicon Dependencies",
+      "description": "We rely predominantly on Amazon AWS and Google Cloud for specialized AI acceleration hardware (Nvidia GPUs, AWS Trainium, Google TPUs). Disruption in chip supply or data center power availability would materially impact training and inference."
+    },
+    {
+      "title": "Copyright and Fair Use Litigation",
+      "description": "We are defending class-action copyright lawsuits brought by music publishers (Universal Music Group) and authors alleging that training on copyrighted text and lyrics constitutes infringement rather than fair use."
+    },
+    {
+      "title": "Intense Frontier Model Competition",
+      "description": "We compete against well-capitalized tech giants and labs (OpenAI, Google DeepMind, Meta, Microsoft) that may subsidize API pricing or integrate competitive models into dominant operating system ecosystems."
+    }
+  ],
+  "quotes": [
+    {
+      "author": "Dario Amodei",
+      "source": "Machines of Loving Grace (Founder Letter)",
+      "text": "I think of the coming era not as a crisis to survive, but as a vast frontier of biological and technological renaissance—if we navigate the adolescence of powerful technology with wisdom and care."
+    },
+    {
+      "author": "Dario Amodei",
+      "source": "Form S-1 Letter to Shareholders",
+      "text": "We did not found Anthropic to build just another enterprise software company. We founded it because we believe the creation of transformative intelligence is the pivot point of human history, demanding an uncompromised commitment to safety and ethics."
+    },
+    {
+      "author": "Anthropic PBC Charter",
+      "source": "Certificate of Incorporation",
+      "text": "The specific public benefit to be promoted by the corporation is to responsibly develop and maintain advanced artificial intelligence for the long-term benefit of humanity."
+    }
+  ]
+}
