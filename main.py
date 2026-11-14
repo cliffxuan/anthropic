@@ -9,14 +9,17 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 
-app = FastAPI(title="ANTH · Anthropic IPO, charted & traded")
+app = FastAPI(title="ANT · Anthropic IPO, charted & traded")
 
-# --- Live price tracker: pre-IPO perp (Hyperliquid io:ANTH) ---
-TARGET_IPO_VALUATION_T = 2.0  # $2.0 Trillion target valuation
-TARGET_SHARE_PRICE = 200.0  # $200.00 target share price at 10B shares
-SHARES_OUTSTANDING = 10_000_000_000  # 10 Billion normalized fully-diluted shares
+# --- Live price tracker: pre-IPO perps on Hyperliquid (io:ANTH & xyz:ANT) ---
+TARGET_IPO_VALUATION_T = 1.41  # $1.41 Trillion fully diluted at $78/sh top of S-1/A range
+TARGET_SHARE_PRICE = 78.0  # $78.00 top of $70–$78 S-1/A range
+MIDPOINT_SHARE_PRICE = 74.0  # $74.00 midpoint of $70–$78 S-1/A range
+SHARES_OUTSTANDING = 18_050_000_000  # ~18.05B fully-diluted shares
+BASIC_SHARES_OUTSTANDING = 13_100_000_000  # ~13.10B post-IPO Class A + Class N shares
 SERIES_H_VALUATION_T = 0.965  # $965B post-money valuation (Series H, May 2026)
 PERP_COIN = "io:ANTH"
+XYZ_PERP_COIN = "xyz:ANT"
 HL_URL = "https://api.hyperliquid.xyz/info"
 CACHE_TTL = 30.0  # seconds
 
@@ -42,14 +45,14 @@ def _http_json(
         return json.loads(resp.read().decode())
 
 
-def _fetch_perp_candles() -> list[dict]:
-    """Fetch daily candles for io:ANTH from Hyperliquid."""
+def _fetch_perp_candles(coin: str = PERP_COIN, days: int = 180) -> list[dict]:
+    """Fetch daily candles for a Hyperliquid perp contract."""
     end = int(time.time() * 1000)
-    start = end - 180 * 86400 * 1000
+    start = end - days * 86400 * 1000
     body = {
         "type": "candleSnapshot",
         "req": {
-            "coin": PERP_COIN,
+            "coin": coin,
             "interval": "1d",
             "startTime": start,
             "endTime": end,
@@ -97,31 +100,60 @@ def _fetch_orderbook() -> dict:
 
 def _build_price_payload() -> dict:
     candles: list[dict] = []
+    xyz_candles: list[dict] = []
     try:
-        candles = _fetch_perp_candles()
+        candles = _fetch_perp_candles(PERP_COIN, 180)
+    except Exception:
+        pass
+    try:
+        xyz_candles = _fetch_perp_candles(XYZ_PERP_COIN, 60)
     except Exception:
         pass
 
-    latest_close = candles[-1]["perp"] if candles else 2041.50
+    latest_close = candles[-1]["perp"] if candles else 1784.60
     prev_close = candles[-2]["perp"] if len(candles) > 1 else latest_close
     day_change_pct = round(((latest_close - prev_close) / prev_close) * 100, 2) if prev_close else 0.0
     implied_valuation_t = round(latest_close / 1000.0, 3)  # 1 point = $1B implied valuation
+    fd_shares_b = SHARES_OUTSTANDING / 1e9  # 18.05B
+    basic_shares_b = BASIC_SHARES_OUTSTANDING / 1e9  # 13.10B
+    implied_share_price_fd = round(latest_close / fd_shares_b, 2)
+
+    xyz_close = xyz_candles[-1]["perp"] if xyz_candles else 102.74
+    xyz_prev = xyz_candles[-2]["perp"] if len(xyz_candles) > 1 else xyz_close
+    xyz_change_pct = round(((xyz_close - xyz_prev) / xyz_prev) * 100, 2) if xyz_prev else 0.0
+    xyz_fdv_t = round((xyz_close * fd_shares_b) / 1000.0, 3)
+    xyz_basic_cap_t = round((xyz_close * basic_shares_b) / 1000.0, 3)
 
     return {
         "coin": PERP_COIN,
-        "source": "Hyperliquid HIP-3 Pre-IPO Perpetual (io:ANTH)",
+        "source": "Hyperliquid HIP-3 Pre-IPO Perpetuals (io:ANTH & xyz:ANT)",
         "target_valuation_t": TARGET_IPO_VALUATION_T,
         "target_share_price": TARGET_SHARE_PRICE,
+        "midpoint_share_price": MIDPOINT_SHARE_PRICE,
         "series_h_valuation_t": SERIES_H_VALUATION_T,
         "shares_outstanding": SHARES_OUTSTANDING,
+        "basic_shares_outstanding": BASIC_SHARES_OUTSTANDING,
         "series": candles,
         "latest": {
             "price": latest_close,
             "prev_close": prev_close,
             "day_change_pct": day_change_pct,
             "implied_valuation_t": implied_valuation_t,
+            "implied_share_price_fd": implied_share_price_fd,
             "vs_series_h_pct": round(((implied_valuation_t - SERIES_H_VALUATION_T) / SERIES_H_VALUATION_T) * 100, 1),
             "vs_target_pct": round(((implied_valuation_t - TARGET_IPO_VALUATION_T) / TARGET_IPO_VALUATION_T) * 100, 1),
+            "vs_s1a_mid_pct": round(((implied_share_price_fd - MIDPOINT_SHARE_PRICE) / MIDPOINT_SHARE_PRICE) * 100, 1),
+        },
+        "xyz_ant": {
+            "coin": XYZ_PERP_COIN,
+            "price": xyz_close,
+            "prev_close": xyz_prev,
+            "day_change_pct": xyz_change_pct,
+            "implied_fdv_t": xyz_fdv_t,
+            "implied_basic_cap_t": xyz_basic_cap_t,
+            "vs_s1a_top_pct": round(((xyz_close - TARGET_SHARE_PRICE) / TARGET_SHARE_PRICE) * 100, 1),
+            "vs_s1a_mid_pct": round(((xyz_close - MIDPOINT_SHARE_PRICE) / MIDPOINT_SHARE_PRICE) * 100, 1),
+            "trade_url": "https://app.hyperliquid.xyz/trade/xyz:ANT",
         },
         "trade_url": "https://app.hyperliquid.xyz/trade/io:ANTH",
         "updated": int(time.time()),
@@ -152,9 +184,9 @@ def orderbook() -> JSONResponse:
             if _orderbook_cache["data"] is None:
                 _orderbook_cache["data"] = {
                     "coin": PERP_COIN,
-                    "best_bid": 2041.3,
-                    "best_ask": 2041.5,
-                    "mid": 2041.4,
+                    "best_bid": 1784.7,
+                    "best_ask": 1784.9,
+                    "mid": 1784.8,
                     "spread": 0.2,
                     "bids": [],
                     "asks": [],
@@ -165,44 +197,52 @@ def orderbook() -> JSONResponse:
 
 @app.get("/api/filings")
 def filings() -> JSONResponse:
-    # Structured feed of SEC status, confidential DRS registration, and investor materials
+    # Structured feed of SEC EDGAR filings for Anthropic, PBC (CIK 0002130357)
     return JSONResponse(
         {
             "company": "Anthropic, PBC",
-            "cik": "0001994821",
-            "source": "SEC EDGAR / JOBS Act Confidential Review",
+            "cik": "0002130357",
+            "source": "SEC EDGAR · Nasdaq Global Select (Ticker: ANT)",
             "filings": [
+                {
+                    "form": "Form S-1/A (Amend. No. 2)",
+                    "filed": "2026-11-10",
+                    "description": "Launches IPO roadshow: 825M Class A shares at $70–$78/sh ($64.4B max public offering) + $26B concurrent Class N private placement (Google, Nvidia, Microsoft).",
+                    "status": "Active Roadshow · Pricing Nov 18",
+                    "public_expected": "Trading Nov 19, 2026",
+                    "url": "https://www.sec.gov/edgar/browse/?CIK=0002130357",
+                },
+                {
+                    "form": "Form S-1 (Public Registration)",
+                    "filed": "2026-10-26",
+                    "description": "Public S-1 registration statement disclosing $4.59B FY25 revenue, $16.29B H1 2026 revenue ($974M Q2 operating profit), $131.7B cash, and Class A/F/T/N governance.",
+                    "status": "EDGAR Public",
+                    "public_expected": "Effective upon pricing",
+                    "url": "https://www.sec.gov/edgar/browse/?CIK=0002130357",
+                },
+                {
+                    "form": "Final Judgment (Bartz Settlement)",
+                    "filed": "2026-07-20",
+                    "description": "U.S. District Court (N.D. Cal.) grants final approval to historic $1.5B Bartz v. Anthropic copyright class-action settlement (~$3,000/work across 500k books).",
+                    "status": "Final Approval Entered",
+                    "public_expected": "Payouts Q4 2026",
+                    "url": "https://www.anthropiccopyrightsettlement.com/",
+                },
                 {
                     "form": "DRS (Confidential S-1)",
                     "filed": "2026-06-01",
-                    "description": "Draft Registration Statement on Form S-1 submitted confidentially under the JOBS Act to SEC Division of Corporation Finance.",
-                    "status": "Under confidential review",
-                    "public_expected": "2026-10-14 (15 days prior to roadshow)",
-                    "url": "https://www.sec.gov/edgar/searchedgar/companysearch",
+                    "description": "Initial confidential Draft Registration Statement submitted under the JOBS Act to SEC Division of Corporation Finance.",
+                    "status": "Unsealed Oct 26, 2026",
+                    "public_expected": "EDGAR Public",
+                    "url": "https://www.sec.gov/edgar/browse/?CIK=0002130357",
                 },
                 {
-                    "form": "Series H Cert.",
+                    "form": "Series H Charter ($965B)",
                     "filed": "2026-05-18",
-                    "description": "Amended and Restated Certificate of Incorporation filed in Delaware authorizing Series H Preferred Stock at $965B post-money.",
+                    "description": "Restated Certificate of Incorporation filed in Delaware authorizing $65B Series H Preferred Stock round at $965B post-money led by Altimeter, Dragoneer, Greenoaks & Sequoia.",
                     "status": "Effective",
                     "public_expected": "Public record",
                     "url": "https://corp.delaware.gov/",
-                },
-                {
-                    "form": "Form D / A",
-                    "filed": "2026-02-24",
-                    "description": "Notice of Exempt Offering of Securities (Anthropic PBC Jan 2026 series).",
-                    "status": "Effective",
-                    "public_expected": "EDGAR Public",
-                    "url": "https://www.sec.gov/edgar/browse/?CIK=0002112584",
-                },
-                {
-                    "form": "FTC 6(b) Response",
-                    "filed": "2025-11-14",
-                    "description": "Submission to Federal Trade Commission regarding cloud compute and commercial partnership agreements with Amazon and Google.",
-                    "status": "Completed",
-                    "public_expected": "Regulatory review",
-                    "url": "https://www.ftc.gov/news-events/news/press-releases/2024/01/ftc-launches-inquiry-generative-ai-investments-partnerships",
                 },
             ],
             "updated": int(time.time()),

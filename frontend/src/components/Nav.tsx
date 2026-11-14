@@ -4,15 +4,16 @@ import { Sparkles, TrendingUp, ExternalLink, Menu, X } from "lucide-react";
 
 const NAV_ITEMS = [
   { label: "Overview", href: "#top" },
-  { label: "Live Market", href: "#market" },
+  { label: "News", href: "#news" },
+  { label: "Perp → Share Px", href: "#market" },
   { label: "Trade IPO", href: "#trade" },
   { label: "Timeline", href: "#track" },
-  { label: "S-1 Offering", href: "#ipo" },
+  { label: "S-1/A Offering", href: "#ipo" },
   { label: "Financials", href: "#financials" },
   { label: "Segments", href: "#segments" },
-  { label: "Compute ($518B)", href: "#compute" },
-  { label: "Governance & LTBT", href: "#governance" },
-  { label: "Risks", href: "#risks" },
+  { label: "Compute ($900B)", href: "#compute" },
+  { label: "Governance", href: "#governance" },
+  { label: "Risks & Legal", href: "#risks" },
 ];
 
 export function Nav() {
@@ -28,7 +29,9 @@ export function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const price = px?.latest.price ?? 2041.5;
+  const price = px?.latest.price ?? 1784.6;
+  const impliedSharePx = px?.latest.implied_share_price_fd ?? Number((price / 18.05).toFixed(2));
+  const xyzPrice = px?.xyz_ant?.price ?? 102.78;
   const change = px?.latest.day_change_pct ?? 0.0;
   const isUp = change >= 0;
 
@@ -48,7 +51,7 @@ export function Nav() {
           </div>
           <div className="flex flex-col">
             <span className="font-semibold tracking-tight text-zinc-100 flex items-center gap-1.5">
-              ANTH <span className="text-[11px] font-normal text-zinc-400">· Anthropic IPO</span>
+              ANT <span className="text-[11px] font-normal text-zinc-400">· Anthropic IPO</span>
             </span>
           </div>
         </a>
@@ -60,15 +63,17 @@ export function Nav() {
         >
           <span className="h-2 w-2 rounded-full bg-emerald-400 pulse-dot" />
           <span className="font-mono text-zinc-400">io:ANTH</span>
-          <span className="font-semibold tabular text-zinc-100">${price.toFixed(2)}</span>
+          <span className="font-semibold tabular text-zinc-100">${price.toFixed(1)}</span>
           <span className={`font-mono text-[11px] ${isUp ? "text-emerald-400" : "text-red-400"}`}>
-            {isUp ? "+" : ""}{change.toFixed(2)}%
+            (~${impliedSharePx.toFixed(1)}/sh)
           </span>
-          <span className="text-[10px] text-zinc-500 font-mono">~$2.04T cap</span>
+          <span className="text-zinc-600">·</span>
+          <span className="font-mono text-zinc-400">xyz:ANT</span>
+          <span className="font-semibold tabular text-emerald-400">${xyzPrice.toFixed(2)}/sh</span>
         </a>
 
         {/* Desktop Nav Items */}
-        <nav className="hidden xl:flex items-center gap-5 text-xs text-zinc-400">
+        <nav className="hidden xl:flex items-center gap-4 text-xs text-zinc-400">
           {NAV_ITEMS.map((item) => (
             <a
               key={item.href}
@@ -115,9 +120,11 @@ export function Nav() {
             >
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-emerald-400 pulse-dot" />
-                <span className="font-mono text-zinc-300">io:ANTH Live</span>
+                <span className="font-mono text-zinc-300">io:ANTH / xyz:ANT</span>
               </div>
-              <span className="font-semibold tabular text-zinc-100">${price.toFixed(2)}</span>
+              <span className="font-semibold tabular text-zinc-100">
+                ~${impliedSharePx.toFixed(1)}–${xyzPrice.toFixed(1)}/sh
+              </span>
             </a>
             {NAV_ITEMS.map((item) => (
               <a

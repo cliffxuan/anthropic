@@ -11,10 +11,10 @@ export function Footer() {
               <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#da7756] to-[#b45309]">
                 <Sparkles size={14} className="text-[#0d0c0b]" />
               </div>
-              <span className="font-semibold text-zinc-200">ANTH · Anthropic IPO</span>
+              <span className="font-semibold text-zinc-200">ANT · Anthropic IPO</span>
             </div>
             <p className="text-[11px] text-zinc-400 leading-relaxed">
-              Interactive primary-source breakdown of Anthropic PBC's Form S-1 prospectus and live pre-IPO perpetual market tracker.
+              Interactive primary-source breakdown of Anthropic PBC's Form S-1/A prospectus (Nasdaq: ANT) and live pre-IPO perpetual market tracker (Hyperliquid: io:ANTH).
             </p>
           </div>
 
@@ -24,12 +24,12 @@ export function Footer() {
             <ul className="space-y-2 text-[11px]">
               <li>
                 <a
-                  href="https://www.sec.gov/edgar/searchedgar/companysearch"
+                  href="https://www.sec.gov/edgar/browse/?CIK=0002130357"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-[#da7756] flex items-center gap-1"
                 >
-                  SEC EDGAR Database <ExternalLink size={10} />
+                  SEC EDGAR (CIK 0002130357) <ExternalLink size={10} />
                 </a>
               </li>
               <li>
@@ -80,13 +80,13 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#trade" className="hover:text-[#da7756]">
-                  IPO Trade Simulator
+                <a href="#news" className="hover:text-[#da7756]">
+                  Nov 2026 Roadshow & News
                 </a>
               </li>
               <li>
                 <a href="#trade" className="hover:text-[#da7756]">
-                  Valuation Multiple Workbench
+                  IPO Trade Simulator & Workbench
                 </a>
               </li>
               <li>
@@ -101,10 +101,10 @@ export function Footer() {
           <div>
             <div className="font-mono uppercase text-zinc-400 text-[11px] mb-3">Corporate Form</div>
             <p className="text-[11px] text-zinc-400 leading-relaxed">
-              Anthropic, PBC is a Delaware Public Benefit Corporation. Headquartered in San Francisco, CA. Anticipated Ticker: <span className="font-mono text-zinc-200">ANTH</span> on Nasdaq.
+              Anthropic, PBC is a Delaware Public Benefit Corporation. Headquartered in San Francisco, CA. Nasdaq Global Select Ticker: <span className="font-mono text-zinc-200">ANT</span> ($70–$78/sh).
             </p>
             <div className="mt-3 flex items-center gap-1.5 text-[11px] text-[#da7756]">
-              <ShieldCheck size={14} /> Responsible Scaling Policy ASL-3
+              <ShieldCheck size={14} /> Responsible Scaling Policy ASL-3 / ASL-4
             </div>
           </div>
         </div>
@@ -112,7 +112,7 @@ export function Footer() {
         {/* Disclaimer */}
         <div className="border-t border-[#262321] pt-6 text-[10px] text-zinc-600 leading-relaxed space-y-2">
           <p>
-            DISCLAIMER: This application is an independent analytical tool for research, educational, and informational purposes only. It does not constitute an offer to buy or sell securities, nor an invitation to participate in any investment strategy. Pre-IPO perpetual contracts on Hyperliquid are synthetic derivatives settled in cryptocurrency (USDC) and do not represent equity ownership or shareholder voting rights in Anthropic PBC.
+            DISCLAIMER: This application is an independent analytical tool for research, educational, and informational purposes only. It does not constitute an offer to buy or sell securities, nor an invitation to participate in any investment strategy. Pre-IPO perpetual contracts on Hyperliquid (io:ANTH) are synthetic derivatives settled in cryptocurrency (USDC) and do not represent Class A equity ownership (Nasdaq: ANT) or shareholder voting rights in Anthropic PBC.
           </p>
           <div className="flex flex-wrap items-center justify-between gap-2 pt-2 text-zinc-500">
             <span>Deployed at <a href="https://anthropic.algoentropy.com" className="text-zinc-400 hover:text-zinc-200">anthropic.algoentropy.com</a></span>

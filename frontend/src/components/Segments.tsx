@@ -1,6 +1,6 @@
 import { Section, Card } from "./Section";
 import { data } from "../data";
-import { Code, Cloud, Building2, User, CheckCircle2, Zap } from "lucide-react";
+import { Code, Cloud, Building2, User, Zap } from "lucide-react";
 
 export function Segments() {
   const segments = data.segments;
@@ -16,10 +16,10 @@ export function Segments() {
     <Section
       id="segments"
       eyebrow="Section 04 · Revenue Engine"
-      title="Product Segments & Revenue Streams"
-      blurb="How Anthropic monetizes frontier intelligence across developer APIs, cloud hyperscaler alliances, enterprise agentic SaaS, and consumer subscriptions."
+      title="Product Segments & H1 2026 Revenue Mix"
+      blurb="How Anthropic generated $16.29B in H1 2026 revenue: 80.2% consumption-based token billing ($13.06B across direct API and AWS/GCP cloud marketplaces) and 19.8% subscriptions ($3.22B across Claude Enterprise, Cowork, Pro, and Max)."
       sourceUrl={data.filing_metadata.source_url}
-      sourceLabel="S-1 · Business · Segment Reporting"
+      sourceLabel="S-1 · Revenue Disaggregation (Note 3)"
     >
       <div className="grid gap-6 md:grid-cols-2">
         {segments.map((seg) => {
@@ -34,7 +34,7 @@ export function Segments() {
                   <div>
                     <h3 className="font-semibold text-zinc-100 text-base">{seg.name}</h3>
                     <div className="text-xs font-mono text-zinc-500">
-                      ${(seg.revenue_2025_millions / 1000).toFixed(2)}B in 2025
+                      {seg.period_label}
                     </div>
                   </div>
                 </div>
@@ -42,7 +42,7 @@ export function Segments() {
                   <div className="text-2xl font-bold font-mono text-[#da7756] tabular">
                     {seg.share_pct}%
                   </div>
-                  <div className="text-[10px] text-zinc-500 uppercase font-mono">Revenue Share</div>
+                  <div className="text-[10px] text-zinc-500 uppercase font-mono">H1 26 Share</div>
                 </div>
               </div>
 
@@ -52,9 +52,9 @@ export function Segments() {
 
               <div className="mt-4 pt-3 border-t border-[#262321] space-y-1.5">
                 {Object.entries(seg.metrics).map(([key, value]) => (
-                  <div key={key} className="flex justify-between items-center text-xs">
-                    <span className="text-zinc-500 capitalize">{key.replace(/_/g, " ")}:</span>
-                    <span className="font-medium text-zinc-200">
+                  <div key={key} className="flex justify-between items-center text-xs gap-4">
+                    <span className="text-zinc-500 capitalize shrink-0">{key.replace(/_/g, " ")}:</span>
+                    <span className="font-medium text-zinc-200 text-right">
                       {Array.isArray(value) ? value.join(" · ") : String(value)}
                     </span>
                   </div>

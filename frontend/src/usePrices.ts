@@ -14,16 +14,31 @@ export interface PricePayload {
   source: string;
   target_valuation_t: number;
   target_share_price: number;
+  midpoint_share_price?: number;
   series_h_valuation_t: number;
   shares_outstanding: number;
+  basic_shares_outstanding?: number;
   series: CandlePoint[];
   latest: {
     price: number;
     prev_close: number;
     day_change_pct: number;
     implied_valuation_t: number;
+    implied_share_price_fd?: number;
     vs_series_h_pct: number;
     vs_target_pct: number;
+    vs_s1a_mid_pct?: number;
+  };
+  xyz_ant?: {
+    coin: string;
+    price: number;
+    prev_close: number;
+    day_change_pct: number;
+    implied_fdv_t: number;
+    implied_basic_cap_t: number;
+    vs_s1a_top_pct: number;
+    vs_s1a_mid_pct: number;
+    trade_url: string;
   };
   trade_url: string;
   updated: number;

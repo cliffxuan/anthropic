@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Nav } from "./components/Nav";
 import { Hero } from "./components/Hero";
+import { News } from "./components/News";
 import { Snapshot } from "./components/Snapshot";
 import { PriceTracker } from "./components/PriceTracker";
 import { TradeSimulator } from "./components/TradeSimulator";
@@ -56,6 +57,7 @@ export default function App() {
       <Nav />
       <Hero />
       <main>
+        <News />
         <Snapshot />
         <PriceTracker />
         <TradeSimulator />

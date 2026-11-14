@@ -1,37 +1,32 @@
-import { useState, useMemo } from "react";
-import { Section, Card, Stat } from "./Section";
+import { useState } from "react";
+import { Section, Card } from "./Section";
 import { usePrices } from "../usePrices";
 import { useOrderbook } from "../useOrderbook";
 import {
   TrendingUp,
   TrendingDown,
-  Calculator,
   Sliders,
   Layers,
-  ArrowRight,
   ExternalLink,
-  DollarSign,
   AlertTriangle,
-  Flame,
-  CheckCircle2,
 } from "lucide-react";
 
 export function TradeSimulator() {
   const { data: px } = usePrices();
   const { data: ob } = useOrderbook();
 
-  const currentPrice = px?.latest.price ?? 2041.5;
+  const currentPrice = px?.latest.price ?? 1771.3;
 
   // Simulator state
   const [tab, setTab] = useState<"trade" | "valuation" | "orderbook">("trade");
   const [direction, setDirection] = useState<"long" | "short">("long");
   const [collateral, setCollateral] = useState<number>(5000);
   const [leverage, setLeverage] = useState<number>(3);
-  const [exitPrice, setExitPrice] = useState<number>(2500);
+  const [exitPrice, setExitPrice] = useState<number>(2000);
 
-  // Valuation model state
-  const [projectedRevenue, setProjectedRevenue] = useState<number>(12.5); // $12.5B 2026 runrate
-  const [psMultiple, setPsMultiple] = useState<number>(160); // 160x P/S
+  // Valuation model state (updated for Nov 2026 S-1/A: $81B Oct ARR, ~18.05B FD shares)
+  const [projectedRevenue, setProjectedRevenue] = useState<number>(81.0); // $81.0B Oct 2026 ARR
+  const [psMultiple, setPsMultiple] = useState<number>(22); // 22x ARR (~$1.78T cap)
 
   // Calculations for Trade Simulator
   const notional = collateral * leverage;
@@ -45,9 +40,9 @@ export function TradeSimulator() {
       ? currentPrice * (1 - liqBuffer * 0.9)
       : currentPrice * (1 + liqBuffer * 0.9);
 
-  // Valuation model calculations
+  // Valuation model calculations (18.05B fully diluted shares -> $78/sh at $1.41T FDV)
   const modeledMarketCapT = (projectedRevenue * psMultiple) / 1000;
-  const modeledSharePrice = (modeledMarketCapT * 1000) / 10.0; // 10B shares
+  const modeledSharePrice = (modeledMarketCapT * 1000) / 18.05; // 18.05B fully diluted shares
   const modeledIndexLevel = modeledMarketCapT * 1000;
   const modeledVsCurrentPct = ((modeledIndexLevel - currentPrice) / currentPrice) * 100;
 
@@ -56,7 +51,7 @@ export function TradeSimulator() {
       id="trade"
       eyebrow="Interactive · Trade the Anthropic IPO"
       title="IPO Trade Simulator & Valuation Workbench"
-      blurb="Model scenarios for the upcoming IPO debut. Simulate long or short positions on the Hyperliquid io:ANTH pre-IPO perpetual contract, stress-test valuation multiples, and view live order book depth."
+      blurb="Model scenarios for the November 19 Nasdaq: ANT debut. Simulate long or short positions on the Hyperliquid io:ANTH pre-IPO perpetual contract, stress-test valuation multiples against the $81B October ARR and $70–$78 S-1/A price range, and inspect live order book depth."
       sourceUrl="https://app.hyperliquid.xyz/trade/io:ANTH"
       sourceLabel="Trade Live on Hyperliquid"
     >
@@ -197,10 +192,10 @@ export function TradeSimulator() {
               </div>
               <div className="mt-2 grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {[
-                  { label: "Bear ($1.5T)", px: 1500 },
-                  { label: "Base ($2.0T)", px: 2000 },
-                  { label: "Bull ($2.5T)", px: 2500 },
-                  { label: "Moon ($3.0T)", px: 3000 },
+                  { label: "S-1/A Low ($1.26T)", px: 1260 },
+                  { label: "S-1/A Top ($1.41T)", px: 1410 },
+                  { label: "IPO Pop ($2.0T)", px: 2000 },
+                  { label: "Supercycle ($2.5T)", px: 2500 },
                 ].map((s) => (
                   <button
                     key={s.px}
@@ -219,9 +214,9 @@ export function TradeSimulator() {
               </div>
               <input
                 type="range"
-                min={1000}
-                max={4000}
-                step={50}
+                min={900}
+                max={3500}
+                step={25}
                 value={exitPrice}
                 onChange={(e) => setExitPrice(Number(e.target.value))}
                 className="mt-3 w-full accent-[#da7756]"
@@ -271,8 +266,8 @@ export function TradeSimulator() {
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-zinc-500">Margin Ratio:</span>
-                  <span className="font-mono text-zinc-300 tabular">{(100 / leverage).toFixed(1)}%</span>
+                  <span className="text-zinc-500">Implied ANT Share Price:</span>
+                  <span className="font-mono text-zinc-300 tabular">${(exitPrice / 18.05).toFixed(2)} / sh (vs $70–$78 IPO)</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-zinc-500">Implied Target Cap:</span>
@@ -297,7 +292,7 @@ export function TradeSimulator() {
                 <AlertTriangle size={14} className="text-amber-400" /> Pre-IPO Derivative Disclaimer
               </div>
               <p className="leading-relaxed text-[11px] text-zinc-500">
-                io:ANTH is a synthetic perpetual futures contract on Hyperliquid tracking an oracle price of Anthropic's implied equity valuation. It is not an equity share or offering by Anthropic PBC. Simulated calculations are illustrative and do not include funding rates or execution slippage.
+                io:ANTH is a synthetic perpetual futures contract on Hyperliquid tracking an oracle price of Anthropic's implied equity valuation. It is not an equity share of Class A common stock (Nasdaq: ANT) offered by Anthropic PBC.
               </p>
             </div>
           </div>
@@ -311,76 +306,76 @@ export function TradeSimulator() {
             <div className="border-b border-[#292624] pb-4">
               <h3 className="font-semibold text-zinc-100 flex items-center gap-2">
                 <Sliders size={18} className="text-[#da7756]" />
-                S-1 Roadshow Pricing Sensitivity Model
+                S-1/A Roadshow Pricing Sensitivity Model
               </h3>
               <p className="mt-1 text-xs text-zinc-400">
-                Explore what revenue trajectory and valuation multiple are priced into the Anthropic debut.
+                Calibrated to Anthropic's $81B October 2026 annualized revenue run-rate and ~18.05B fully diluted shares.
               </p>
             </div>
 
             <div>
               <div className="flex justify-between items-center text-xs">
-                <label className="font-mono uppercase text-zinc-400">2026/2027 Projected Run-Rate Revenue</label>
+                <label className="font-mono uppercase text-zinc-400">Annualized Run-Rate / NTM Revenue</label>
                 <span className="font-mono text-[#da7756] font-bold tabular text-sm">
                   ${projectedRevenue.toFixed(1)} Billion
                 </span>
               </div>
               <input
                 type="range"
-                min={4}
-                max={25}
-                step={0.5}
+                min={30}
+                max={150}
+                step={1}
                 value={projectedRevenue}
                 onChange={(e) => setProjectedRevenue(Number(e.target.value))}
                 className="mt-3 w-full accent-[#da7756]"
               />
               <div className="mt-2 flex justify-between text-[10px] text-zinc-500 font-mono">
-                <span>$4.6B (2025 Act.)</span>
-                <span>$12.5B (2026E Base)</span>
-                <span>$25B (Super-Scale)</span>
+                <span>$44B (9M26 Ann.)</span>
+                <span>$81B (Oct 2026 ARR)</span>
+                <span>$150B (2027E Bull)</span>
               </div>
             </div>
 
             <div>
               <div className="flex justify-between items-center text-xs">
-                <label className="font-mono uppercase text-zinc-400">Price-to-Sales (P/S) Multiple</label>
+                <label className="font-mono uppercase text-zinc-400">EV / ARR Multiple</label>
                 <span className="font-mono text-zinc-200 font-bold tabular text-sm">
-                  {psMultiple}× P/S
+                  {psMultiple}× ARR
                 </span>
               </div>
               <input
                 type="range"
-                min={30}
-                max={300}
-                step={5}
+                min={10}
+                max={45}
+                step={0.5}
                 value={psMultiple}
                 onChange={(e) => setPsMultiple(Number(e.target.value))}
                 className="mt-3 w-full accent-[#da7756]"
               />
               <div className="mt-2 flex justify-between text-[10px] text-zinc-500 font-mono">
-                <span>30× (Big Tech)</span>
-                <span>160× (Frontier AI Median)</span>
-                <span>300× (Monopoly Premium)</span>
+                <span>17.4× ($1.41T S-1/A Top)</span>
+                <span>22× (Perp Implied)</span>
+                <span>35× (AI Premium)</span>
               </div>
             </div>
 
             <div className="rounded-xl border border-[#2a2624] bg-[#12100f] p-4 text-xs text-zinc-300 space-y-2">
-              <div className="font-semibold text-zinc-200">Comparable AI Multiples (2026):</div>
+              <div className="font-semibold text-zinc-200">Comparable Valuation Benchmarks (Nov 2026):</div>
+              <div className="flex justify-between text-zinc-400">
+                <span>Anthropic S-1/A Top ($78/sh · $1.41T FDV):</span>
+                <span className="font-mono text-emerald-400">17.4× Oct ARR ($81B)</span>
+              </div>
+              <div className="flex justify-between text-zinc-400">
+                <span>Anthropic Hyperliquid Perp (~$1.77T):</span>
+                <span className="font-mono text-[#da7756]">21.9× Oct ARR ($81B)</span>
+              </div>
               <div className="flex justify-between text-zinc-400">
                 <span>Nvidia (NVDA):</span>
-                <span className="font-mono text-zinc-200">~28× NTM Sales</span>
+                <span className="font-mono text-zinc-200">~25× NTM Sales</span>
               </div>
               <div className="flex justify-between text-zinc-400">
                 <span>Palantir (PLTR):</span>
-                <span className="font-mono text-zinc-200">~42× NTM Sales</span>
-              </div>
-              <div className="flex justify-between text-zinc-400">
-                <span>OpenAI (Private Rounds):</span>
-                <span className="font-mono text-zinc-200">~80×–120× Run-Rate</span>
-              </div>
-              <div className="flex justify-between text-zinc-400">
-                <span>Anthropic Series H ($965B):</span>
-                <span className="font-mono text-[#da7756]">~208× 2025 Revenue</span>
+                <span className="font-mono text-zinc-200">~38× NTM Sales</span>
               </div>
             </div>
           </Card>
@@ -393,22 +388,22 @@ export function TradeSimulator() {
 
               <div className="mt-4 grid grid-cols-2 gap-4">
                 <div className="rounded-xl border border-[#2a2624] bg-[#12100f] p-4">
-                  <div className="text-xs text-zinc-500 font-mono">Modeled Market Cap</div>
+                  <div className="text-xs text-zinc-500 font-mono">Modeled FDV Market Cap</div>
                   <div className="mt-1 text-3xl font-bold tabular text-zinc-100">
                     ${modeledMarketCapT.toFixed(2)}T
                   </div>
                   <div className="text-xs text-zinc-400 font-mono mt-0.5">
-                    {modeledMarketCapT >= 2 ? "Exceeds $2T debut goal" : "Below $2T debut goal"}
+                    {modeledMarketCapT >= 1.41 ? "Above $1.41T S-1/A top" : "Within/below S-1/A range"}
                   </div>
                 </div>
 
                 <div className="rounded-xl border border-[#2a2624] bg-[#12100f] p-4">
-                  <div className="text-xs text-zinc-500 font-mono">Modeled Share Price</div>
+                  <div className="text-xs text-zinc-500 font-mono">Implied ANT Share Price</div>
                   <div className="mt-1 text-3xl font-bold tabular text-[#da7756]">
                     ${modeledSharePrice.toFixed(2)}
                   </div>
                   <div className="text-xs text-zinc-400 font-mono mt-0.5">
-                    10B normalized shares
+                    vs. $70–$78 S-1/A range
                   </div>
                 </div>
               </div>
@@ -419,7 +414,7 @@ export function TradeSimulator() {
                   <span className="font-mono text-zinc-200 font-semibold tabular">${currentPrice.toFixed(2)}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-zinc-400">Modeled vs. Live Market:</span>
+                  <span className="text-zinc-400">Modeled vs. Live Perp Market:</span>
                   <span
                     className={`font-mono font-semibold tabular ${
                       modeledVsCurrentPct >= 0 ? "text-emerald-400" : "text-red-400"
@@ -430,9 +425,10 @@ export function TradeSimulator() {
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-zinc-400">Series H Benchmark ($965B):</span>
+                  <span className="text-zinc-400">vs. S-1/A Top Range ($78.00 / $1.41T):</span>
                   <span className="font-mono text-zinc-300 tabular">
-                    +{(((modeledMarketCapT - 0.965) / 0.965) * 100).toFixed(1)}%
+                    {modeledMarketCapT >= 1.41 ? "+" : ""}
+                    {(((modeledMarketCapT - 1.41) / 1.41) * 100).toFixed(1)}%
                   </span>
                 </div>
               </div>
@@ -463,7 +459,7 @@ export function TradeSimulator() {
               <div className="flex items-center gap-3 text-xs">
                 <span className="text-zinc-500">Spread:</span>
                 <span className="font-mono text-zinc-200 tabular font-semibold">
-                  ${ob?.spread ?? 0.2}
+                  ${ob?.spread ?? 0.1}
                 </span>
                 <span className="text-zinc-500">·</span>
                 <span className="text-zinc-500">Mid:</span>
@@ -484,11 +480,11 @@ export function TradeSimulator() {
                   {(ob?.bids && ob.bids.length > 0
                     ? ob.bids
                     : [
-                        { px: 2041.3, sz: 0.84 },
-                        { px: 2041.2, sz: 2.08 },
-                        { px: 2041.1, sz: 0.15 },
-                        { px: 2040.8, sz: 1.45 },
-                        { px: 2040.5, sz: 3.2 },
+                        { px: 1771.2, sz: 0.115 },
+                        { px: 1771.1, sz: 0.177 },
+                        { px: 1770.9, sz: 0.086 },
+                        { px: 1770.8, sz: 0.186 },
+                        { px: 1770.7, sz: 0.172 },
                       ]
                   ).map((b, i) => (
                     <div key={i} className="flex justify-between py-1 px-2 rounded bg-emerald-500/5 text-zinc-300">
@@ -509,11 +505,11 @@ export function TradeSimulator() {
                   {(ob?.asks && ob.asks.length > 0
                     ? ob.asks
                     : [
-                        { px: 2041.5, sz: 0.69 },
-                        { px: 2041.6, sz: 0.12 },
-                        { px: 2041.8, sz: 1.85 },
-                        { px: 2042.2, sz: 0.95 },
-                        { px: 2042.5, sz: 4.1 },
+                        { px: 1771.3, sz: 0.084 },
+                        { px: 1771.6, sz: 0.423 },
+                        { px: 1771.7, sz: 0.148 },
+                        { px: 1772.0, sz: 0.078 },
+                        { px: 1772.2, sz: 0.025 },
                       ]
                   ).map((a, i) => (
                     <div key={i} className="flex justify-between py-1 px-2 rounded bg-red-500/5 text-zinc-300">

@@ -1,6 +1,6 @@
 import { Section, Card } from "./Section";
 import { data } from "../data";
-import { Quote, Sparkles } from "lucide-react";
+import { Quote } from "lucide-react";
 
 export function Quotes() {
   const quotes = data.quotes;
@@ -10,9 +10,9 @@ export function Quotes() {
       id="quotes"
       eyebrow="Section 10 · The Mission"
       title="In Their Own Words"
-      blurb="Excerpts from Dario Amodei's Founder Letter to S-1 shareholders and Anthropic's landmark essays on the adolescence of transformative technology."
-      sourceUrl="https://darioamodei.com/machines-of-loving-grace"
-      sourceLabel="Dario Amodei · Machines of Loving Grace"
+      blurb="Excerpts from Dario and Daniela Amodei's Founders' Letter in the October 2026 Form S-1 prospectus ('The Exponential in Cognition') and Anthropic's Public Benefit Charter."
+      sourceUrl={data.filing_metadata.source_url}
+      sourceLabel="Form S-1 · Letter from the Founders"
     >
       <div className="grid gap-6 md:grid-cols-3">
         {quotes.map((q, i) => (

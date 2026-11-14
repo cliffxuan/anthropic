@@ -1,6 +1,6 @@
-import { Section, Card, Stat, SourceLink } from "./Section";
-import { data, fmtUSD, fmtDate } from "../data";
-import { CheckCircle2, AlertCircle, Cpu, Shield, DollarSign, Users, Award, TrendingUp } from "lucide-react";
+import { Section, Card, Stat } from "./Section";
+import { data } from "../data";
+import { Shield, DollarSign, Award } from "lucide-react";
 
 export function Snapshot() {
   const ipo = data.ipo;
@@ -9,46 +9,46 @@ export function Snapshot() {
   return (
     <Section
       id="snapshot"
-      eyebrow="Section 01 · S-1 Executive Summary"
+      eyebrow="Section 01 · S-1/A Executive Summary"
       title="The Prospectus at a glance"
-      blurb="Key numbers from the confidential Form S-1 draft registration statement submitted to the SEC on June 1, 2026, paired with verified capitalization filings."
+      blurb="Key numbers from Anthropic PBC's public Form S-1 (filed Oct 26, 2026) and Amendment No. 2 (filed Nov 10, 2026) launching the institutional roadshow on Nasdaq under ticker ANT."
       sourceUrl={data.filing_metadata.source_url}
-      sourceLabel="SEC Form S-1 (Confidential DRS)"
+      sourceLabel="SEC Form S-1/A (CIK 0002130357)"
     >
       <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
         <Card className="border-l-4 border-l-[#da7756]">
           <Stat
-            label="Target IPO Valuation"
-            value="~$2.0 Trillion"
+            label="S-1/A Target Valuation"
+            value="$1.41 Trillion"
             accent="text-[#da7756]"
-            sub="Aiming for historic public debut; normalized target ~$200/share"
+            sub="$70–$78/sh price range ($917B–$1.02T basic · up to $1.41T FDV)"
           />
         </Card>
 
         <Card className="border-l-4 border-l-emerald-500">
           <Stat
-            label="2025 Revenue"
-            value={`$${f.fy2025_revenue_usd_billions}B`}
+            label="9M 2026 Revenue & ARR"
+            value={`$${f.nine_month_2026_revenue_usd_billions}B`}
             accent="text-emerald-400"
-            sub={`+${f.fy2025_yoy_growth_pct}% YoY from $1.05B in 2024`}
+            sub={`$81B Oct 2026 ARR · $16.95B in Q3 2026 · $4.59B in FY25`}
           />
         </Card>
 
         <Card className="border-l-4 border-l-amber-500">
           <Stat
-            label="Compute Obligations"
-            value={`$${f.total_compute_commitments_usd_billions}B`}
+            label="Compute Commitments"
+            value={`Up to $${f.total_compute_commitments_usd_billions}B`}
             accent="text-amber-400"
-            sub="10-year commitments across AWS Trainium & Google TPUs"
+            sub={`$${f.noncancelable_compute_minimums_usd_billions}B non-cancelable minimums (Google, AWS, MSFT)`}
           />
         </Card>
 
         <Card className="border-l-4 border-l-cyan-500">
           <Stat
-            label="Series H Post-Money"
-            value={`$${ipo.series_h.post_money_valuation_usd_billions}B`}
+            label="Total IPO + Private Raise"
+            value={`$${ipo.total_capital_raise_usd_billions}B`}
             accent="text-cyan-400"
-            sub={`Raised $${ipo.series_h.amount_raised_usd_billions}B in May 2026`}
+            sub={`$64.4B Class A IPO + $26B Class N (Google & Nvidia $10B ea.)`}
           />
         </Card>
       </div>
@@ -56,54 +56,54 @@ export function Snapshot() {
       <div className="mt-6 grid gap-5 lg:grid-cols-3">
         <Card>
           <div className="flex items-center gap-2 text-xs font-mono uppercase text-[#da7756]">
-            <DollarSign size={14} /> Balance Sheet & Cash
+            <DollarSign size={14} /> Balance Sheet & Profitability
           </div>
           <div className="mt-3 space-y-2 text-sm text-zinc-300">
             <div className="flex justify-between border-b border-[#262321] pb-2">
-              <span className="text-zinc-400">Cash & Equivalents</span>
-              <span className="font-semibold text-zinc-100 tabular">$14.2 Billion</span>
+              <span className="text-zinc-400">Cash & Marketable Sec.</span>
+              <span className="font-semibold text-zinc-100 tabular">$131.7 Billion</span>
             </div>
             <div className="flex justify-between border-b border-[#262321] pb-2">
-              <span className="text-zinc-400">Gross Margin (2025)</span>
-              <span className="font-semibold text-emerald-400 tabular">58.0%</span>
+              <span className="text-zinc-400">Q2 2026 Operating Profit</span>
+              <span className="font-semibold text-emerald-400 tabular">+$974 Million</span>
             </div>
             <div className="flex justify-between border-b border-[#262321] pb-2">
-              <span className="text-zinc-400">Operating Loss (2025)</span>
-              <span className="font-semibold text-red-400 tabular">-$8.24 Billion</span>
+              <span className="text-zinc-400">9M 2026 Operating Cash Flow</span>
+              <span className="font-semibold text-emerald-400 tabular">+$6.6 Billion</span>
             </div>
             <div className="flex justify-between pt-1">
-              <span className="text-zinc-400">Accounting Net Loss</span>
-              <span className="font-semibold text-zinc-300 tabular">-$42.1 Billion*</span>
+              <span className="text-zinc-400">H1 2026 GAAP Net Loss</span>
+              <span className="font-semibold text-zinc-300 tabular">-$80.75 Billion*</span>
             </div>
             <p className="mt-2 text-[11px] leading-relaxed text-zinc-500">
-              *$33.86B of the 2025 accounting net loss is a non-cash mark-to-market charge on convertible notes due to valuation markup.
+              *Over $72B of H1 2026 GAAP net loss (and $33.9B of FY25's -$42.0B net loss) stems from non-cash fair-value markups on convertible notes & SAFEs.
             </p>
           </div>
         </Card>
 
         <Card>
           <div className="flex items-center gap-2 text-xs font-mono uppercase text-amber-400">
-            <Shield size={14} /> Structure & Governance
+            <Shield size={14} /> 5-Class Capital & Governance
           </div>
           <div className="mt-3 space-y-2 text-sm text-zinc-300">
             <div className="flex justify-between border-b border-[#262321] pb-2">
-              <span className="text-zinc-400">Corporate Form</span>
-              <span className="font-semibold text-zinc-100">Delaware PBC</span>
+              <span className="text-zinc-400">Class A (Public · ANT)</span>
+              <span className="font-semibold text-zinc-100">1 vote/sh (capped 49.9%)</span>
             </div>
             <div className="flex justify-between border-b border-[#262321] pb-2">
-              <span className="text-zinc-400">Class A (Public)</span>
-              <span className="font-semibold text-zinc-100">1 vote / share</span>
+              <span className="text-zinc-400">Class F (Founder LLC)</span>
+              <span className="font-semibold text-amber-400">50.1% general voting power</span>
             </div>
             <div className="flex justify-between border-b border-[#262321] pb-2">
-              <span className="text-zinc-400">Class B (Insiders)</span>
-              <span className="font-semibold text-zinc-100">10 votes / share</span>
+              <span className="text-zinc-400">Class T (Safety Trust)</span>
+              <span className="font-semibold text-[#da7756]">Elects 4 of 7 Directors</span>
             </div>
             <div className="flex justify-between pt-1">
-              <span className="text-zinc-400">Class T (Safety Trust)</span>
-              <span className="font-semibold text-[#da7756]">Long-Term Benefit Trust</span>
+              <span className="text-zinc-400">Class N (Strategic)</span>
+              <span className="font-semibold text-zinc-100">Non-voting economic</span>
             </div>
             <p className="mt-2 text-[11px] leading-relaxed text-zinc-500">
-              The Long-Term Benefit Trust (LTBT) holds veto and director appointment rights tied to frontier model safety thresholds.
+              The Long-Term Benefit Trust appoints a 4-seat board majority (Reed Hastings, Vas Narasimhan, Chris Liddell), while Founder LLC holds 50.1% stockholder voting control.
             </p>
           </div>
         </Card>
@@ -114,23 +114,23 @@ export function Snapshot() {
           </div>
           <div className="mt-3 space-y-2 text-sm text-zinc-300">
             <div className="flex justify-between border-b border-[#262321] pb-2">
-              <span className="text-zinc-400">Direct API Share</span>
-              <span className="font-semibold text-zinc-100">42% of revenue</span>
+              <span className="text-zinc-400">Consumption vs. Sub</span>
+              <span className="font-semibold text-zinc-100">80.2% API · 19.8% Sub</span>
             </div>
             <div className="flex justify-between border-b border-[#262321] pb-2">
-              <span className="text-zinc-400">Hyperscaler Alliances</span>
-              <span className="font-semibold text-zinc-100">36% (AWS & GCP)</span>
+              <span className="text-zinc-400">CSP Marketplaces</span>
+              <span className="font-semibold text-zinc-100">48% of H1 26 ($7.8B)</span>
             </div>
             <div className="flex justify-between border-b border-[#262321] pb-2">
-              <span className="text-zinc-400">Net Revenue Retention</span>
-              <span className="font-semibold text-emerald-400 tabular">172% NRR</span>
+              <span className="text-zinc-400">&gt;$100K ARR Customers</span>
+              <span className="font-semibold text-emerald-400 tabular">11,900+ enterprises</span>
             </div>
             <div className="flex justify-between pt-1">
-              <span className="text-zinc-400">Enterprise Customers</span>
-              <span className="font-semibold text-zinc-100">35,000+ businesses</span>
+              <span className="text-zinc-400">Frontier Model Suite</span>
+              <span className="font-semibold text-zinc-100">Claude 5.5 & Mythos 5.2</span>
             </div>
             <p className="mt-2 text-[11px] leading-relaxed text-zinc-500">
-              Proprietary coding agent workflows (Claude Code) and Computer Use API drive industry-leading retention among Fortune 500 engineering teams.
+              Claude Code, Claude Cowork desktop agents, and 1M-context Claude 5.5 models drive explosive enterprise expansion with no customer &gt;10% of revenue.
             </p>
           </div>
         </Card>
