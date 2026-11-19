@@ -2,16 +2,35 @@ import { useState, useEffect } from "react";
 
 export interface CandlePoint {
   date: string;
-  perp: number;
-  open: number;
-  high: number;
-  low: number;
+  perp: number | null;
+  perp_share?: number | null;
+  xyz?: number | null;
+  stock?: number | null;
+  stock_val?: number | null;
+  open: number | null;
+  high: number | null;
+  low: number | null;
   volume: number;
+}
+
+export interface NasdaqQuote {
+  symbol: string;
+  exchange: string;
+  market_status: string;
+  last_sale: number | null;
+  bid: number | null;
+  ask: number | null;
+  volume: string | null;
+  is_trading: boolean;
 }
 
 export interface PricePayload {
   coin: string;
+  ipo_price?: number;
+  listing_date?: string;
   source: string;
+  perp_source?: string;
+  stock_source?: string;
   target_valuation_t: number;
   target_share_price: number;
   midpoint_share_price?: number;
@@ -28,7 +47,10 @@ export interface PricePayload {
     vs_series_h_pct: number;
     vs_target_pct: number;
     vs_s1a_mid_pct?: number;
+    stock?: number | null;
+    stock_prev?: number | null;
   };
+  nasdaq_quote?: NasdaqQuote;
   xyz_ant?: {
     coin: string;
     price: number;
