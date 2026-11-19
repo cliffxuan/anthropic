@@ -40,9 +40,9 @@ export function TradeSimulator() {
       ? currentPrice * (1 - liqBuffer * 0.9)
       : currentPrice * (1 + liqBuffer * 0.9);
 
-  // Valuation model calculations (18.05B fully diluted shares -> $78/sh at $1.41T FDV)
+  // Valuation model calculations (18.07B fully diluted shares -> $83.00/sh at $1.50T FDV)
   const modeledMarketCapT = (projectedRevenue * psMultiple) / 1000;
-  const modeledSharePrice = (modeledMarketCapT * 1000) / 18.05; // 18.05B fully diluted shares
+  const modeledSharePrice = (modeledMarketCapT * 1000) / 18.07; // 18.07B fully diluted shares
   const modeledIndexLevel = modeledMarketCapT * 1000;
   const modeledVsCurrentPct = ((modeledIndexLevel - currentPrice) / currentPrice) * 100;
 
@@ -192,9 +192,9 @@ export function TradeSimulator() {
               </div>
               <div className="mt-2 grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {[
-                  { label: "S-1/A Low ($1.26T)", px: 1260 },
-                  { label: "S-1/A Top ($1.41T)", px: 1410 },
-                  { label: "IPO Pop ($2.0T)", px: 2000 },
+                  { label: "S-1/A Mid ($1.34T)", px: 1337 },
+                  { label: "$83 IPO ($1.50T)", px: 1500 },
+                  { label: "Debut Pop ($2.0T)", px: 2000 },
                   { label: "Supercycle ($2.5T)", px: 2500 },
                 ].map((s) => (
                   <button
@@ -267,7 +267,7 @@ export function TradeSimulator() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-zinc-500">Implied ANT Share Price:</span>
-                  <span className="font-mono text-zinc-300 tabular">${(exitPrice / 18.05).toFixed(2)} / sh (vs $70–$78 IPO)</span>
+                  <span className="font-mono text-zinc-300 tabular">${(exitPrice / 18.07).toFixed(2)} / sh (vs $83.00 IPO)</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-zinc-500">Implied Target Cap:</span>
@@ -362,12 +362,12 @@ export function TradeSimulator() {
             <div className="rounded-xl border border-[#2a2624] bg-[#12100f] p-4 text-xs text-zinc-300 space-y-2">
               <div className="font-semibold text-zinc-200">Comparable Valuation Benchmarks (Nov 2026):</div>
               <div className="flex justify-between text-zinc-400">
-                <span>Anthropic S-1/A Top ($78/sh · $1.41T FDV):</span>
-                <span className="font-mono text-emerald-400">17.4× Oct ARR ($81B)</span>
+                <span>Anthropic Final IPO ($83/sh · $1.50T FDV):</span>
+                <span className="font-mono text-emerald-400">18.5× Oct ARR ($81B)</span>
               </div>
               <div className="flex justify-between text-zinc-400">
-                <span>Anthropic Hyperliquid Perp (~$1.77T):</span>
-                <span className="font-mono text-[#da7756]">21.9× Oct ARR ($81B)</span>
+                <span>Anthropic Hyperliquid Perp (~$1.81T):</span>
+                <span className="font-mono text-[#da7756]">22.4× Oct ARR ($81B)</span>
               </div>
               <div className="flex justify-between text-zinc-400">
                 <span>Nvidia (NVDA):</span>
@@ -393,7 +393,7 @@ export function TradeSimulator() {
                     ${modeledMarketCapT.toFixed(2)}T
                   </div>
                   <div className="text-xs text-zinc-400 font-mono mt-0.5">
-                    {modeledMarketCapT >= 1.41 ? "Above $1.41T S-1/A top" : "Within/below S-1/A range"}
+                    {modeledMarketCapT >= 1.5 ? "Above $1.50T IPO pricing" : "Below $1.50T IPO pricing"}
                   </div>
                 </div>
 
@@ -403,7 +403,7 @@ export function TradeSimulator() {
                     ${modeledSharePrice.toFixed(2)}
                   </div>
                   <div className="text-xs text-zinc-400 font-mono mt-0.5">
-                    vs. $70–$78 S-1/A range
+                    vs. $83.00 IPO price
                   </div>
                 </div>
               </div>
@@ -425,10 +425,10 @@ export function TradeSimulator() {
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-zinc-400">vs. S-1/A Top Range ($78.00 / $1.41T):</span>
+                  <span className="text-zinc-400">vs. Final IPO Pricing ($83.00 / $1.50T):</span>
                   <span className="font-mono text-zinc-300 tabular">
-                    {modeledMarketCapT >= 1.41 ? "+" : ""}
-                    {(((modeledMarketCapT - 1.41) / 1.41) * 100).toFixed(1)}%
+                    {modeledMarketCapT >= 1.5 ? "+" : ""}
+                    {(((modeledMarketCapT - 1.5) / 1.5) * 100).toFixed(1)}%
                   </span>
                 </div>
               </div>

@@ -9,19 +9,19 @@ export function Snapshot() {
   return (
     <Section
       id="snapshot"
-      eyebrow="Section 01 · S-1/A Executive Summary"
-      title="The Prospectus at a glance"
-      blurb="Key numbers from Anthropic PBC's public Form S-1 (filed Oct 26, 2026) and Amendment No. 2 (filed Nov 10, 2026) launching the institutional roadshow on Nasdaq under ticker ANT."
+      eyebrow="Section 01 · Final Prospectus Summary"
+      title="The $83.00 / Share IPO at a glance"
+      blurb="Key numbers from Anthropic PBC's final IPO pricing on November 18, 2026 ($83.00/share across 980M Class A shares, above the $70–$78 range) and public Form S-1 financial disclosures."
       sourceUrl={data.filing_metadata.source_url}
-      sourceLabel="SEC Form S-1/A (CIK 0002130357)"
+      sourceLabel="SEC Form 424(b)(4) (CIK 0002130357)"
     >
       <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
         <Card className="border-l-4 border-l-[#da7756]">
           <Stat
-            label="S-1/A Target Valuation"
-            value="$1.41 Trillion"
+            label="Final IPO Valuation ($83/sh)"
+            value="$1.50 Trillion"
             accent="text-[#da7756]"
-            sub="$70–$78/sh price range ($917B–$1.02T basic · up to $1.41T FDV)"
+            sub="Priced at $83.00/sh (above $70–$78 range · ~$1.10T basic cap)"
           />
         </Card>
 
@@ -48,7 +48,7 @@ export function Snapshot() {
             label="Total IPO + Private Raise"
             value={`$${ipo.total_capital_raise_usd_billions}B`}
             accent="text-cyan-400"
-            sub={`$64.4B Class A IPO + $26B Class N (Google & Nvidia $10B ea.)`}
+            sub={`$81.34B IPO (980M sh) + $26B Class N ($83/sh · Largest IPO ever)`}
           />
         </Card>
       </div>
@@ -60,7 +60,7 @@ export function Snapshot() {
           </div>
           <div className="mt-3 space-y-2 text-sm text-zinc-300">
             <div className="flex justify-between border-b border-[#262321] pb-2">
-              <span className="text-zinc-400">Cash & Marketable Sec.</span>
+              <span className="text-zinc-400">Pre-IPO Cash & Sec.</span>
               <span className="font-semibold text-zinc-100 tabular">$131.7 Billion</span>
             </div>
             <div className="flex justify-between border-b border-[#262321] pb-2">

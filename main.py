@@ -12,11 +12,11 @@ from fastapi.staticfiles import StaticFiles
 app = FastAPI(title="ANT · Anthropic IPO, charted & traded")
 
 # --- Live price tracker: pre-IPO perps on Hyperliquid (io:ANTH & xyz:ANT) ---
-TARGET_IPO_VALUATION_T = 1.41  # $1.41 Trillion fully diluted at $78/sh top of S-1/A range
-TARGET_SHARE_PRICE = 78.0  # $78.00 top of $70–$78 S-1/A range
-MIDPOINT_SHARE_PRICE = 74.0  # $74.00 midpoint of $70–$78 S-1/A range
-SHARES_OUTSTANDING = 18_050_000_000  # ~18.05B fully-diluted shares
-BASIC_SHARES_OUTSTANDING = 13_100_000_000  # ~13.10B post-IPO Class A + Class N shares
+TARGET_IPO_VALUATION_T = 1.50  # $1.50 Trillion fully diluted at $83.00/sh final IPO pricing (Nov 18, 2026)
+TARGET_SHARE_PRICE = 83.0  # $83.00 final IPO price (above $70–$78 S-1/A range)
+MIDPOINT_SHARE_PRICE = 74.0  # $74.00 midpoint of initial $70–$78 S-1/A range
+SHARES_OUTSTANDING = 18_070_000_000  # ~18.07B fully-diluted shares ($83.00/sh = $1.50T FDV)
+BASIC_SHARES_OUTSTANDING = 13_230_000_000  # ~13.23B post-IPO Class A + Class N shares (after 980M upsize)
 SERIES_H_VALUATION_T = 0.965  # $965B post-money valuation (Series H, May 2026)
 PERP_COIN = "io:ANTH"
 XYZ_PERP_COIN = "xyz:ANT"
@@ -110,15 +110,15 @@ def _build_price_payload() -> dict:
     except Exception:
         pass
 
-    latest_close = candles[-1]["perp"] if candles else 1784.60
+    latest_close = candles[-1]["perp"] if candles else 1811.80
     prev_close = candles[-2]["perp"] if len(candles) > 1 else latest_close
     day_change_pct = round(((latest_close - prev_close) / prev_close) * 100, 2) if prev_close else 0.0
     implied_valuation_t = round(latest_close / 1000.0, 3)  # 1 point = $1B implied valuation
-    fd_shares_b = SHARES_OUTSTANDING / 1e9  # 18.05B
-    basic_shares_b = BASIC_SHARES_OUTSTANDING / 1e9  # 13.10B
+    fd_shares_b = SHARES_OUTSTANDING / 1e9  # 18.07B
+    basic_shares_b = BASIC_SHARES_OUTSTANDING / 1e9  # 13.23B
     implied_share_price_fd = round(latest_close / fd_shares_b, 2)
 
-    xyz_close = xyz_candles[-1]["perp"] if xyz_candles else 102.74
+    xyz_close = xyz_candles[-1]["perp"] if xyz_candles else 103.00
     xyz_prev = xyz_candles[-2]["perp"] if len(xyz_candles) > 1 else xyz_close
     xyz_change_pct = round(((xyz_close - xyz_prev) / xyz_prev) * 100, 2) if xyz_prev else 0.0
     xyz_fdv_t = round((xyz_close * fd_shares_b) / 1000.0, 3)
@@ -184,9 +184,9 @@ def orderbook() -> JSONResponse:
             if _orderbook_cache["data"] is None:
                 _orderbook_cache["data"] = {
                     "coin": PERP_COIN,
-                    "best_bid": 1784.7,
-                    "best_ask": 1784.9,
-                    "mid": 1784.8,
+                    "best_bid": 1811.7,
+                    "best_ask": 1811.9,
+                    "mid": 1811.8,
                     "spread": 0.2,
                     "bids": [],
                     "asks": [],
@@ -205,19 +205,27 @@ def filings() -> JSONResponse:
             "source": "SEC EDGAR · Nasdaq Global Select (Ticker: ANT)",
             "filings": [
                 {
+                    "form": "Form 424(b)(4) (Final Pricing)",
+                    "filed": "2026-11-18",
+                    "description": "Priced upsized 980M Class A share IPO at $83.00/sh ($81.34B IPO proceeds; $1.50T FDV) + $26B concurrent Class N private placement at $83.00/sh ($107.34B total raise).",
+                    "status": "Priced $83.00 · Debut Nov 19",
+                    "public_expected": "Trading on Nasdaq: ANT",
+                    "url": "https://www.sec.gov/edgar/browse/?CIK=0002130357",
+                },
+                {
                     "form": "Form S-1/A (Amend. No. 2)",
                     "filed": "2026-11-10",
-                    "description": "Launches IPO roadshow: 825M Class A shares at $70–$78/sh ($64.4B max public offering) + $26B concurrent Class N private placement (Google, Nvidia, Microsoft).",
-                    "status": "Active Roadshow · Pricing Nov 18",
-                    "public_expected": "Trading Nov 19, 2026",
+                    "description": "Launched IPO roadshow: initial 825M Class A share range at $70–$78/sh alongside $26B strategic Class N commitments from Google, Nvidia, AMD, Broadcom, Micron, Microsoft & TSMC.",
+                    "status": "Completed (Upsized Nov 18)",
+                    "public_expected": "EDGAR Public",
                     "url": "https://www.sec.gov/edgar/browse/?CIK=0002130357",
                 },
                 {
                     "form": "Form S-1 (Public Registration)",
                     "filed": "2026-10-26",
                     "description": "Public S-1 registration statement disclosing $4.59B FY25 revenue, $16.29B H1 2026 revenue ($974M Q2 operating profit), $131.7B cash, and Class A/F/T/N governance.",
-                    "status": "EDGAR Public",
-                    "public_expected": "Effective upon pricing",
+                    "status": "Declared Effective",
+                    "public_expected": "EDGAR Public",
                     "url": "https://www.sec.gov/edgar/browse/?CIK=0002130357",
                 },
                 {
@@ -227,14 +235,6 @@ def filings() -> JSONResponse:
                     "status": "Final Approval Entered",
                     "public_expected": "Payouts Q4 2026",
                     "url": "https://www.anthropiccopyrightsettlement.com/",
-                },
-                {
-                    "form": "DRS (Confidential S-1)",
-                    "filed": "2026-06-01",
-                    "description": "Initial confidential Draft Registration Statement submitted under the JOBS Act to SEC Division of Corporation Finance.",
-                    "status": "Unsealed Oct 26, 2026",
-                    "public_expected": "EDGAR Public",
-                    "url": "https://www.sec.gov/edgar/browse/?CIK=0002130357",
                 },
                 {
                     "form": "Series H Charter ($965B)",

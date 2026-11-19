@@ -101,7 +101,7 @@ export function Footer() {
           <div>
             <div className="font-mono uppercase text-zinc-400 text-[11px] mb-3">Corporate Form</div>
             <p className="text-[11px] text-zinc-400 leading-relaxed">
-              Anthropic, PBC is a Delaware Public Benefit Corporation. Headquartered in San Francisco, CA. Nasdaq Global Select Ticker: <span className="font-mono text-zinc-200">ANT</span> ($70–$78/sh).
+              Anthropic, PBC is a Delaware Public Benefit Corporation. Headquartered in San Francisco, CA. Nasdaq Global Select Ticker: <span className="font-mono text-zinc-200">ANT</span> (Priced at $83.00/sh · $1.50T FDV).
             </p>
             <div className="mt-3 flex items-center gap-1.5 text-[11px] text-[#da7756]">
               <ShieldCheck size={14} /> Responsible Scaling Policy ASL-3 / ASL-4

@@ -4,23 +4,23 @@ import { TrendingUp, BookOpen, Calculator, ShieldCheck, Newspaper } from "lucide
 export function Hero() {
   const { data: px } = usePrices();
 
-  const price = px?.latest.price ?? 1784.6;
-  const valuationT = px?.latest.implied_valuation_t ?? 1.785;
-  const impliedSharePx = px?.latest.implied_share_price_fd ?? Number((price / 18.05).toFixed(2));
-  const xyzPrice = px?.xyz_ant?.price ?? 102.78;
-  const vsSeriesH = px?.latest.vs_series_h_pct ?? 85.0;
+  const price = px?.latest.price ?? 1811.8;
+  const valuationT = px?.latest.implied_valuation_t ?? 1.812;
+  const impliedSharePx = px?.latest.implied_share_price_fd ?? Number((price / 18.07).toFixed(2));
+  const xyzPrice = px?.xyz_ant?.price ?? 103.0;
+  const vsSeriesH = px?.latest.vs_series_h_pct ?? 87.8;
 
   return (
     <div className="relative overflow-hidden pt-12 pb-16 sm:pt-20 sm:pb-24 anthropic-bg border-b border-[#262321]">
       <div className="mx-auto max-w-6xl px-5">
         {/* Top Status Banner */}
         <div className="inline-flex flex-wrap items-center gap-2 rounded-full border border-[#38332f] bg-[#1a1715]/80 px-3.5 py-1.5 text-xs text-zinc-300 backdrop-blur">
-          <span className="flex h-2 w-2 rounded-full bg-[#da7756] pulse-dot" />
-          <span className="font-semibold text-zinc-100">Form S-1/A Roadshow Live</span>
+          <span className="flex h-2 w-2 rounded-full bg-emerald-400 pulse-dot" />
+          <span className="font-semibold text-zinc-100">IPO Priced at $83.00 / sh ($1.50T FDV)</span>
           <span className="text-zinc-500">·</span>
-          <span className="text-zinc-300">Nasdaq: ANT ($70–$78/sh · Perps imply ~${impliedSharePx.toFixed(0)}–${xyzPrice.toFixed(0)}/sh)</span>
+          <span className="text-zinc-300">$81.34B IPO + $26B Private ($107.34B Raise)</span>
           <span className="text-zinc-500">·</span>
-          <span className="text-[#da7756] font-mono font-medium">Pricing Nov 18 · Debut Nov 19, 2026</span>
+          <span className="text-[#da7756] font-mono font-medium">Nasdaq: ANT Debut Nov 19, 2026</span>
         </div>
 
         {/* Headline */}
@@ -32,10 +32,10 @@ export function Hero() {
         </h1>
 
         <p className="mt-5 max-w-3xl text-base text-zinc-400 sm:text-lg leading-relaxed">
-          Primary-source breakdown of Anthropic PBC's public Form S-1 and November 2026 S-1/A roadshow filing:
-          explosive growth to <span className="text-zinc-200 font-medium">$33.2B in 9M 2026 revenue ($81B Oct ARR)</span>,{" "}
-          a <span className="text-zinc-200 font-medium">$90.4B combined IPO + private placement</span> anchored by Google & Nvidia,{" "}
-          up to <span className="text-zinc-200 font-medium">$900B</span> in 10-year compute commitments, and live pre-IPO perpetual trading on Hyperliquid.
+          Primary-source breakdown of Anthropic PBC's historic <span className="text-zinc-200 font-medium">$83.00/share IPO pricing ($1.50T FDV)</span>—the
+          largest public offering in global history: <span className="text-zinc-200 font-medium">$81.34B across 980M Class A shares</span> plus a{" "}
+          <span className="text-zinc-200 font-medium">$26.0B Class N private placement</span> ($107.34B total),{" "}
+          <span className="text-zinc-200 font-medium">$33.2B in 9M 2026 revenue ($81B ARR)</span>, and live perpetual trading on Hyperliquid.
         </p>
 
         {/* CTA Buttons */}
@@ -45,14 +45,14 @@ export function Hero() {
             className="flex items-center gap-2 rounded-xl bg-[#da7756] px-5 py-3 text-sm font-semibold text-[#0d0c0b] transition hover:bg-[#e0896b] shadow-lg shadow-[#da7756]/20"
           >
             <TrendingUp size={16} />
-            Live Perp → Share Price (~${impliedSharePx.toFixed(0)}–${xyzPrice.toFixed(0)}/sh)
+            Live Perp → Share Price (~${impliedSharePx.toFixed(0)}–${xyzPrice.toFixed(0)}/sh vs $83 IPO)
           </a>
           <a
             href="#news"
             className="flex items-center gap-2 rounded-xl border border-[#3a3532] bg-[#191716] px-5 py-3 text-sm font-medium text-zinc-200 transition hover:border-[#da7756]/50 hover:bg-[#201d1b]"
           >
             <Newspaper size={16} className="text-[#da7756]" />
-            Nov 2026 Roadshow & News
+            $83.00 Pricing & Debut News
           </a>
           <a
             href="#trade"
@@ -66,7 +66,7 @@ export function Hero() {
             className="flex items-center gap-2 rounded-xl border border-[#3a3532] bg-[#191716] px-5 py-3 text-sm font-medium text-zinc-200 transition hover:border-[#da7756]/50 hover:bg-[#201d1b]"
           >
             <BookOpen size={16} className="text-[#da7756]" />
-            S-1/A Offering Mechanics
+            $107.3B Offering Mechanics
           </a>
         </div>
 
@@ -75,10 +75,10 @@ export function Hero() {
           <div className="rounded-xl border border-[#2a2624] bg-[#141211]/90 p-4">
             <div className="text-[11px] font-mono uppercase tracking-wider text-zinc-500">Perp Implied Share Px</div>
             <div className="mt-1 text-2xl font-bold tabular text-[#da7756]">
-              ~${impliedSharePx.toFixed(2)}–${xyzPrice.toFixed(0)}
+              ~${impliedSharePx.toFixed(0)}–${xyzPrice.toFixed(0)}/sh
             </div>
             <div className="mt-1 text-[11px] text-zinc-400 font-mono">
-              ${valuationT.toFixed(2)}T cap vs $70–$78 IPO
+              ${valuationT.toFixed(2)}T cap vs $83.00 IPO
             </div>
           </div>
 
@@ -93,22 +93,22 @@ export function Hero() {
           </div>
 
           <div className="rounded-xl border border-[#2a2624] bg-[#141211]/90 p-4">
-            <div className="text-[11px] font-mono uppercase tracking-wider text-zinc-500">IPO + Private Raise</div>
+            <div className="text-[11px] font-mono uppercase tracking-wider text-zinc-500">Total Capital Raised</div>
             <div className="mt-1 text-2xl font-bold tabular text-amber-400">
-              $90.4B
+              $107.3B
             </div>
             <div className="mt-1 text-[11px] text-zinc-400 font-mono">
-              $64.4B IPO + $26B Class N
+              $81.3B IPO + $26B Class N
             </div>
           </div>
 
           <div className="rounded-xl border border-[#2a2624] bg-[#141211]/90 p-4">
-            <div className="text-[11px] font-mono uppercase tracking-wider text-zinc-500">Liquid Cash Reserves</div>
+            <div className="text-[11px] font-mono uppercase tracking-wider text-zinc-500">IPO Valuation ($83/sh)</div>
             <div className="mt-1 text-2xl font-bold tabular text-zinc-200">
-              $131.7B
+              $1.50T
             </div>
             <div className="mt-1 text-[11px] text-[#da7756] font-mono">
-              +{vsSeriesH.toFixed(1)}% vs $965B Series H
+              +{vsSeriesH.toFixed(1)}% Perp vs Series H
             </div>
           </div>
 

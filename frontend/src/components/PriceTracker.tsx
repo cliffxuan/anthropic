@@ -15,47 +15,47 @@ import { Activity, TrendingUp, TrendingDown, ExternalLink, ArrowLeftRight, Calcu
 
 const HL_URL = "https://app.hyperliquid.xyz/trade/io:ANTH";
 const HL_XYZ_URL = "https://app.hyperliquid.xyz/trade/xyz:ANT";
-const FD_SHARES_B = 18.05; // 18.05B fully diluted shares ($78/sh = $1.408T FDV)
-const BASIC_SHARES_B = 13.1; // 13.10B post-IPO Class A + Class N shares ($78/sh = $1.022T basic)
+const FD_SHARES_B = 18.07; // 18.07B fully diluted shares ($83/sh = $1.50T FDV)
+const BASIC_SHARES_B = 13.23; // 13.23B post-IPO Class A + Class N shares (after 980M upsize)
+const FINAL_IPO_PX = 83.0; // $83.00 final IPO price (Nov 18, 2026)
 
 export function PriceTracker() {
   const { data: d, err } = usePrices();
 
-  const price = d?.latest.price ?? 1784.6;
-  const prevClose = d?.latest.prev_close ?? 1782.4;
-  const dayChange = d?.latest.day_change_pct ?? 0.12;
+  const price = d?.latest.price ?? 1811.8;
+  const prevClose = d?.latest.prev_close ?? 1717.8;
+  const dayChange = d?.latest.day_change_pct ?? 5.47;
   const isUp = dayChange >= 0;
-  const impliedCapT = d?.latest.implied_valuation_t ?? 1.785;
+  const impliedCapT = d?.latest.implied_valuation_t ?? 1.812;
   const impliedSharePriceFD = d?.latest.implied_share_price_fd ?? Number((price / FD_SHARES_B).toFixed(2));
-  const vsSeriesH = d?.latest.vs_series_h_pct ?? 85.0;
-  const vsS1ATopPct = (((impliedSharePriceFD - 78.0) / 78.0) * 100);
+  const vsIpoPct = (((impliedSharePriceFD - FINAL_IPO_PX) / FINAL_IPO_PX) * 100);
   const vsS1AMidPct = (((impliedSharePriceFD - 74.0) / 74.0) * 100);
 
-  const xyzPrice = d?.xyz_ant?.price ?? 102.78;
-  const xyzChange = d?.xyz_ant?.day_change_pct ?? 0.63;
+  const xyzPrice = d?.xyz_ant?.price ?? 103.0;
+  const xyzChange = d?.xyz_ant?.day_change_pct ?? 4.75;
   const xyzIsUp = xyzChange >= 0;
   const xyzFdvT = d?.xyz_ant?.implied_fdv_t ?? Number(((xyzPrice * FD_SHARES_B) / 1000).toFixed(3));
   const xyzBasicCapT = d?.xyz_ant?.implied_basic_cap_t ?? Number(((xyzPrice * BASIC_SHARES_B) / 1000).toFixed(3));
-  const xyzVsTopPct = d?.xyz_ant?.vs_s1a_top_pct ?? Number((((xyzPrice - 78.0) / 78.0) * 100).toFixed(1));
+  const xyzVsIpoPct = d?.xyz_ant?.vs_s1a_top_pct ?? Number((((xyzPrice - FINAL_IPO_PX) / FINAL_IPO_PX) * 100).toFixed(1));
   const xyzVsMidPct = d?.xyz_ant?.vs_s1a_mid_pct ?? Number((((xyzPrice - 74.0) / 74.0) * 100).toFixed(1));
 
   const seriesH = d?.series_h_valuation_t ? d.series_h_valuation_t * 1000 : 965;
-  const target = d?.target_valuation_t ? d.target_valuation_t * 1000 : 1410;
+  const target = d?.target_valuation_t ? d.target_valuation_t * 1000 : 1500;
 
   // Interactive converter state (initialized to live io:ANTH valuation)
   const [customPerpVal, setCustomPerpVal] = useState<number | null>(null);
   const activePerpVal = customPerpVal ?? price;
   const activeSharePx = activePerpVal / FD_SHARES_B;
   const activeBasicCapB = activeSharePx * BASIC_SHARES_B;
-  const activePopVs78 = ((activeSharePx - 78) / 78) * 100;
+  const activePopVs83 = ((activeSharePx - FINAL_IPO_PX) / FINAL_IPO_PX) * 100;
   const activePopVs74 = ((activeSharePx - 74) / 74) * 100;
 
   return (
     <Section
       id="market"
       eyebrow="Live · Pre-IPO Derivative Market & Share Price Conversion"
-      title="Hyperliquid Live Perps → Implied IPO Share Price (ANT)"
-      blurb={`Two pre-IPO perpetual contracts on Hyperliquid track Anthropic ahead of its November 19 Nasdaq debut: Entropy's valuation-indexed io:ANTH ($${price.toFixed(1)} = ~$${impliedSharePriceFD.toFixed(2)}/sh) and Trade.xyz's per-share xyz:ANT ($${xyzPrice.toFixed(2)}/sh)—pricing in a +27% to +32% IPO pop above the official $70–$78 S-1/A range.`}
+      title="Hyperliquid Live Perps → Implied Share Price vs. $83.00 IPO"
+      blurb={`Following Anthropic's upsized $83.00/share IPO pricing ($1.50T FDV · $81.34B IPO), Hyperliquid perpetuals are pricing in a +21% to +24% debut pop on November 19: Entropy's valuation-indexed io:ANTH trades at $${price.toFixed(1)} (~$${impliedSharePriceFD.toFixed(2)}/sh) and Trade.xyz's per-share xyz:ANT trades at $${xyzPrice.toFixed(2)}/sh.`}
       sourceUrl={HL_URL}
       sourceLabel="Hyperliquid · io:ANTH & xyz:ANT"
     >
@@ -114,7 +114,7 @@ export function PriceTracker() {
                     stroke="#da7756"
                     strokeDasharray="4 4"
                     label={{
-                      value: `S-1/A Top FDV: $${target} ($1.41T @ $78/sh)`,
+                      value: `Final IPO Pricing: $${target} ($1.50T @ $83/sh)`,
                       position: "insideTopRight",
                       fill: "#da7756",
                       fontSize: 11,
@@ -125,7 +125,7 @@ export function PriceTracker() {
                     stroke="#71717a"
                     strokeDasharray="3 3"
                     label={{
-                      value: `Series H: $${seriesH} ($965B · ~$53.5/sh)`,
+                      value: `Series H: $${seriesH} ($965B · ~$53.4/sh)`,
                       position: "insideBottomRight",
                       fill: "#a1a1aa",
                       fontSize: 11,
@@ -150,7 +150,7 @@ export function PriceTracker() {
               <span className="h-0.5 w-4 rounded bg-[#da7756]" /> io:ANTH daily close (Hyperliquid)
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <span className="h-0.5 w-4 rounded border-t border-dashed border-[#da7756]" /> $1.41T S-1/A top range ($78/sh)
+              <span className="h-0.5 w-4 rounded border-t border-dashed border-[#da7756]" /> $1.50T Final IPO Pricing ($83.00/sh)
             </span>
             <span className="inline-flex items-center gap-1.5">
               <span className="h-0.5 w-4 rounded border-t border-dashed border-zinc-500" /> $965B Series H post-money
@@ -174,7 +174,7 @@ export function PriceTracker() {
                     {isUp ? "+" : ""}{dayChange.toFixed(2)}%
                   </span>
                   <span className="text-zinc-500">·</span>
-                  <span className="text-emerald-400 font-mono">+{vsS1ATopPct.toFixed(1)}% vs $78</span>
+                  <span className="text-emerald-400 font-mono">+{vsIpoPct.toFixed(1)}% vs $83 IPO</span>
                 </span>
               }
             />
@@ -194,7 +194,7 @@ export function PriceTracker() {
                     {xyzIsUp ? "+" : ""}{xyzChange.toFixed(2)}%
                   </span>
                   <span className="text-zinc-500">·</span>
-                  <span className="text-emerald-400 font-mono">+{xyzVsTopPct.toFixed(1)}% vs $78</span>
+                  <span className="text-emerald-400 font-mono">+{xyzVsIpoPct.toFixed(1)}% vs $83 IPO</span>
                 </span>
               }
             />
@@ -202,20 +202,20 @@ export function PriceTracker() {
 
           <div className="rounded-xl border border-[#2a2624] bg-[#141211] p-4 text-xs text-zinc-400 space-y-2">
             <div className="flex items-center justify-between text-zinc-300 font-medium">
-              <span>Share Count Denominators</span>
-              <span className="font-mono text-[#da7756]">Form S-1/A</span>
+              <span>Final IPO Share Denominators</span>
+              <span className="font-mono text-[#da7756]">Form 424(b)(4)</span>
             </div>
             <div className="flex justify-between">
               <span className="text-zinc-500">Fully Diluted Shares (FDV)</span>
-              <span className="font-mono text-zinc-200">18.05 Billion</span>
+              <span className="font-mono text-zinc-200">18.07 Billion</span>
             </div>
             <div className="flex justify-between">
               <span className="text-zinc-500">Basic Shares (Class A + N)</span>
-              <span className="font-mono text-zinc-200">13.10 Billion</span>
+              <span className="font-mono text-zinc-200">13.23 Billion</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-zinc-500">S-1/A Price Range</span>
-              <span className="font-mono text-emerald-400">$70.00 – $78.00 ($74 mid)</span>
+              <span className="text-zinc-500">Final IPO Offer Price</span>
+              <span className="font-mono text-emerald-400">$83.00 / sh (vs $70–$78 range)</span>
             </div>
           </div>
 
@@ -247,7 +247,7 @@ export function PriceTracker() {
             <div className="flex items-center gap-2 text-xs font-mono uppercase text-[#da7756]">
               <ArrowLeftRight size={15} /> Hyperliquid Perps → Implied IPO Share Price Conversion Table
             </div>
-            <span className="text-[11px] font-mono text-zinc-500">18.05B FD · 13.10B Basic</span>
+            <span className="text-[11px] font-mono text-zinc-500">18.07B FD · 13.23B Basic</span>
           </div>
 
           <table className="w-full text-left text-xs border-collapse">
@@ -257,7 +257,7 @@ export function PriceTracker() {
                 <th className="py-2 px-2">Contract Quote</th>
                 <th className="py-2 px-2">Implied ANT / Sh</th>
                 <th className="py-2 px-2">Implied FDV Cap</th>
-                <th className="py-2 pl-2 text-right">vs. $78 Top (vs. $74 Mid)</th>
+                <th className="py-2 pl-2 text-right">vs. $83 IPO (vs. $74 S-1/A Mid)</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#221f1d] text-zinc-300">
@@ -277,8 +277,8 @@ export function PriceTracker() {
                   <div className="text-[10px] text-zinc-500">${((impliedSharePriceFD * BASIC_SHARES_B) / 1000).toFixed(2)}T basic</div>
                 </td>
                 <td className="py-3 pl-2 text-right font-mono tabular">
-                  <span className="text-emerald-400 font-semibold">+{vsS1ATopPct.toFixed(1)}%</span>
-                  <div className="text-[10px] text-zinc-400">+{vsS1AMidPct.toFixed(1)}% vs mid</div>
+                  <span className="text-emerald-400 font-semibold">+{vsIpoPct.toFixed(1)}%</span>
+                  <div className="text-[10px] text-zinc-400">+{vsS1AMidPct.toFixed(1)}% vs $74 mid</div>
                 </td>
               </tr>
 
@@ -298,48 +298,48 @@ export function PriceTracker() {
                   <div className="text-[10px] text-zinc-500">${xyzBasicCapT.toFixed(2)}T basic</div>
                 </td>
                 <td className="py-3 pl-2 text-right font-mono tabular">
-                  <span className="text-emerald-400 font-semibold">+{xyzVsTopPct.toFixed(1)}%</span>
-                  <div className="text-[10px] text-zinc-400">+{xyzVsMidPct.toFixed(1)}% vs mid</div>
+                  <span className="text-emerald-400 font-semibold">+{xyzVsIpoPct.toFixed(1)}%</span>
+                  <div className="text-[10px] text-zinc-400">+{xyzVsMidPct.toFixed(1)}% vs $74 mid</div>
                 </td>
               </tr>
 
               <tr>
                 <td className="py-3 pr-3">
-                  <div className="font-semibold text-zinc-200">S-1/A IPO Range Top</div>
-                  <div className="text-[10px] text-zinc-500 font-mono">Nasdaq: ANT Bookbuilding</div>
-                </td>
-                <td className="py-3 px-2 font-mono text-zinc-400 tabular">
-                  1,408.0 idx
-                </td>
-                <td className="py-3 px-2 font-mono font-semibold text-zinc-200 tabular">
-                  $78.00 / sh
+                  <div className="font-semibold text-zinc-100">Final IPO Pricing (Nov 18)</div>
+                  <div className="text-[10px] text-zinc-500 font-mono">Nasdaq: ANT (980M sh · $81.34B)</div>
                 </td>
                 <td className="py-3 px-2 font-mono text-zinc-300 tabular">
-                  $1.408T
-                  <div className="text-[10px] text-zinc-500">$1.022T basic</div>
+                  1,500.0 idx
                 </td>
-                <td className="py-3 pl-2 text-right font-mono text-zinc-500 tabular">
-                  Baseline (Top)
+                <td className="py-3 px-2 font-mono font-semibold text-zinc-100 tabular">
+                  $83.00 / sh
                 </td>
-              </tr>
-
-              <tr>
-                <td className="py-3 pr-3">
-                  <div className="font-semibold text-zinc-200">S-1/A IPO Range Low</div>
-                  <div className="text-[10px] text-zinc-500 font-mono">Nasdaq: ANT Floor</div>
-                </td>
-                <td className="py-3 px-2 font-mono text-zinc-400 tabular">
-                  1,263.5 idx
-                </td>
-                <td className="py-3 px-2 font-mono font-semibold text-zinc-200 tabular">
-                  $70.00 / sh
-                </td>
-                <td className="py-3 px-2 font-mono text-zinc-300 tabular">
-                  $1.264T
-                  <div className="text-[10px] text-zinc-500">$917B basic</div>
+                <td className="py-3 px-2 font-mono text-zinc-200 tabular">
+                  $1.500T
+                  <div className="text-[10px] text-zinc-500">$1.098T basic</div>
                 </td>
                 <td className="py-3 pl-2 text-right font-mono text-zinc-400 tabular">
-                  -10.3% vs Top
+                  Official IPO Price
+                </td>
+              </tr>
+
+              <tr>
+                <td className="py-3 pr-3">
+                  <div className="font-semibold text-zinc-400">Initial S-1/A Range</div>
+                  <div className="text-[10px] text-zinc-500 font-mono">Nov 10 Roadshow Guidance</div>
+                </td>
+                <td className="py-3 px-2 font-mono text-zinc-500 tabular">
+                  1,265–1,409 idx
+                </td>
+                <td className="py-3 px-2 font-mono text-zinc-400 tabular">
+                  $70.00–$78.00
+                </td>
+                <td className="py-3 px-2 font-mono text-zinc-400 tabular">
+                  $1.26T–$1.41T
+                  <div className="text-[10px] text-zinc-500">$917B–$1.02T basic</div>
+                </td>
+                <td className="py-3 pl-2 text-right font-mono text-zinc-500 tabular">
+                  Upsized + Priced Above
                 </td>
               </tr>
             </tbody>
@@ -347,8 +347,8 @@ export function PriceTracker() {
 
           <p className="mt-3 text-[11px] text-zinc-500 leading-relaxed">
             <strong className="text-zinc-300">Conversion Formula:</strong>{" "}
-            <code className="text-[#da7756]">Implied ANT Share Price = io:ANTH Price ($B) ÷ 18.05B fully diluted shares</code>. Conversely,{" "}
-            <code className="text-emerald-400">Implied FDV ($T) = (xyz:ANT Share Price × 18.05B) ÷ 1,000</code>.
+            <code className="text-[#da7756]">Implied ANT Share Price = io:ANTH Price ($B) ÷ 18.07B fully diluted shares</code>. Conversely,{" "}
+            <code className="text-emerald-400">Implied FDV ($T) = (xyz:ANT Share Price × 18.07B) ÷ 1,000</code>.
           </p>
         </Card>
 
@@ -386,9 +386,9 @@ export function PriceTracker() {
                   className="w-full accent-[#da7756]"
                 />
                 <div className="mt-1 flex justify-between text-[10px] font-mono text-zinc-500">
-                  <span>$1,264 ($70/sh)</span>
-                  <span>$1,408 ($78/sh)</span>
-                  <span>$1,785 (Live)</span>
+                  <span>$1,337 ($74/sh)</span>
+                  <span>$1,500 ($83 IPO)</span>
+                  <span>$1,812 (Live)</span>
                   <span>$2,500 ($138/sh)</span>
                 </div>
               </div>
@@ -400,28 +400,28 @@ export function PriceTracker() {
                     ${activeSharePx.toFixed(2)}
                   </div>
                   <div className="mt-0.5 text-[10px] font-mono text-zinc-400">
-                    at 18.05B FD shares
+                    at 18.07B FD shares
                   </div>
                 </div>
 
                 <div className="rounded-xl border border-[#2a2624] bg-[#12100f] p-3.5">
-                  <div className="text-[10px] font-mono uppercase text-zinc-500">Implied IPO Pop</div>
-                  <div className={`mt-1 text-2xl font-bold font-mono tabular ${activePopVs78 >= 0 ? "text-[#da7756]" : "text-red-400"}`}>
-                    {activePopVs78 >= 0 ? "+" : ""}{activePopVs78.toFixed(1)}%
+                  <div className="text-[10px] font-mono uppercase text-zinc-500">Pop vs. $83.00 IPO</div>
+                  <div className={`mt-1 text-2xl font-bold font-mono tabular ${activePopVs83 >= 0 ? "text-[#da7756]" : "text-red-400"}`}>
+                    {activePopVs83 >= 0 ? "+" : ""}{activePopVs83.toFixed(1)}%
                   </div>
                   <div className="mt-0.5 text-[10px] font-mono text-zinc-400">
-                    vs $78 top ({activePopVs74 >= 0 ? "+" : ""}{activePopVs74.toFixed(1)}% vs $74)
+                    ({activePopVs74 >= 0 ? "+" : ""}{activePopVs74.toFixed(1)}% vs $74 S-1/A mid)
                   </div>
                 </div>
               </div>
 
               <div className="rounded-xl border border-[#262321] bg-[#12100f] p-3 text-xs space-y-1.5">
                 <div className="flex justify-between">
-                  <span className="text-zinc-500">Basic Market Cap (13.10B sh):</span>
+                  <span className="text-zinc-500">Basic Market Cap (13.23B sh):</span>
                   <span className="font-mono text-zinc-200 tabular">${(activeBasicCapB / 1000).toFixed(3)} Trillion</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-zinc-500">Fully Diluted Cap (18.05B sh):</span>
+                  <span className="text-zinc-500">Fully Diluted Cap (18.07B sh):</span>
                   <span className="font-mono text-zinc-200 tabular">${(activePerpVal / 1000).toFixed(3)} Trillion</span>
                 </div>
                 <div className="flex justify-between">

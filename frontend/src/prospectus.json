@@ -5,9 +5,10 @@
     "drs_submission_date": "2026-06-01",
     "public_s1_date": "2026-10-26",
     "s1a_roadshow_date": "2026-11-10",
-    "filing_type": "Form S-1/A (Amendment No. 2 to Registration Statement)",
+    "final_pricing_date": "2026-11-18",
+    "filing_type": "Form 424(b)(4) Final Prospectus · Priced at $83.00/sh",
     "expected_public_filing": "2026-10-26",
-    "expected_ipo_window": "November 18–19, 2026",
+    "expected_ipo_window": "Priced Nov 18 · Debut Nov 19, 2026",
     "ticker_symbol": "ANT",
     "perp_ticker": "io:ANTH",
     "exchange": "Nasdaq Global Select Market",
@@ -25,25 +26,27 @@
     "filing_index_url": "https://www.sec.gov/edgar/browse/?CIK=0002130357"
   },
   "ipo": {
-    "target_valuation_usd_trillions": 1.41,
-    "non_diluted_valuation_usd_trillions": 1.02,
+    "target_valuation_usd_trillions": 1.50,
+    "non_diluted_valuation_usd_trillions": 1.10,
     "initial_whisper_valuation_usd_trillions": 2.0,
     "price_range_low_usd": 70.0,
     "price_range_high_usd": 78.0,
-    "target_price_per_share_usd": 78.0,
-    "shares_offered": 825000000,
-    "primary_shares_offered": 801351354,
+    "final_ipo_price_usd": 83.0,
+    "target_price_per_share_usd": 83.0,
+    "shares_offered": 980000000,
+    "primary_shares_offered": 956351354,
     "secondary_shares_offered": 23648646,
-    "greenshoe_shares": 123750000,
-    "total_shares_outstanding": 13100000000,
-    "fully_diluted_shares": 18050000000,
-    "gross_proceeds_usd_billions": 64.35,
+    "greenshoe_shares": 147000000,
+    "total_shares_outstanding": 13230000000,
+    "fully_diluted_shares": 18070000000,
+    "gross_proceeds_usd_billions": 81.34,
+    "primary_proceeds_usd_billions": 79.38,
     "concurrent_private_placement_usd_billions": 26.0,
-    "total_capital_raise_usd_billions": 90.35,
+    "total_capital_raise_usd_billions": 107.34,
     "private_placement_anchors": [
-      { "name": "Google", "commitment_usd_billions": 10.0 },
-      { "name": "Nvidia", "commitment_usd_billions": 10.0 },
-      { "name": "Microsoft, AMD, Broadcom, Micron & TSMC", "commitment_usd_billions": 6.0 }
+      { "name": "Google (Alphabet)", "commitment_usd_billions": 10.0 },
+      { "name": "NVIDIA Corporation", "commitment_usd_billions": 10.0 },
+      { "name": "AMD ($2.5B), Broadcom ($1B), Micron ($1B), Microsoft ($1B) & TSMC ($0.5B)", "commitment_usd_billions": 6.0 }
     ],
     "series_h": {
       "date": "2026-05-15",
@@ -68,14 +71,14 @@
       "class_n_votes_per_share": 0,
       "class_f_holders": "Founder LLC (Dario Amodei, Daniela Amodei & 5 co-founders)",
       "class_t_holder": "Long-Term Benefit Trust (LTBT) — elects 4 of 7 board directors",
-      "class_n_holders": "Strategic partners (Amazon, Google, Nvidia, Microsoft)",
+      "class_n_holders": "Strategic partners (Amazon, Google, Nvidia, Microsoft, AMD, Broadcom, Micron, TSMC)",
       "founder_voting_power_pct": 50.1,
       "pbc_purpose": "To responsibly develop and maintain advanced artificial intelligence for the long-term benefit of humanity, balancing commercial execution with safety."
     },
     "lock_up": {
       "standard_days": 180,
       "expiry_date": "2027-05-18",
-      "tiered_early_release": "Staggered release following Q1 2027 earnings if Class A stock closes >= 125% of the IPO price ($97.50 at top of range) for 10 of 15 consecutive trading days."
+      "tiered_early_release": "Staggered release following Q1 2027 earnings if Class A stock closes >= 125% of the $83.00 IPO price ($103.75/share) for 10 of 15 consecutive trading days."
     }
   },
   "financials": {
@@ -224,16 +227,16 @@
     "timeframe": "10 years (2026–2036)",
     "partners": [
       {
-        "name": "Google Cloud ($111B Non-Cancelable Minimum)",
-        "details": "Anthropic's largest single cloud minimum commitment (~$111B) plus $10B IPO private placement anchor; powers TPU v5p and v6 superclusters for multimodal pre-training and global inference."
+        "name": "Google Cloud ($111B Non-Cancelable Minimum + $10B Class N Anchor)",
+        "details": "Anthropic's largest single cloud minimum commitment (~$111B) plus $10B IPO private placement anchor at $83.00/sh; powers TPU v5p and v6 superclusters for multimodal pre-training and global inference."
       },
       {
         "name": "Amazon AWS ($110B Non-Cancelable Minimum)",
         "details": "Multi-gigawatt dedicated data center footprint (~$110B minimum); primary deployment on custom AWS Trainium 2 & 3 silicon clusters and Project Rainier."
       },
       {
-        "name": "Microsoft, Nvidia & Global GPU Alliances ($31B+ Minimums)",
-        "details": "$31B non-cancelable Microsoft cloud commitment, $10B Nvidia IPO private placement anchor, and gigawatt power/compute deals with OnePWR, Nscale, and European FLAP-D hubs."
+        "name": "NVIDIA ($10B Anchor), Microsoft ($31B Minimum) & Silicon Syndicate",
+        "details": "$10B Nvidia, $2.5B AMD, $1B Broadcom, $1B Micron, $1B Microsoft, and $500M TSMC Class N private placements at $83/sh alongside $31B Microsoft cloud minimums and OnePWR/Nscale gigawatt sites."
       }
     ],
     "scaling_trajectory": {
@@ -314,10 +317,18 @@
   ],
   "latest_news": [
     {
+      "date": "2026-11-18",
+      "category": "IPO Pricing · $83.00/sh",
+      "title": "Anthropic Prices Upsized $81.34B IPO at $83.00/Share ($1.5T FDV) — Largest IPO in History",
+      "summary": "Anthropic priced 980M Class A shares at $83.00/sh (above the $70–$78 range, upsized from 825M shares) plus a $26B concurrent Class N private placement (Google $10B, Nvidia $10B, AMD $2.5B, Broadcom/Micron/Microsoft $1B ea., TSMC $0.5B) for $107.34B in total gross proceeds ahead of Nov 19 Nasdaq: ANT trading.",
+      "source": "SEC Form 424(b)(4) / Anthropic IR",
+      "url": "https://www.sec.gov/edgar/browse/?CIK=0002130357"
+    },
+    {
       "date": "2026-11-10",
       "category": "SEC Filing · S-1/A",
-      "title": "Anthropic Launches IPO Roadshow at $70–$78/Share ($1.4T Fully Diluted Valuation)",
-      "summary": "Amended Form S-1/A sets offering of 825M Class A shares under Nasdaq ticker ANT, paired with a $26B concurrent private placement anchored by Google ($10B) and Nvidia ($10B) for up to $90.4B in total gross proceeds.",
+      "title": "Anthropic Launches IPO Roadshow at $70–$78/Share ($1.4T Initial Target)",
+      "summary": "Amended Form S-1/A launched institutional bookbuilding for 825M Class A shares under Nasdaq ticker ANT alongside the $26B strategic Class N private placement before massive oversubscription drove the Nov 18 upsize to 980M shares at $83.00.",
       "source": "SEC Form S-1/A",
       "url": "https://www.sec.gov/edgar/browse/?CIK=0002130357"
     },
@@ -352,14 +363,6 @@
       "summary": "Judge Araceli Martínez-Olguín enters final judgment approving the largest copyright settlement in U.S. history (~$3,000 per work across ~500,000 books), resolving past shadow-library input claims with >91% claimant participation.",
       "source": "N.D. Cal. Final Judgment",
       "url": "https://www.anthropiccopyrightsettlement.com"
-    },
-    {
-      "date": "2026-05-15",
-      "category": "Funding · Series H / DoD",
-      "title": "$65B Series H Closes at $965B Valuation Amid Pentagon AI Guardrail Standoff",
-      "summary": "Altimeter, Dragoneer, Greenoaks, and Sequoia lead record $65B private financing even as Anthropic challenges the Pentagon's 'supply chain risk' designation over its refusal to allow autonomous weapons or domestic surveillance.",
-      "source": "Anthropic Investor Relations",
-      "url": "https://www.anthropic.com/news"
     }
   ],
   "quotes": [

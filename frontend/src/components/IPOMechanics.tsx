@@ -6,25 +6,25 @@ export function IPOMechanics() {
   return (
     <Section
       id="ipo"
-      eyebrow="Section 02 · S-1/A Offering Structure"
-      title="The $90.4B Offering Mechanics, in Plain English"
-      blurb="How Anthropic structured the largest capital raise in technology history: combining a $64.4B public Class A offering with a $26B strategic Class N private placement and mission-bound 5-class governance."
+      eyebrow="Section 02 · Final Offering Structure"
+      title="The $107.34B Offering Mechanics, in Plain English"
+      blurb="How Anthropic executed the largest capital raise in global market history on November 18, 2026: combining an upsized $81.34B public Class A IPO at $83.00/share with a $26.0B strategic Class N private placement."
       sourceUrl={data.filing_metadata.source_url}
-      sourceLabel="S-1/A · Description of Capital Stock"
+      sourceLabel="Form 424(b)(4) · Final Prospectus"
     >
       <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         <Card className="border-t-2 border-t-[#da7756]">
           <div className="flex items-center gap-2 text-xs font-mono uppercase text-[#da7756]">
-            <Tag size={16} /> S-1/A Public Offering Terms
+            <Tag size={16} /> Final IPO Pricing ($83.00 / sh)
           </div>
           <h3 className="mt-2 text-lg font-semibold text-zinc-100">
-            Up to $64.35B Public Class A Raise
+            $81.34B Public Class A Offering
           </h3>
           <p className="mt-2 text-xs text-zinc-400 leading-relaxed">
-            Offers <span className="text-zinc-200 font-medium">825,000,000 Class A shares</span> (801.35M primary by Anthropic + 23.65M secondary, plus 123.75M greenshoe) at{" "}
-            <span className="text-emerald-400 font-medium">$70.00–$78.00 / share</span> under Nasdaq ticker{" "}
-            <span className="text-zinc-200 font-mono font-medium">ANT</span>, valuing Anthropic at up to{" "}
-            <span className="text-zinc-200 font-medium">$1.02T basic / $1.41T fully diluted</span>.
+            Upsized from 825M to <span className="text-zinc-200 font-medium">980,000,000 Class A shares</span> (956.35M primary by Anthropic raising $79.38B + 23.65M secondary, plus 147M greenshoe) priced at{" "}
+            <span className="text-emerald-400 font-medium">$83.00 / share</span> (above $70–$78 range) under Nasdaq ticker{" "}
+            <span className="text-zinc-200 font-mono font-medium">ANT</span> at a{" "}
+            <span className="text-zinc-200 font-medium">$1.50T fully diluted valuation</span>.
           </p>
         </Card>
 
@@ -36,11 +36,10 @@ export function IPOMechanics() {
             $26.0B Strategic Class N Round
           </h3>
           <p className="mt-2 text-xs text-zinc-400 leading-relaxed">
-            Closing simultaneously at the IPO price, strategic silicon and cloud partners are purchasing{" "}
-            <span className="text-zinc-200 font-medium">$26B of non-voting Class N stock</span>: anchored by{" "}
+            Closing immediately alongside the IPO at the identical <span className="text-zinc-200 font-medium">$83.00/share</span> price: anchored by{" "}
             <span className="text-emerald-400 font-medium">Google ($10B)</span> and{" "}
-            <span className="text-emerald-400 font-medium">Nvidia ($10B)</span>, plus{" "}
-            <span className="text-zinc-200 font-medium">Microsoft, AMD, Broadcom, Micron & TSMC ($6B)</span>.
+            <span className="text-emerald-400 font-medium">NVIDIA ($10B)</span>, alongside{" "}
+            <span className="text-zinc-200 font-medium">AMD ($2.5B), Broadcom ($1B), Micron ($1B), Microsoft ($1B) & TSMC ($500M)</span>.
           </p>
         </Card>
 
@@ -93,7 +92,7 @@ export function IPOMechanics() {
             20+ Underwriters · 180-Day Lock-up
           </h3>
           <p className="mt-2 text-xs text-zinc-400 leading-relaxed">
-            Led by <span className="text-zinc-200 font-medium">Goldman Sachs and Morgan Stanley</span> across 20+ global bookrunners. Insiders face a 180-day lock-up through May 2027, with staggered early release triggers if ANT trades ≥125% of the IPO price ($97.50).
+            Led by <span className="text-zinc-200 font-medium">Goldman Sachs and Morgan Stanley</span> across 20+ global bookrunners. Insiders face a 180-day lock-up through May 2027, with staggered early release triggers if ANT trades ≥125% of the $83.00 IPO price ($103.75).
           </p>
         </Card>
       </div>

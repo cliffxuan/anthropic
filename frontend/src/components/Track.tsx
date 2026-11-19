@@ -15,22 +15,20 @@ export function Track() {
 
   const ipo = data.ipo;
   const t = ipo.expected_timeline;
-  const pricingDays = daysUntil(t.pricing_date);
-  const tradingDays = daysUntil(t.trading_start);
   const lockupDays = daysUntil(ipo.lock_up.expiry_date);
 
-  const impliedCapT = px?.latest.implied_valuation_t ?? 1.771;
-  const s1aCapT = ipo.target_valuation_usd_trillions; // 1.41T
+  const impliedCapT = px?.latest.implied_valuation_t ?? 1.812;
+  const finalIpoCapT = ipo.target_valuation_usd_trillions; // 1.50T
   const octArrB = data.financials.summary.oct_2026_arr_usd_billions; // $81.0B
   const psArrPerp = (impliedCapT * 1000) / octArrB;
-  const psArrS1A = (s1aCapT * 1000) / octArrB;
+  const psArrIpo = (finalIpoCapT * 1000) / octArrB;
 
   return (
     <Section
       id="track"
       eyebrow="Timeline · SEC Watch"
       title="Road to Nasdaq (ANT): Key Milestones & Filings"
-      blurb="Tracking Anthropic's progression from its June 2026 confidential DRS submission to the October 26 public S-1 drop, the November 10 S-1/A roadshow launch ($70–$78/share), and the November 18–19 pricing and Nasdaq debut."
+      blurb="Tracking Anthropic's completed roadshow and record-breaking November 18 pricing at $83.00/share ($81.34B IPO + $26B private placement = $107.34B total raise) through today's November 19 Nasdaq debut."
       sourceUrl={data.filing_metadata.source_url}
       sourceLabel="SEC EDGAR · CIK 0002130357"
     >
@@ -41,8 +39,8 @@ export function Track() {
             <div className="flex items-center gap-2 text-xs font-mono uppercase text-[#da7756]">
               <CalendarClock size={14} /> Offering Timetable & Lock-up
             </div>
-            <span className="rounded-full border border-[#38332f] bg-[#141211] px-2 py-0.5 text-[10px] font-mono text-zinc-400">
-              Nasdaq: ANT
+            <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-mono text-emerald-400">
+              Priced $83.00 · Debut Today
             </span>
           </div>
 
@@ -64,27 +62,27 @@ export function Track() {
             />
 
             <TimelineRow
-              title="Form S-1/A & Institutional Roadshow Launch"
+              title="Form S-1/A & Institutional Roadshow"
               date={fmtDate(t.roadshow_start)}
-              badge="Live Now"
-              badgeTone="bg-[#da7756]/15 text-[#da7756] border-[#da7756]/40"
-              desc="S-1/A sets price range at $70.00–$78.00/share for 825M Class A shares ($64.4B max public offering) alongside a $26B concurrent Class N private placement anchored by Google & Nvidia."
+              badge="Completed"
+              badgeTone="bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+              desc="Initial bookbuilding launched at $70.00–$78.00/share for 825M Class A shares before massive institutional and retail oversubscription led underwriters to upsize."
             />
 
             <TimelineRow
-              title="Final IPO Pricing & Nasdaq Trading Debut (ANT)"
-              date={`${fmtDate(t.pricing_date)} – ${fmtDate(t.trading_start)}`}
-              badge={pricingDays > 0 ? `${pricingDays}d to pricing · ${tradingDays}d to debut` : "Imminent"}
-              badgeTone="bg-amber-500/10 text-amber-400 border-amber-500/30"
-              desc="Goldman Sachs and Morgan Stanley price the heavily oversubscribed offering on Nov 18; Class A shares begin trading on the Nasdaq Global Select Market under ticker ANT on Nov 19."
+              title="Upsized IPO Priced at $83.00 / Share ($1.50T FDV)"
+              date={fmtDate(t.pricing_date)}
+              badge="Completed · $107.34B Raise"
+              badgeTone="bg-emerald-500/15 text-emerald-400 border-emerald-500/40"
+              desc="Anthropic priced 980M Class A shares at $83.00/sh ($81.34B IPO — largest in history) plus $26B in concurrent Class N shares at $83.00/sh to Google, Nvidia, AMD, Broadcom, Micron, Microsoft & TSMC."
             />
 
             <TimelineRow
-              title="Tiered Lock-up Expiry (180 Days)"
-              date={fmtDate(ipo.lock_up.expiry_date)}
-              badge={lockupDays > 0 ? `${lockupDays} days away` : "Scheduled"}
-              badgeTone="bg-zinc-800 text-zinc-400 border-zinc-700"
-              desc={ipo.lock_up.tiered_early_release}
+              title="Nasdaq Global Select Debut (Ticker: ANT)"
+              date={fmtDate(t.trading_start)}
+              badge="Live Today"
+              badgeTone="bg-[#da7756]/20 text-[#da7756] border-[#da7756]/40"
+              desc={`Class A shares commence trading on Nasdaq under ticker ANT today (Nov 19), with Hyperliquid perps pricing in a +21% to +24% debut pop (~$100–$103/sh). Tiered 180-day lock-up expires ${fmtDate(ipo.lock_up.expiry_date)} (${lockupDays}d).`}
             />
           </div>
         </Card>
@@ -95,9 +93,9 @@ export function Track() {
             <div className="text-xs font-mono uppercase text-zinc-400 mb-2">Valuation Multiples on $81B Oct ARR</div>
             <div className="grid grid-cols-2 gap-3 mt-3">
               <div className="rounded-xl border border-[#2a2624] bg-[#12100f] p-3">
-                <div className="text-[11px] text-zinc-500 font-mono">S-1/A Top ($1.41T FDV)</div>
-                <div className="text-xl font-bold text-emerald-400 tabular mt-0.5">{psArrS1A.toFixed(1)}×</div>
-                <div className="text-[10px] text-zinc-400">at $78/sh · $81B ARR</div>
+                <div className="text-[11px] text-zinc-500 font-mono">Final IPO ($1.50T FDV)</div>
+                <div className="text-xl font-bold text-emerald-400 tabular mt-0.5">{psArrIpo.toFixed(1)}×</div>
+                <div className="text-[10px] text-zinc-400">at $83.00/sh · $81B ARR</div>
               </div>
               <div className="rounded-xl border border-[#2a2624] bg-[#12100f] p-3">
                 <div className="text-[11px] text-zinc-500 font-mono">Perp Implied (${impliedCapT.toFixed(2)}T)</div>
@@ -106,7 +104,7 @@ export function Track() {
               </div>
             </div>
             <div className="mt-3 text-[11px] text-zinc-500 leading-relaxed">
-              With 9M 2026 revenue reaching $33.2B ($17.0B in Q3 alone) and October 2026 ARR hitting $81B, Anthropic's S-1/A prices the company at ~17.4× forward run-rate.
+              At last night's $83.00/share IPO price ($1.50T FDV), Anthropic priced at 18.5× its $81B October 2026 annualized revenue run-rate.
             </div>
           </Card>
 
