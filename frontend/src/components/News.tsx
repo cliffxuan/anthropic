@@ -1,6 +1,6 @@
 import { Section, Card } from "./Section";
 import { data, fmtDate } from "../data";
-import { Newspaper, ExternalLink, Sparkles, Scale, FileText, ShieldAlert, TrendingUp } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 
 export function News() {
   const news = data.latest_news;
@@ -15,9 +15,9 @@ export function News() {
   return (
     <Section
       id="news"
-      eyebrow="Breaking · Oct–Nov 2026 Developments"
+      eyebrow="Breaking · Post-IPO Trading & SEC Filings"
       title="Latest News, Filings & Catalysts"
-      blurb="Real-time tracker of Anthropic's November 2026 IPO roadshow (Nasdaq: ANT), S-1/A financial disclosures ($33.2B 9M 2026 revenue, $81B ARR), Claude 5.5 & Mythos 5.2 launches, the $1.5B Bartz copyright settlement, and the Pentagon Acceptable-Use standoff."
+      blurb="Real-time tracker of Anthropic's completed $83.00/share IPO ($104.8B net proceeds settled Nov 20, 2026), Nasdaq: ANT secondary-market trading (Day 1 open $111.50, high $115.10, close $97.17), Form 424(b)(4) financial disclosures ($33.24B 9M'26 revenue, $81B Oct run-rate), Claude 5.5 & Mythos 5.2 launches, and the Pentagon Acceptable-Use litigation."
       sourceUrl={data.filing_metadata.source_url}
       sourceLabel="SEC EDGAR · CIK 0002130357"
     >

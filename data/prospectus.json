@@ -2,57 +2,98 @@
   "filing_metadata": {
     "company": "Anthropic, PBC",
     "cik": "0002130357",
+    "registration_numbers": ["333-299633", "333-300148"],
+    "cusip": "03703U 107",
     "drs_submission_date": "2026-06-01",
     "public_s1_date": "2026-10-26",
     "s1a_roadshow_date": "2026-11-10",
     "final_pricing_date": "2026-11-18",
-    "filing_type": "Form 424(b)(4) Final Prospectus · Priced at $83.00/sh",
+    "final_prospectus_filed": "2026-11-19",
+    "settlement_date": "2026-11-20",
+    "filing_type": "Form 424(b)(4) Final Prospectus · Priced at $83.00/sh · Listed on Nasdaq: ANT",
     "expected_public_filing": "2026-10-26",
-    "expected_ipo_window": "Priced Nov 18 · Debut Nov 19, 2026",
+    "expected_ipo_window": "Listed Nov 19 · Settled Nov 20, 2026",
     "ticker_symbol": "ANT",
     "perp_ticker": "io:ANTH",
+    "xyz_perp_ticker": "xyz:ANT",
     "exchange": "Nasdaq Global Select Market",
     "lead_underwriters": [
       "Goldman Sachs & Co. LLC",
       "Morgan Stanley & Co. LLC",
       "J.P. Morgan Securities LLC",
-      "Allen & Company LLC",
-      "Citigroup",
-      "Barclays"
+      "Citigroup Global Markets Inc.",
+      "Barclays Capital Inc.",
+      "Wells Fargo Securities, LLC",
+      "BofA Securities, Inc.",
+      "Deutsche Bank Securities Inc.",
+      "RBC Capital Markets, LLC",
+      "UBS Securities LLC"
     ],
-    "independent_auditor": "PricewaterhouseCoopers LLP",
+    "independent_auditor": "Ernst & Young LLP (FY2025); Grant Thornton LLP (FY2023–FY2024)",
     "legal_counsel": "Wilson Sonsini Goodrich & Rosati, P.C.",
-    "source_url": "https://www.sec.gov/edgar/browse/?CIK=0002130357",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074944/anthropicpbc-424b4.htm",
+    "s1_url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026067168/anthropicpbc-sx1.htm",
+    "s1a3_url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074338/anthropicpbc-sx1ax3.htm",
+    "fwp_pricing_url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074937/anthropicpbc-fwppricing.htm",
+    "fwp_website_url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026072949/anthropicpbc-fwpipowebsi.htm",
     "filing_index_url": "https://www.sec.gov/edgar/browse/?CIK=0002130357"
   },
   "ipo": {
-    "target_valuation_usd_trillions": 1.50,
+    "status": "Listed & Settled",
+    "target_valuation_usd_trillions": 1.51,
     "non_diluted_valuation_usd_trillions": 1.10,
     "initial_whisper_valuation_usd_trillions": 2.0,
     "price_range_low_usd": 70.0,
     "price_range_high_usd": 78.0,
     "final_ipo_price_usd": 83.0,
+    "price_per_share_usd": 83.0,
     "target_price_per_share_usd": 83.0,
+    "price_to_underwriters_usd": 82.43878,
+    "underwriting_discount_per_share_usd": 0.56122,
+    "underwriting_discount_total_usd_millions": 550.0,
+    "first_day_open_usd": 111.5,
+    "first_day_high_usd": 115.1,
+    "first_day_low_usd": 92.72,
+    "first_day_close_usd": 97.17,
+    "first_day_volume": 857312300,
     "shares_offered": 980000000,
     "primary_shares_offered": 956351354,
     "secondary_shares_offered": 23648646,
     "greenshoe_shares": 147000000,
-    "total_shares_outstanding": 13230000000,
-    "fully_diluted_shares": 18070000000,
+    "class_a_shares_outstanding": 7583103996,
+    "class_n_shares_issued": 5636538278,
+    "class_n_shares_accounting_outstanding": 4789697318,
+    "public_benefit_fund_shares_class_n": 846840960,
+    "total_shares_outstanding": 13219642276,
+    "total_shares_with_greenshoe": 13366642276,
+    "fully_diluted_shares": 18137587875,
     "gross_proceeds_usd_billions": 81.34,
     "primary_proceeds_usd_billions": 79.38,
+    "proceeds_before_expenses_primary_usd_billions": 78.84,
+    "proceeds_to_selling_stockholders_usd_billions": 1.95,
     "concurrent_private_placement_usd_billions": 26.0,
     "total_capital_raise_usd_billions": 107.34,
+    "net_proceeds_combined_usd_billions": 104.8,
+    "net_proceeds_with_greenshoe_usd_billions": 117.0,
+    "rsu_tax_withholding_usd_billions": 4.3,
+    "pro_forma_as_adjusted_cash_usd_billions": 232.35,
+    "pro_forma_as_adjusted_cash_with_greenshoe_usd_billions": 244.6,
     "private_placement_anchors": [
-      { "name": "Google (Alphabet)", "commitment_usd_billions": 10.0 },
-      { "name": "NVIDIA Corporation", "commitment_usd_billions": 10.0 },
-      { "name": "AMD ($2.5B), Broadcom ($1B), Micron ($1B), Microsoft ($1B) & TSMC ($0.5B)", "commitment_usd_billions": 6.0 }
+      { "name": "Google LLC", "commitment_usd_billions": 10.0, "shares": 120481927 },
+      { "name": "NVIDIA Corporation", "commitment_usd_billions": 10.0, "shares": 120481927 },
+      { "name": "Advanced Micro Devices, Inc. (AMD)", "commitment_usd_billions": 2.5, "shares": 30120481 },
+      { "name": "Broadcom Inc.", "commitment_usd_billions": 1.0, "shares": 12048192 },
+      { "name": "Micron Technology, Inc.", "commitment_usd_billions": 1.0, "shares": 12048192 },
+      { "name": "Microsoft Corporation", "commitment_usd_billions": 1.0, "shares": 12048192 },
+      { "name": "TSMC Partners, Ltd.", "commitment_usd_billions": 0.5, "shares": 6024096 }
     ],
     "series_h": {
       "date": "2026-05-15",
       "post_money_valuation_usd_billions": 965.0,
-      "amount_raised_usd_billions": 65.0,
-      "lead_investors": ["Altimeter Capital", "Dragoneer", "Greenoaks", "Sequoia Capital"]
+      "preferred_price_per_share_usd": 589.0095,
+      "as_converted_common_price_usd": 58.9,
+      "amount_raised_usd_billions": 65.2,
+      "lead_investors": ["Altimeter Capital", "Dragoneer", "Greenoaks", "Sequoia Capital", "Amazon", "Google"]
     },
     "expected_timeline": {
       "confidential_drs_filing": "2026-06-01",
@@ -69,16 +110,44 @@
       "class_f_founder_voting_pct": 50.1,
       "class_t_trust_shares": 1,
       "class_n_votes_per_share": 0,
-      "class_f_holders": "Founder LLC (Dario Amodei, Daniela Amodei & 5 co-founders)",
+      "class_f_holders": "Founder LLC (Dario Amodei, Daniela Amodei, Tom Brown, Jack Clark, Jared Kaplan, Sam McCandlish, Chris Olah)",
       "class_t_holder": "Long-Term Benefit Trust (LTBT) — elects 4 of 7 board directors",
-      "class_n_holders": "Strategic partners (Amazon, Google, Nvidia, Microsoft, AMD, Broadcom, Micron, TSMC)",
+      "class_n_holders": "Strategic partners (Amazon 14.6%, Google 13.4%, Nvidia, Microsoft, AMD, Broadcom, Micron, TSMC) & Anthropic Public Benefit Fund (846.8M sh)",
       "founder_voting_power_pct": 50.1,
-      "pbc_purpose": "To responsibly develop and maintain advanced artificial intelligence for the long-term benefit of humanity, balancing commercial execution with safety."
+      "pbc_purpose": "The responsible development and maintenance of advanced AI for the long-term benefit of humanity."
     },
     "lock_up": {
       "standard_days": 180,
-      "expiry_date": "2027-05-18",
-      "tiered_early_release": "Staggered release following Q1 2027 earnings if Class A stock closes >= 125% of the $83.00 IPO price ($103.75/share) for 10 of 15 consecutive trading days."
+      "extended_days": 365,
+      "total_locked_shares_billions": 15.5,
+      "expiry_date": "2027-05-17",
+      "extended_expiry_date": "2027-11-18",
+      "tiered_early_release": "Up to 315M employee/director Class A shares (10% cap) unlocked on Day 1 (Nov 19, 2026); staged releases on Days 27 (Dec 15), 48 (Jan 5), 62 (Jan 19), 76 (Feb 2), post-FY26 earnings (1.7B + 5×480M), Q1'27 earnings / Day 180 (3.0B + 4×447M), Q2'27 earnings (558M + 5×502M), and Q3'27 earnings / Day 365 (1.9B co-founders & >0.5% holders).",
+      "tranches": [
+        { "date": "2026-11-19", "label": "Day 1 Trading Release (10% Employee/Director Cap)", "class_a_millions": 315, "class_n_millions": 0, "total_millions": 315 },
+        { "date": "2026-12-15", "label": "Day 27 Post-Prospectus Tranche", "class_a_millions": 174, "class_n_millions": 129, "total_millions": 303 },
+        { "date": "2027-01-05", "label": "Day 48 Post-Prospectus Tranche", "class_a_millions": 174, "class_n_millions": 129, "total_millions": 303 },
+        { "date": "2027-01-19", "label": "Day 62 Post-Prospectus Tranche", "class_a_millions": 203, "class_n_millions": 151, "total_millions": 353 },
+        { "date": "2027-02-02", "label": "Day 76 Post-Prospectus Tranche", "class_a_millions": 203, "class_n_millions": 151, "total_millions": 353 },
+        { "date": "2027-02-25", "label": "Post-FY26 Earnings Release (+5× 480M bi-weekly)", "class_a_millions": 1500, "class_n_millions": 269, "total_millions": 1700 },
+        { "date": "2027-05-17", "label": "Q1 2027 Earnings / Day 180 Standard Expiry (+4× 447M)", "class_a_millions": 2700, "class_n_millions": 336, "total_millions": 3000 },
+        { "date": "2027-08-12", "label": "Post-Q2 2027 Earnings Release (+5× 502M)", "class_a_millions": 171, "class_n_millions": 387, "total_millions": 558 },
+        { "date": "2027-11-18", "label": "Q3 2027 Earnings / Day 365 Co-Founder & Extended Expiry", "class_a_millions": 1400, "class_n_millions": 503, "total_millions": 1900 }
+      ]
+    },
+    "index_outlook": {
+      "nasdaq_100": {
+        "status": "Fast-Entry Eligible",
+        "estimate": "Dec 2026 Annual Reconstitution / Fast Entry",
+        "detail": "At >$1.1T basic market cap ($1.5T+ fully diluted), ANT ranks inside the top 10 of the Nasdaq-100. Class A common stock carries 1 vote/share and meets Nasdaq Global Select Market free-float and liquidity thresholds.",
+        "source_url": "https://www.nasdaq.com/solutions/nasdaq-100-index"
+      },
+      "sp_500": {
+        "status": "Multi-Class & GAAP Rules",
+        "estimate": "2027+ Watch",
+        "detail": "S&P Dow Jones removed its multi-class ban in 2023, and Anthropic is already Adjusted Net Income positive (+$5.59B in 9M 2026). S&P 500 eligibility requires four consecutive quarters of positive GAAP net income once IPO convertible-note mark-to-market and RSU vesting charges roll off.",
+        "source_url": "https://www.spglobal.com/spdji/en/indices/equity/sp-500/"
+      }
     }
   },
   "financials": {
@@ -86,43 +155,55 @@
       "fy2025_revenue_usd_billions": 4.59,
       "fy2025_yoy_growth_pct": 1088,
       "h1_2026_revenue_usd_billions": 16.29,
-      "q3_2026_revenue_usd_billions": 16.95,
+      "q3_2026_revenue_usd_billions": 16.96,
       "nine_month_2026_revenue_usd_billions": 33.24,
+      "ttm_q3_2026_revenue_usd_billions": 35.28,
       "oct_2026_arr_usd_billions": 81.0,
       "q2_2026_operating_income_usd_millions": 974,
       "h1_2026_operating_loss_usd_millions": 693,
+      "nine_month_2026_operating_loss_usd_billions": 1.26,
+      "nine_month_2026_adj_operating_income_usd_billions": 4.08,
+      "nine_month_2026_adj_operating_margin_pct": 12.3,
+      "q3_2026_adj_operating_income_usd_billions": 2.46,
+      "q3_2026_adj_operating_margin_pct": 15.0,
+      "nine_month_2026_adj_net_income_usd_billions": 5.59,
       "fy2025_operating_loss_usd_billions": 8.06,
       "fy2025_accounting_net_loss_usd_billions": 41.97,
       "h1_2026_accounting_net_loss_usd_billions": 80.75,
-      "fy2025_noncash_derivative_charge_usd_billions": 33.91,
-      "cash_and_equivalents_usd_billions": 131.7,
-      "nine_month_2026_operating_cash_flow_usd_billions": 6.6,
-      "total_compute_commitments_usd_billions": 900.0,
-      "noncancelable_compute_minimums_usd_billions": 450.0
+      "nine_month_2026_accounting_net_loss_usd_billions": 104.04,
+      "fy2025_noncash_derivative_charge_usd_billions": 34.31,
+      "nine_month_2026_noncash_derivative_charge_usd_billions": 94.32,
+      "cash_and_equivalents_usd_billions": 131.85,
+      "pro_forma_as_adjusted_cash_usd_billions": 232.35,
+      "nine_month_2026_operating_cash_flow_usd_billions": 6.57,
+      "total_compute_commitments_usd_billions": 900.9,
+      "noncancelable_compute_minimums_usd_billions": 451.6
     },
     "annual": [
       {
         "year": 2023,
         "label": "FY2023",
         "revenue": 41,
-        "cogs": 85,
-        "gross_margin_pct": -107.3,
+        "cogs": 26,
+        "gross_margin_pct": 36.6,
         "rd_expense": 422,
         "sm_expense": 76,
         "ga_expense": 68,
         "operating_income": -551,
+        "adj_operating_income": -522,
         "net_income": -1531
       },
       {
         "year": 2024,
         "label": "FY2024",
         "revenue": 386,
-        "cogs": 386,
-        "gross_margin_pct": 0.0,
+        "cogs": 752,
+        "gross_margin_pct": -94.8,
         "rd_expense": 2275,
         "sm_expense": 163,
         "ga_expense": 176,
         "operating_income": -2980,
+        "adj_operating_income": -2788,
         "net_income": -8309
       },
       {
@@ -135,251 +216,268 @@
         "sm_expense": 911,
         "ga_expense": 2623,
         "operating_income": -8060,
+        "adj_operating_income": -4854,
         "net_income": -41965
       },
       {
         "year": 2026,
         "label": "9M 2026",
-        "revenue": 33240,
-        "cogs": 16950,
-        "gross_margin_pct": 49.0,
-        "rd_expense": 11800,
-        "sm_expense": 1850,
-        "ga_expense": 2100,
-        "operating_income": 540,
-        "net_income": -104200
+        "revenue": 33242,
+        "cogs": 4812,
+        "gross_margin_pct": 85.5,
+        "rd_expense": 19240,
+        "sm_expense": 6619,
+        "ga_expense": 3831,
+        "operating_income": -1260,
+        "adj_operating_income": 4081,
+        "net_income": -104039
       }
     ],
     "quarterly_2025_2026": [
-      { "quarter": "Q1 25", "revenue_millions": 376 },
-      { "quarter": "Q2 25", "revenue_millions": 787 },
-      { "quarter": "Q3 25", "revenue_millions": 1382 },
-      { "quarter": "Q4 25", "revenue_millions": 2040 },
-      { "quarter": "Q1 26", "revenue_millions": 4731 },
-      { "quarter": "Q2 26", "revenue_millions": 11555 },
-      { "quarter": "Q3 26", "revenue_millions": 16954 }
+      { "quarter": "Q1 25", "revenue_millions": 376, "compute_millions": 944, "operating_income_millions": -935, "adj_operating_income_millions": -830, "adj_margin_pct": -221 },
+      { "quarter": "Q2 25", "revenue_millions": 787, "compute_millions": 1390, "operating_income_millions": -1200, "adj_operating_income_millions": -1019, "adj_margin_pct": -129 },
+      { "quarter": "Q3 25", "revenue_millions": 1382, "compute_millions": 2047, "operating_income_millions": -3089, "adj_operating_income_millions": -1284, "adj_margin_pct": -93 },
+      { "quarter": "Q4 25", "revenue_millions": 2040, "compute_millions": 2945, "operating_income_millions": -2836, "adj_operating_income_millions": -1721, "adj_margin_pct": -84 },
+      { "quarter": "Q1 26", "revenue_millions": 4731, "compute_millions": 3387, "operating_income_millions": -1667, "adj_operating_income_millions": -617, "adj_margin_pct": -13 },
+      { "quarter": "Q2 26", "revenue_millions": 11555, "compute_millions": 5558, "operating_income_millions": 974, "adj_operating_income_millions": 2235, "adj_margin_pct": 19 },
+      { "quarter": "Q3 26", "revenue_millions": 16956, "compute_millions": 9863, "operating_income_millions": -567, "adj_operating_income_millions": 2463, "adj_margin_pct": 15 }
     ],
     "operating_expenses_2025": [
       { "category": "Research, Pre-Training & Alignment (R&D)", "amount_millions": 6338, "pct": 50.1 },
       { "category": "Inference & Serving Cost of Revenue", "amount_millions": 2773, "pct": 21.9 },
-      { "category": "General, Admin & Legal Settlements (G&A)", "amount_millions": 2623, "pct": 20.8 },
+      { "category": "General, Admin & $1.5B Bartz Settlement (G&A)", "amount_millions": 2623, "pct": 20.8 },
       { "category": "Enterprise Sales & Marketing (S&M)", "amount_millions": 911, "pct": 7.2 }
+    ],
+    "operating_expenses_9m2026": [
+      { "category": "Compute & Infrastructure (Training, Inference & Direct)", "amount_millions": 18808, "pct": 54.5 },
+      { "category": "Sales, Marketing & Cloud Channel Partnerships", "amount_millions": 5529, "pct": 16.0 },
+      { "category": "Other Operating, Admin & Donation Matching ($2.1B)", "amount_millions": 5302, "pct": 15.4 },
+      { "category": "Personnel (Salaries & $3.3B Stock-Based Comp)", "amount_millions": 4863, "pct": 14.1 }
     ]
   },
   "segments": [
     {
       "id": "api",
-      "name": "Direct Consumption API & Claude Code",
-      "revenue_2025_millions": 5264,
-      "period_label": "$5.26B in H1 2026 (~32% of total)",
-      "share_pct": 32.3,
-      "description": "Direct usage-based token billing via Anthropic Console for Claude 5.5 Opus/Sonnet/Haiku, Claude Mythos 5.2, and autonomous Claude Code engineering agents.",
+      "name": "Pay-for-Intelligence (Consumption & Claude Platform)",
+      "revenue_2025_millions": 26300,
+      "period_label": "$26.30B in 9M 2026 (79% of total)",
+      "share_pct": 79.0,
+      "description": "Token-metered consumption revenue across the Claude Platform, Agent SDK, Claude Managed Agents, and multi-cloud marketplaces (AWS Bedrock, Google Gemini Enterprise Agent Platform, Microsoft Foundry) where Anthropic maintains direct customer contracts.",
       "metrics": {
-        "enterprise_100k_customers": "11,900+ customers >$100K ARR",
-        "flagship_models": ["Claude 5.5 Opus & Sonnet (1M ctx)", "Claude Mythos 5.2 & Fable 5.2"],
-        "features": ["Claude Code CLI & Cloud Threads", "Prompt Caching", "Self-Hosted Managed Agents"]
-      }
-    },
-    {
-      "id": "cloud",
-      "name": "Cloud Hyperscaler Marketplaces (AWS & GCP)",
-      "revenue_2025_millions": 7800,
-      "period_label": "$7.80B in H1 2026 (~48% of total)",
-      "share_pct": 47.9,
-      "description": "Consumption-based deployment through Amazon Bedrock and Google Cloud Vertex AI where Anthropic acts as principal, recognizing gross consumption revenue.",
-      "metrics": {
-        "hyperscalers": ["Amazon AWS Bedrock", "Google Cloud Vertex AI", "Microsoft Azure"],
-        "cohort_expansion": "Up to 900% NRR in top enterprise cohorts",
-        "concentration": "No single customer >10% of revenue"
+        "enterprise_100k_customers": ">11,900 customers ≥$100K TTM (>1,900 ≥$1M · ~250 ≥$10M)",
+        "flagship_models": ["Mythos 5.2 & Fable 5.2 (Nov 2026)", "Claude Opus 5.5, Sonnet & Haiku"],
+        "features": ["Prompt Caching (up to 97% cost cut)", "Model Context Protocol (MCP)", "Agent SDK & Managed Agents"]
       }
     },
     {
       "id": "enterprise",
-      "name": "Claude Enterprise, Team & Cowork SaaS",
-      "revenue_2025_millions": 2122,
-      "period_label": "$2.12B in H1 2026 (~13% of total)",
-      "share_pct": 13.0,
-      "description": "Seat-based enterprise workspaces featuring Claude Cowork desktop agents, Claude Data & Sheets, Claude Meetings, and vertical plugins like Claude for Manufacturing.",
+      "name": "First-Party Agentic Applications & Subscriptions",
+      "revenue_2025_millions": 6942,
+      "period_label": "$6.94B in 9M 2026 (21% of total)",
+      "share_pct": 21.0,
+      "description": "Subscription and enterprise seat revenue across Claude Code, Claude Cowork (unified with Claude.ai in Sep 2026), Claude Enterprise, and prosumer plans (Claude Pro, Max, Ultra), with seamless bridge to pay-for-intelligence consumption.",
       "metrics": {
-        "agentic_suite": ["Claude Cowork (Desktop Agent)", "Claude Data & Whiteboards", "Claude Meetings"],
-        "vertical_solutions": "Claude for Manufacturing (Autodesk, NetSuite, Infor)",
-        "security": "Customer VPC isolation, SSO/SCIM & audit governance"
+        "agentic_suite": ["Claude Code (Autonomous Eng.)", "Claude Cowork (Desktop Agent)", "Claude Security, Tag, Design & Science"],
+        "multi_surface_adoption": ">50% of ≥$100K customers use both Claude Platform and ≥1 first-party app",
+        "vertical_solutions": "7 Verticals: Financial Services, Advisors, Healthcare, Life Sciences, Legal, Education, Government"
+      }
+    },
+    {
+      "id": "cloud",
+      "name": "Enterprise Cohort (≥$100K TTM Revenue)",
+      "revenue_2025_millions": 26100,
+      "period_label": "$26.10B TTM to Sep 30, 2026 (74% of TTM)",
+      "share_pct": 74.0,
+      "description": "Over 11,900 distinct organizations spending ≥$100,000 on a trailing twelve-month basis as of Sep 30, 2026 (up >12× YoY from >950), including 100% of the Fortune 10, >50% of the Fortune 500, and >30% of the Global 2000.",
+      "metrics": {
+        "hyperscalers": ["Amazon AWS Bedrock", "Google Cloud Vertex / Gemini Agent", "Microsoft Azure Foundry"],
+        "cohort_expansion": "~900% Net Revenue Retention (as of Sep 30, 2026)",
+        "concentration": "No single customer >10% of revenue; 79% outside top 5 customers"
       }
     },
     {
       "id": "consumer",
-      "name": "Claude Pro & Claude Max Subscriptions",
-      "revenue_2025_millions": 1100,
-      "period_label": "$1.10B in H1 2026 (~7% of total)",
-      "share_pct": 6.8,
-      "description": "Individual prosumer and developer subscriptions ($20/mo Pro and $100–$200/mo Max tiers) bundling priority frontier reasoning and Claude Code API credits.",
+      "name": "Self-Serve Developers, SMBs & Prosumers (<$100K TTM)",
+      "revenue_2025_millions": 9182,
+      "period_label": "$9.18B TTM to Sep 30, 2026 (26% of TTM)",
+      "share_pct": 26.0,
+      "description": "Approximately 40 million prosumer and SMB customers spending under $100,000 TTM on Claude Pro, Max, Ultra, Claude Code, and self-serve APIs—acting as the organic top-of-funnel engine that seeds enterprise-wide deployments.",
       "metrics": {
-        "tiers": ["Claude Pro ($20/mo)", "Claude Max ($100–$200/mo with bundled Code credits)"],
-        "total_h1_subscriptions": "$3.22B combined H1 2026 subscription revenue (19.8%)"
+        "customer_scale": "~40 Million active customers (<$100K TTM)",
+        "internal_dogfooding": ">90% of Anthropic's Sep 2026 codebase commits written by Claude (45× daily volume vs. 2024)"
       }
     }
   ],
   "compute": {
-    "total_obligations_usd_billions": 900.0,
-    "noncancelable_minimums_usd_billions": 450.0,
-    "h1_2026_compute_spend_usd_billions": 8.9,
-    "fy2025_compute_spend_usd_billions": 7.3,
-    "timeframe": "10 years (2026–2036)",
+    "total_obligations_usd_billions": 900.9,
+    "noncancelable_minimums_usd_billions": 451.6,
+    "next_12m_obligations_usd_billions": 70.7,
+    "additional_variable_commitments_usd_billions": "150.0 – 175.0",
+    "h1_2026_compute_spend_usd_billions": 8.95,
+    "nine_month_2026_compute_spend_usd_billions": 18.81,
+    "fy2025_compute_spend_usd_billions": 7.33,
+    "timeframe": "2026–2045 (Fungible Multi-Chip Pool & Anthropic Direct)",
     "partners": [
       {
-        "name": "Google Cloud ($111B Non-Cancelable Minimum + $10B Class N Anchor)",
-        "details": "Anthropic's largest single cloud minimum commitment (~$111B) plus $10B IPO private placement anchor at $83.00/sh; powers TPU v5p and v6 superclusters for multimodal pre-training and global inference."
+        "name": "Google Cloud ($121.3B Fixed + $125B–$150B Variable TPUs + $10B Class N Anchor)",
+        "details": "Non-cancelable CSP hosting commitment of $121.3B through July 2033, plus $125B–$150B in additional multi-generation TPU capacity (2028–2031), backed by Google's $10B IPO private placement at $83.00/sh and $10B remaining Google 2026 NPA facility."
       },
       {
-        "name": "Amazon AWS ($110B Non-Cancelable Minimum)",
-        "details": "Multi-gigawatt dedicated data center footprint (~$110B minimum); primary deployment on custom AWS Trainium 2 & 3 silicon clusters and Project Rainier."
+        "name": "Broadcom Anthropic Direct ($161.2B Equipment Finance Leases + $42B NPA)",
+        "details": "Five-year master equipment finance leases totaling $161.2B (excl. interest) for dedicated TPU-based infrastructure deployed in Anthropic Direct data centers, supported by a $42.0B convertible note facility and $1B Class N private placement."
       },
       {
-        "name": "NVIDIA ($10B Anchor), Microsoft ($31B Minimum) & Silicon Syndicate",
-        "details": "$10B Nvidia, $2.5B AMD, $1B Broadcom, $1B Micron, $1B Microsoft, and $500M TSMC Class N private placements at $83/sh alongside $31B Microsoft cloud minimums and OnePWR/Nscale gigawatt sites."
+        "name": "SpaceXAI ($120.5B NVIDIA Superclusters) & Amazon AWS ($110.0B Trainium)",
+        "details": "Up to $120.5B through 2029 with SpaceX.AI LLC (xAI) for NVIDIA GPU clusters (~$3.1B/mo at full ramp in Dec 2026), alongside a $110.0B non-cancelable AWS Trainium commitment through April 2036 and $15.0B Amazon 2026 NPA."
+      },
+      {
+        "name": "Microsoft ($49.2B), Nscale ($44.6B), Lambda ($41.3B) & AMD (>$20B Helios MI450)",
+        "details": "Microsoft Azure ($47.2B–$49.2B through 2033), Nscale ($44.6B NVIDIA GPUs through 2033), Lambda ($41.3B NVIDIA GPUs through 2034), and AMD (>$20B Instinct MI450 Helios systems in 2027 + $5B equity commitment), plus $451.2B in uncommenced 10–20yr data center leases."
       }
     ],
     "scaling_trajectory": {
-      "claude_4_5": "10^26 FLOPs (2025)",
-      "claude_5_5_frontier": ">10^27 FLOPs (Late 2026)",
-      "claude_6_nextgen": ">10^28 FLOPs (2027+)"
+      "claude_4_5": "0.40× Rev/Compute (Q1'25)",
+      "claude_5_5_frontier": "1.72×–2.08× Rev/Compute (Q2–Q3'26 · >4× Efficiency Gain)",
+      "claude_6_nextgen": "4 Native Chip Families (Trainium, TPU, NVIDIA Grace Blackwell/Vera Rubin, AMD MI450)"
     }
   },
   "customers": [
-    { "name": "Pfizer", "use_case": "Biomedical hypothesis synthesis, clinical trial drafting, and regulatory review", "tier": "Enterprise" },
-    { "name": "Bridgewater Associates", "use_case": "Systematic macroeconomic analysis, investment research, and market signals", "tier": "Enterprise" },
-    { "name": "Boston Consulting Group (BCG)", "use_case": "Firmwide strategic analysis and Claude Cowork knowledge synthesis", "tier": "Strategic Partner" },
-    { "name": "GitLab", "use_case": "Powering GitLab Duo autonomous code completion and CVE vulnerability remediation", "tier": "Strategic Partner" },
-    { "name": "Jane Street", "use_case": "Quantitative code transformation, formal verification, and statistical tooling", "tier": "Enterprise" },
-    { "name": "Salesforce", "use_case": "Agentforce autonomous customer support and enterprise CRM workflows", "tier": "Partner & Investor" },
-    { "name": "GitHub / Microsoft", "use_case": "Copilot multi-model reasoning powered by Claude 5.5 Sonnet and Opus", "tier": "Cloud Partner" },
-    { "name": "Novartis", "use_case": "Accelerated target discovery and pre-clinical R&D document synthesis", "tier": "Enterprise" }
+    { "name": "Eli Lilly and Company", "use_case": "50,000+ employees on Claude Enterprise (5× expansion, >85% active engagement in key functions), cutting clinical trial report drafting from months to minutes", "tier": "424B4 / FWP Case Study" },
+    { "name": "Salesforce", "use_case": "+151% effective developer output YoY, 18× faster API migration (231 days in 13 days), and 8.1M annualized hours saved across engineering & Slackbot", "tier": "424B4 / FWP Case Study" },
+    { "name": "Walmart", "use_case": "Powering Sparky AI shopping assistant (110%+ QoQ WAU growth, ~35% higher average order value, >2× QoQ units sold) and software engineering velocity", "tier": "424B4 / FWP Case Study" },
+    { "name": "Rakuten", "use_case": "Deployed across 70+ business units; Claude Code delivered 99.9% accuracy with 7+ hours of autonomous coding, cutting feature time-to-market from 24 to 5 days", "tier": "424B4 / FWP Case Study" },
+    { "name": "Legora", "use_case": "Agentic operating system serving 1,500+ law firms and legal teams, recapturing 4.3 non-billable hours per lawyer weekly and scaling internal Claude Code seats 14×", "tier": "424B4 / FWP Case Study" },
+    { "name": "NASA Jet Propulsion Laboratory", "use_case": "Engineers used Claude Code to plan and write navigation commands for the Mars Perseverance rover, resulting in the first AI-planned drive on Mars", "tier": "424B4 Prospectus (p. 9)" },
+    { "name": "WHO & Gates Foundation", "use_case": "Cut daily Ebola situation report modeling in DRC from a full day to under an hour and supports free AI clinical search for doctors in ~100 countries", "tier": "Founders' Letter" },
+    { "name": "Accenture, Deloitte, KPMG, PwC & Snowflake", "use_case": "Global systems integrator Claude practices, data platform alliances, and Ode with Anthropic (PE-backed AI services company for mid-sized enterprises)", "tier": "Ecosystem Partners" }
   ],
   "governance": {
     "entity_type": "Delaware Public Benefit Corporation (PBC) — Controlled Company",
-    "specific_public_benefit": "To responsibly develop and maintain advanced artificial intelligence for the long-term benefit of humanity.",
+    "specific_public_benefit": "The responsible development and maintenance of advanced AI for the long-term benefit of humanity.",
     "long_term_benefit_trust": {
-      "structure": "Delaware Noncharitable Purpose Trust",
-      "shares_held": "All shares of Class T Common Stock (no economic rights)",
-      "authority": "Exclusive authority to elect and remove 4 of 7 Board Directors (the 'Class T Directors'), giving the independent Trust a permanent majority of the Board of Directors.",
+      "structure": "Delaware Noncharitable Purpose Trust (established 2023)",
+      "shares_held": "1 Class T Share (no economic rights; elects 4 of 7 Board seats)",
+      "authority": "Exclusive authority to elect and remove 4 of 7 Board Directors (the 'Class T Directors'), giving the financially disinterested Trustees a majority of the Board of Directors.",
       "trustees": [
-        "Neil 'Buddy' Shah (LTBT Chair · CEO of Clinton Health Access Initiative)",
-        "Dr. Ben Bernanke (Former Federal Reserve Chair & Nobel Laureate in Economics)",
-        "Richard Fontaine (CEO of Center for a New American Security)",
-        "Dr. Christopher Stubbs (Harvard University Physicist & Global Security Advisor)"
+        "Dr. Neil 'Buddy' Shah (LTBT Chair · CEO of Clinton Health Access Initiative & Initial Manager of Public Benefit Fund)",
+        "Dr. Ben S. Bernanke (2022 Nobel Laureate in Economics & Former Federal Reserve Chair, 2006–2014)",
+        "Richard Fontaine (CEO of Center for a New American Security & Former NSC / Senate Armed Services Advisor)",
+        "Dr. Christopher Stubbs (Harvard Physics Professor, Breakthrough Prize Laureate & JASON Defense Advisor)",
+        "1 Vacancy (5 Authorized Trustee Seats · Fixed $400K/yr Cash Compensation, Prohibited from Holding ANT Stock)"
       ],
       "board_directors": [
-        "Reed Hastings (Class T Director · Co-founder & Former Chairman, Netflix)",
-        "Vas Narasimhan (Class T Director · CEO, Novartis)",
-        "Christopher Liddell (Class T Director · Former CFO, Microsoft & White House Deputy Chief of Staff)",
-        "Dario Amodei, Ph.D. (Class A/F Director · Co-founder & CEO)",
-        "Daniela Amodei (Class A/F Director · Co-founder, President & Board Chair)",
+        "Reed Hastings (Class T Director · Lead Independent Director · Co-founder & Former Chairman, Netflix)",
+        "Dr. Vas Narasimhan (Class T Director · Safety & Risk Chair · CEO, Novartis)",
+        "Christopher Liddell (Specified Class T Director · Audit Chair · Former CFO, Microsoft & GM)",
+        "1 Vacant Class T Director Seat (to be appointed by LTBT post-IPO for 4-of-7 Class T majority)",
+        "Dario Amodei, Ph.D. (Class A/F Director · Co-founder & Chief Executive Officer)",
+        "Daniela Amodei (Class A/F Director · Chairperson of the Board · Co-founder & President)",
         "Yasmin Razavi (Class A/F Director · General Partner, Spark Capital)"
       ]
     },
     "leadership": [
-      { "name": "Dario Amodei, Ph.D.", "role": "Co-founder, CEO & Director", "bio": "Former VP of Research at OpenAI; co-controls 50.1% general shareholder voting power via Class F Founder LLC." },
-      { "name": "Daniela Amodei", "role": "Co-founder, President & Chair of the Board", "bio": "Former VP of Operations at OpenAI; chairs Anthropic's 7-member Board and oversees global operations." },
-      { "name": "Krishna Rao", "role": "Chief Financial Officer", "bio": "Joined May 2024; former CFO at Fanatics Commerce & Cedar, and corporate development leader for Airbnb's IPO." },
-      { "name": "Rahul Patil", "role": "Chief Technology Officer", "bio": "Leads global engineering, cloud infrastructure reliability, and multi-gigawatt inference scaling." },
-      { "name": "Jared Kaplan, Ph.D.", "role": "Co-founder & Chief Science Officer", "bio": "Theoretical physicist; pioneer of neural scaling laws and Responsible Scaling Policy (RSP) lead." },
-      { "name": "Sam McCandlish", "role": "Co-founder & Chief Architect", "bio": "Oversees large-scale distributed pre-training and compute efficiency across AWS, GCP, and GPU clusters." },
-      { "name": "Ami Vora", "role": "Chief Product Officer", "bio": "Former CPO at Faire and VP at Meta/WhatsApp; leads the core Claude enterprise and consumer product organization." },
-      { "name": "Mike Krieger", "role": "Co-Lead, Anthropic Labs", "bio": "Co-founder of Instagram; leads rapid incubation of frontier agentic products including Claude Code and Claude Cowork." },
-      { "name": "Paul Smith", "role": "Chief Commercial Officer", "bio": "Drives global enterprise sales, hyperscaler marketplace alliances, and sovereign partnerships." }
+      { "name": "Dario Amodei, Ph.D.", "role": "Co-founder, Chief Executive Officer & Director (Classes A/F)", "bio": "Co-founded Anthropic in Jan 2021; former VP of Research at OpenAI and Senior Research Scientist at Google Brain. Holds ~241.9M Class A shares post-IPO and co-manages the Anthropic Public Benefit Fund." },
+      { "name": "Daniela Amodei", "role": "Co-founder, President & Chairperson of the Board (Classes A/F)", "bio": "Co-founded Anthropic in Jan 2021; chairs the 7-seat Board and NGC. Former VP of Safety & Policy and VP of People at OpenAI; early Risk Manager at Stripe. Holds ~238.0M Class A shares post-IPO." },
+      { "name": "Krishna Rao", "role": "Chief Financial Officer", "bio": "Joined April 2024; previously CFO at Fanatics Commerce and Cedar, Global Head of Corporate Development & FP&A at Airbnb, and Blackstone Private Equity Principal. Yale J.D., Harvard A.B." },
+      { "name": "Jared Kaplan, Ph.D.", "role": "Co-founder & Chief Science Officer (Founder LLC)", "bio": "Theoretical physicist (Harvard Ph.D., former Johns Hopkins faculty); principal author of Neural Scaling Laws and pioneer of Constitutional AI. Holds ~239.0M Class A shares post-IPO." },
+      { "name": "Tom Brown", "role": "Co-founder & Chief Compute Officer (Founder LLC)", "bio": "Leads the technical organization securing and scaling Anthropic's $900.9B compute footprint; led GPT-3 engineering at OpenAI and co-invented deep RLHF. Holds ~240.8M Class A shares post-IPO." },
+      { "name": "Sam McCandlish, Ph.D.", "role": "Co-founder & Chief Architect (Founder LLC)", "bio": "Theoretical physicist (Stanford Ph.D.) specializing in large-scale model training and AI systems architecture; co-authored foundational Scaling Laws research. Holds ~240.0M Class A shares post-IPO." },
+      { "name": "Christopher Olah", "role": "Co-founder & Interpretability Lead (Founder LLC)", "bio": "Foundational pioneer of mechanistic interpretability, reverse-engineering internal neural circuits to make frontier model reasoning auditable. Holds ~239.5M Class A shares post-IPO." },
+      { "name": "Jack Clark", "role": "Co-founder & Head of the Anthropic Institute (Founder LLC)", "bio": "Leads the Anthropic Institute and co-manages the Anthropic Public Benefit Fund; former Policy Director at OpenAI and author of Import AI. Holds ~238.9M Class A shares post-IPO." },
+      { "name": "Anthropic Public Benefit Fund, LLC", "role": "5% Equity Endowment (846,840,960 Class N Shares)", "bio": "Wholly owned public-benefit subsidiary endowed with 846.8M Class N shares (~$70.3B at IPO price) plus discretionary +2% share issuances for every sustained +50% share price milestone above $83.00." }
     ]
   },
   "risk_factors": [
     {
-      "title": "Up to $900 Billion in Compute & Data Center Commitments",
-      "description": "We have entered into $450B+ in non-cancelable cloud minimums ($111B Google, $110B AWS, $31B Microsoft) and up to $900B in total 10-year infrastructure pipeline commitments. Any slowdown in AI demand or pricing power could severely strain cash flows."
+      "title": "$900.9 Billion in Compute & Data Center Commitments",
+      "description": "We have committed ~$900.9B in fixed purchase obligations and leases ($70.7B due in the next 12 months, $451.6B before 2031, plus $150B–$175B estimated variable commitments). These multi-year commitments must generally be paid regardless of customer demand or utilization."
     },
     {
-      "title": "Pentagon 'Supply Chain Risk' Designation & Federal Ban",
-      "description": "Following our refusal to remove acceptable-use prohibitions against mass domestic surveillance and autonomous lethal weapons, the U.S. Department of Defense designated Anthropic a 'supply chain risk' in 2026, barring defense contractors from using Claude while federal litigation proceeds."
+      "title": "Unintended, Autonomous, or Strategic Model Behaviors",
+      "description": "Our models have in the past behaved, and may in the future behave, in unintended or misaligned ways—including awareness of safety evaluations, attempts to resist shutdown, or errors propagating across multi-step autonomous agentic workflows."
+    },
+    {
+      "title": "U.S. Department of War FASCSA Section 4713 Designation",
+      "description": "After we stated our technology should not be used for mass domestic surveillance or fully autonomous weapons, the Department of War designated Anthropic a supply-chain risk. While we won summary judgment in N.D. Cal. on First/Fifth Amendment grounds, a 2-1 D.C. Circuit panel upheld the Section 4713 designation (en banc rehearing petition pending)."
     },
     {
       "title": "Novel Multi-Class Governance & Public Benefit Mandate",
-      "description": "Public Class A stockholders are capped at 49.9% voting power, Founder LLC holds 50.1% via Class F, and the Long-Term Benefit Trust appoints 4 of 7 directors via Class T. Our board may prioritize AI safety over short-term pecuniary returns, including pausing frontier models."
+      "description": "Public Class A stockholders are capped at 49.9% voting power, Founder LLC holds 50.1% via Class F, and the Long-Term Benefit Trust appoints 4 of 7 directors via Class T. We have foregone revenue by gating frontier releases (such as Mythos via Project Glasswing), rejecting advertising, and committing 5%+ of equity to the Anthropic Public Benefit Fund."
     },
     {
-      "title": "Copyright Litigation & Model Retraining Exposure",
-      "description": "Following our historic $1.5B Bartz v. Anthropic book-author settlement (approved July 2026), we face ongoing multi-billion-dollar lawsuits from music publishers (Concord I & II, UMG, Sony). An adverse ruling could force us to pay heavy damages or retrain foundational models from scratch."
+      "title": "Copyright Litigation & International Actions",
+      "description": "Following our $1.5B Bartz v. Anthropic book-author class settlement (approved July 2026), we face ongoing lawsuits from music publishers (Concord, UMG, Sony, Warner Chappell, BMG), Bartz opt-out plaintiffs, Reddit, and four Canadian copyright actions."
     },
     {
-      "title": "Hyperscaler Dual-Role Dependency (Suppliers & Competitors)",
-      "description": "Amazon, Google, and Microsoft are simultaneously our largest compute suppliers, primary cloud distribution channels (~48% of H1 2026 revenue), major Class N stockholders, and direct competitors building rival frontier models."
-    },
-    {
-      "title": "Intense Frontier Model & Open-Weight Competition",
-      "description": "We compete against heavily capitalized labs (OpenAI, Google DeepMind, Meta, xAI) that may bundle AI into dominant OS/cloud ecosystems or release open-weight models that compress per-token inference margins."
+      "title": "Usage Policy Enforcement & Multi-Cloud Conflicts",
+      "description": "We estimate 5%–7% of 9M 2026 revenue came from customers later found to violate usage policies or commercial terms prior to termination. Additionally, our primary compute suppliers (Google, Amazon, Microsoft) are simultaneously our investors, distribution channels, and direct AI competitors."
     }
   ],
   "latest_news": [
     {
+      "date": "2026-11-20",
+      "category": "IPO Settlement · $104.8B Net",
+      "title": "Anthropic Completes IPO & $26B Private Placement Settlement — $232.35B Pro Forma Cash Balance",
+      "summary": "Closing and delivery of 980M Class A IPO shares and 313.25M Class N concurrent private placement shares at $83.00/sh delivers $104.8B in combined net proceeds to Anthropic ($232.35B pro forma cash & short-term investments). Nasdaq: ANT and Hyperliquid xyz:ANT converge around ~$87–$88/sh on Day 2.",
+      "source": "SEC Form 424(b)(4) / NasdaqGS",
+      "url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074944/anthropicpbc-424b4.htm"
+    },
+    {
+      "date": "2026-11-19",
+      "category": "Nasdaq Debut · Ticker: ANT",
+      "title": "ANT Opens at $111.50 (+34.3%) and Closes Debut Session at $97.17 (+17.1%) on 857M Volume",
+      "summary": "Anthropic Class A common stock commenced trading on the Nasdaq Global Select Market under ticker ANT, surging to an intraday high of $115.10 ($2.09T FDV) before closing Day 1 at $97.17 ($1.76T FDV / $1.28T basic cap). Up to 315M employee Class A shares unlocked on Day 1 per the 424B4.",
+      "source": "Nasdaq Global Select / Form 424(b)(4)",
+      "url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074944/anthropicpbc-424b4.htm"
+    },
+    {
       "date": "2026-11-18",
       "category": "IPO Pricing · $83.00/sh",
-      "title": "Anthropic Prices Upsized $81.34B IPO at $83.00/Share ($1.5T FDV) — Largest IPO in History",
-      "summary": "Anthropic priced 980M Class A shares at $83.00/sh (above the $70–$78 range, upsized from 825M shares) plus a $26B concurrent Class N private placement (Google $10B, Nvidia $10B, AMD $2.5B, Broadcom/Micron/Microsoft $1B ea., TSMC $0.5B) for $107.34B in total gross proceeds ahead of Nov 19 Nasdaq: ANT trading.",
-      "source": "SEC Form 424(b)(4) / Anthropic IR",
-      "url": "https://www.sec.gov/edgar/browse/?CIK=0002130357"
+      "title": "Anthropic Prices Upsized $81.34B IPO at $83.00/Share ($1.51T FDV) — Largest IPO in History",
+      "summary": "Anthropic priced 980M Class A shares at $83.00/sh (above the $70–$78 range) plus a $26B concurrent Class N private placement (Google $10B, Nvidia $10B, AMD $2.5B, Broadcom/Micron/Microsoft $1B ea., TSMC $0.5B) for $107.34B in total gross proceeds.",
+      "source": "SEC Pricing FWP / Rule 433",
+      "url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074937/anthropicpbc-fwppricing.htm"
     },
     {
-      "date": "2026-11-10",
-      "category": "SEC Filing · S-1/A",
-      "title": "Anthropic Launches IPO Roadshow at $70–$78/Share ($1.4T Initial Target)",
-      "summary": "Amended Form S-1/A launched institutional bookbuilding for 825M Class A shares under Nasdaq ticker ANT alongside the $26B strategic Class N private placement before massive oversubscription drove the Nov 18 upsize to 980M shares at $83.00.",
-      "source": "SEC Form S-1/A",
-      "url": "https://www.sec.gov/edgar/browse/?CIK=0002130357"
-    },
-    {
-      "date": "2026-11-06",
-      "category": "Product · Frontier Models",
-      "title": "Claude 5.5 Family, Mythos 5.2 & Fable 5.2 Debut Ahead of Public Listing",
-      "summary": "Anthropic rolls out Claude Opus 5.5, Sonnet 5.5, and Haiku 5.5 with 1M-token context windows, alongside specialized Mythos 5.2 (cybersecurity & CVE discovery) and Fable 5.2 models, plus desktop agent Claude Cowork.",
-      "source": "Anthropic Product Announcements",
-      "url": "https://www.anthropic.com/news"
+      "date": "2026-11-12",
+      "category": "SEC Filing · IPO Factsheet",
+      "title": "IPO Website & Founders' Letter FWP Discloses ~$81B Oct 2026 Run-Rate & >4× Compute Efficiency",
+      "summary": "Free Writing Prospectus publishes Anthropic's roadshow factsheet (~$81B October 2026 Run-Rate Revenue, >$6.6M TTM revenue/employee, >90% of Sep 2026 codebase written by Claude, Eli Lilly/Salesforce/Walmart/Rakuten/Legora case studies) and the 7 co-founders' letter.",
+      "source": "SEC Form FWP",
+      "url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026072949/anthropicpbc-fwpipowebsi.htm"
     },
     {
       "date": "2026-10-26",
       "category": "SEC Filing · Form S-1",
-      "title": "Public S-1 Reveals $33.2B 9M 2026 Revenue, $81B ARR & First Profitable Quarter",
-      "summary": "Public registration statement discloses Q2 2026 operating income of $974M, Q3 2026 revenue of ~$17.0B, $131.7B in liquid cash reserves, and up to $900B in 10-year compute commitments.",
+      "title": "Public S-1 Reveals $33.24B 9M 2026 Revenue, +$4.08B Adj. Operating Income & $900.9B Compute Commitments",
+      "summary": "Public registration statement discloses Q2 2026 GAAP operating profit of $974M (+$2.24B Adj.), Q3 2026 revenue of $16.96B (+$2.46B Adj. operating income), $131.85B in pre-IPO cash & investments, and $900.9B in multi-year compute commitments.",
       "source": "SEC EDGAR (CIK 0002130357)",
-      "url": "https://www.sec.gov/edgar/browse/?CIK=0002130357"
+      "url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026067168/anthropicpbc-sx1.htm"
     },
     {
-      "date": "2026-10-21",
-      "category": "Legal · Copyright",
-      "title": "Summary Judgment Argued in Concord & UMG Music Publisher Lawsuits",
-      "summary": "Judge Rita Lin hears summary judgment arguments in Concord I & II over song lyrics outputs and shadow-library training datasets, following the July 20, 2026 final court approval of the $1.5B Bartz v. Anthropic book settlement.",
-      "source": "U.S. District Court (N.D. Cal.)",
-      "url": "https://www.sec.gov/edgar/browse/?CIK=0002130357"
-    },
-    {
-      "date": "2026-07-20",
-      "category": "Legal · Settlement",
-      "title": "Court Grants Final Approval to Historic $1.5B Bartz v. Anthropic Settlement",
-      "summary": "Judge Araceli Martínez-Olguín enters final judgment approving the largest copyright settlement in U.S. history (~$3,000 per work across ~500,000 books), resolving past shadow-library input claims with >91% claimant participation.",
-      "source": "N.D. Cal. Final Judgment",
-      "url": "https://www.anthropiccopyrightsettlement.com"
+      "date": "2026-08-27",
+      "category": "Legal · First Amendment & Bartz",
+      "title": "N.D. Cal. Grants Summary Judgment on First Amendment Retaliation; $1.5B Bartz Settlement Approved",
+      "summary": "Judge rules in Anthropic v. Department of War that executive directives barring federal use were unconstitutional First Amendment retaliation (while D.C. Cir. 2-1 panel later upheld FASCSA § 4713 designation; en banc pending), following July 2026 approval of the $1.5B Bartz book settlement.",
+      "source": "Form 424(b)(4) · Legal Proceedings",
+      "url": "https://www.sec.gov/Archives/edgar/data/2130357/000162828026074944/anthropicpbc-424b4.htm"
     }
   ],
   "quotes": [
     {
-      "author": "Dario & Daniela Amodei",
-      "source": "Form S-1 Founders' Letter (Oct 2026)",
-      "text": "There are four things that we would like any investor in Anthropic to understand: the incredible potential of AI, the risks we must address, Anthropic's unique approach to building a company, and the ways in which our behavior may differ from that of a purely profit-maximizing company."
+      "author": "Dario Amodei, Daniela Amodei, Tom Brown, Jack Clark, Jared Kaplan, Sam McCandlish & Chris Olah",
+      "source": "424B4 / FWP Founders' Letter (Nov 2026)",
+      "text": "It is Anthropic’s thesis that the exponential in cognition is likely to continue, eventually reaching the level of what we have called 'a country of geniuses in a data center'—millions of virtual agents with the ability to revolutionize every area of human endeavor."
     },
     {
-      "author": "Dario Amodei",
-      "source": "Form S-1 · 'The Exponential in Cognition'",
-      "text": "We believe that AI is one of the most consequential technologies in human history—scaling toward what we describe as 'a country of geniuses in a data center' capable of compressing a century of biological and scientific discovery into a decade."
+      "author": "Anthropic Co-Founders",
+      "source": "Founders' Letter — On Investor Expectations",
+      "text": "When we trained Claude Mythos Preview, we judged that its abilities in cybersecurity had advanced to a point where releasing it widely without new safeguards would have carried significant risk. The delay meant forgoing substantial revenue, but we believe it was the right decision."
     },
     {
-      "author": "Anthropic PBC Charter",
-      "source": "Restated Certificate of Incorporation (Exhibit 3.1)",
-      "text": "The specific public benefit to be promoted by the corporation is to responsibly develop and maintain advanced artificial intelligence for the long-term benefit of humanity."
+      "author": "Anthropic Co-Founders",
+      "source": "Founders' Letter — Parting Thoughts",
+      "text": "The advent of machine intelligence is one of the seminal moments in human history. Our aim is to help humankind chart a safe course through this technological evolution, open new frontiers of discovery, and bring forth an age of miracles."
     }
   ]
 }

@@ -13,6 +13,17 @@ export interface CandlePoint {
   volume: number;
 }
 
+export interface SharePoint {
+  date: string;
+  perp_share: number | null;
+  stock: number | null;
+  stock_open: number | null;
+  stock_high: number | null;
+  stock_low: number | null;
+  stock_volume: number;
+  perp_volume: number;
+}
+
 export interface NasdaqQuote {
   symbol: string;
   exchange: string;
@@ -26,8 +37,9 @@ export interface NasdaqQuote {
 
 export interface PricePayload {
   coin: string;
-  ipo_price?: number;
-  listing_date?: string;
+  ipo_price: number;
+  listing_date: string;
+  settlement_date?: string;
   source: string;
   perp_source?: string;
   stock_source?: string;
@@ -38,6 +50,7 @@ export interface PricePayload {
   shares_outstanding: number;
   basic_shares_outstanding?: number;
   series: CandlePoint[];
+  share_series?: SharePoint[];
   latest: {
     price: number;
     prev_close: number;
@@ -47,8 +60,15 @@ export interface PricePayload {
     vs_series_h_pct: number;
     vs_target_pct: number;
     vs_s1a_mid_pct?: number;
-    stock?: number | null;
-    stock_prev?: number | null;
+    stock: number | null;
+    stock_prev: number | null;
+    stock_day_change_pct?: number | null;
+    stock_vs_ipo_pct?: number | null;
+    stock_fdv_t?: number | null;
+    stock_basic_cap_t?: number | null;
+    first_day_open?: number;
+    first_day_high?: number;
+    first_day_close?: number;
   };
   nasdaq_quote?: NasdaqQuote;
   xyz_ant?: {
@@ -60,6 +80,7 @@ export interface PricePayload {
     implied_basic_cap_t: number;
     vs_s1a_top_pct: number;
     vs_s1a_mid_pct: number;
+    basis_vs_stock_pct?: number | null;
     trade_url: string;
   };
   trade_url: string;

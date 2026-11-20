@@ -16,34 +16,38 @@ import { Activity, TrendingUp, TrendingDown, ExternalLink, ArrowLeftRight, Calcu
 
 const HL_URL = "https://app.hyperliquid.xyz/trade/io:ANTH";
 const HL_XYZ_URL = "https://app.hyperliquid.xyz/trade/xyz:ANT";
-const FD_SHARES_B = 18.07; // 18.07B fully diluted shares ($83/sh = $1.50T FDV)
-const BASIC_SHARES_B = 13.23; // 13.23B post-IPO Class A + Class N shares (after 980M upsize)
+const FD_SHARES_B = 18.1376; // 18,137,587,875 fully diluted shares per Form 424(b)(4) p. 25 ($83/sh = $1.505T FDV)
+const BASIC_SHARES_B = 13.2196; // 13,219,642,276 post-IPO Class A + Class N shares
 const FINAL_IPO_PX = 83.0; // $83.00 final IPO price (Nov 18, 2026)
 
 export function PriceTracker() {
   const { data: d, err } = usePrices();
+  const [view, setView] = useState<"share" | "valuation">("share");
 
-  const price = d?.latest.price ?? 1833.6;
-  const dayChange = d?.latest.day_change_pct ?? 6.74;
+  const price = d?.latest.price ?? 1542.8;
+  const dayChange = d?.latest.day_change_pct ?? 0.0;
   const isUp = dayChange >= 0;
-  const impliedCapT = d?.latest.implied_valuation_t ?? 1.834;
+  const impliedCapT = d?.latest.implied_valuation_t ?? 1.543;
   const impliedSharePriceFD = d?.latest.implied_share_price_fd ?? Number((price / FD_SHARES_B).toFixed(2));
-  const vsIpoPct = (((impliedSharePriceFD - FINAL_IPO_PX) / FINAL_IPO_PX) * 100);
-  const vsS1AMidPct = (((impliedSharePriceFD - 74.0) / 74.0) * 100);
+  const vsIpoPct = ((impliedSharePriceFD - FINAL_IPO_PX) / FINAL_IPO_PX) * 100;
+  const vsS1AMidPct = ((impliedSharePriceFD - 74.0) / 74.0) * 100;
 
   // Listed Nasdaq stock (ANT) via Yahoo Finance + Nasdaq Live quote
   const stock = d?.latest.stock ?? null;
   const stockPrev = d?.latest.stock_prev ?? null;
-  const stockDay = pctChange(stock, stockPrev);
-  const stockVsIpo = pctChange(stock, FINAL_IPO_PX);
+  const stockDay = d?.latest.stock_day_change_pct ?? pctChange(stock, stockPrev);
+  const stockVsIpo = d?.latest.stock_vs_ipo_pct ?? pctChange(stock, FINAL_IPO_PX);
   const listed = stock != null;
   const nq = d?.nasdaq_quote;
   const indicativeBid = nq?.bid ?? 100.0;
   const indicativeVsIpo = ((indicativeBid - FINAL_IPO_PX) / FINAL_IPO_PX) * 100;
   const listingDate = d?.listing_date ?? "2026-11-19";
+  const firstDayOpen = d?.latest.first_day_open ?? 111.5;
+  const firstDayHigh = d?.latest.first_day_high ?? 115.1;
+  const firstDayClose = d?.latest.first_day_close ?? 97.17;
 
-  const xyzPrice = d?.xyz_ant?.price ?? 104.13;
-  const xyzChange = d?.xyz_ant?.day_change_pct ?? 5.9;
+  const xyzPrice = d?.xyz_ant?.price ?? stock ?? 87.6;
+  const xyzChange = d?.xyz_ant?.day_change_pct ?? 0.0;
   const xyzIsUp = xyzChange >= 0;
   const xyzFdvT = d?.xyz_ant?.implied_fdv_t ?? Number(((xyzPrice * FD_SHARES_B) / 1000).toFixed(3));
   const xyzBasicCapT = d?.xyz_ant?.implied_basic_cap_t ?? Number(((xyzPrice * BASIC_SHARES_B) / 1000).toFixed(3));
@@ -51,11 +55,12 @@ export function PriceTracker() {
   const xyzVsMidPct = d?.xyz_ant?.vs_s1a_mid_pct ?? Number((((xyzPrice - 74.0) / 74.0) * 100).toFixed(1));
 
   const seriesH = d?.series_h_valuation_t ? d.series_h_valuation_t * 1000 : 965;
-  const target = d?.target_valuation_t ? d.target_valuation_t * 1000 : 1500;
+  const target = d?.target_valuation_t ? d.target_valuation_t * 1000 : 1505.4;
 
-  // Interactive converter state (initialized to live io:ANTH valuation)
+  // Interactive converter state (initialized to live Nasdaq ANT or io:ANTH valuation)
   const [customPerpVal, setCustomPerpVal] = useState<number | null>(null);
-  const activePerpVal = customPerpVal ?? price;
+  const defaultValB = stock != null ? stock * FD_SHARES_B : price;
+  const activePerpVal = customPerpVal ?? defaultValB;
   const activeSharePx = activePerpVal / FD_SHARES_B;
   const activeBasicCapB = activeSharePx * BASIC_SHARES_B;
   const activePopVs83 = ((activeSharePx - FINAL_IPO_PX) / FINAL_IPO_PX) * 100;
@@ -64,21 +69,44 @@ export function PriceTracker() {
   return (
     <Section
       id="market"
-      eyebrow="Live · Nasdaq Spot & Pre-IPO Derivative Market"
-      title="ANT on Nasdaq vs. Hyperliquid Perps (io:ANTH & xyz:ANT)"
-      blurb={`Tracking Nasdaq: ANT (listed ${fmtDate(listingDate)} at $83.00/sh · $1.50T FDV) against Hyperliquid's pre-IPO perpetual contracts: Entropy's valuation-indexed io:ANTH ($${price.toFixed(1)} = ~$${impliedSharePriceFD.toFixed(2)}/sh) and Trade.xyz's per-share xyz:ANT ($${xyzPrice.toFixed(2)}/sh).`}
-      sourceUrl={HL_URL}
+      eyebrow="Live · Nasdaq Spot & Hyperliquid Perpetual Market"
+      title="Nasdaq: ANT vs. Hyperliquid Perps (xyz:ANT & io:ANTH)"
+      blurb={`Anthropic commenced trading on the Nasdaq Global Select Market on ${fmtDate(listingDate)} under ticker ANT after pricing its IPO at $83.00/sh ($1.51T FDV · $1.10T Basic). Day 1 opened at $${firstDayOpen.toFixed(2)}, peaked at $${firstDayHigh.toFixed(2)}, and closed at $${firstDayClose.toFixed(2)} (+17.1%). Compare live Nasdaq spot against Hyperliquid's per-share xyz:ANT ($${xyzPrice.toFixed(2)}/sh) and valuation-indexed io:ANTH ($${price.toFixed(1)} = ~$${impliedSharePriceFD.toFixed(2)}/sh).`}
+      sourceUrl={HL_XYZ_URL}
       sourceLabel="Nasdaq: ANT & Hyperliquid"
     >
       <div className="grid gap-5 lg:grid-cols-12">
         <Card className="lg:col-span-8">
-          <div className="mb-4 flex items-center justify-between">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-zinc-400">
-              <Activity size={14} className="text-[#da7756]" /> Daily Close · Implied Valuation ($B) & Share Price
+              <Activity size={14} className="text-emerald-400" />
+              {view === "share"
+                ? "Share Price ($/sh) · Nasdaq ANT vs. Hyperliquid xyz:ANT"
+                : "Implied Valuation ($B) · io:ANTH vs. Nasdaq ANT FDV"}
             </div>
-            <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-emerald-400 pulse-dot" />
-              <span className="text-[11px] font-mono text-zinc-400">Nasdaq + Hyperliquid Oracle</span>
+            <div className="flex items-center gap-1.5 rounded-lg border border-[#2c2826] bg-[#131110] p-1 text-[11px] font-mono">
+              <button
+                type="button"
+                onClick={() => setView("share")}
+                className={`rounded px-2.5 py-1 transition ${
+                  view === "share"
+                    ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                    : "text-zinc-400 hover:text-zinc-200"
+                }`}
+              >
+                Share Price ($/sh)
+              </button>
+              <button
+                type="button"
+                onClick={() => setView("valuation")}
+                className={`rounded px-2.5 py-1 transition ${
+                  view === "valuation"
+                    ? "bg-[#da7756]/20 text-[#da7756] border border-[#da7756]/30"
+                    : "text-zinc-400 hover:text-zinc-200"
+                }`}
+              >
+                FD Valuation ($B)
+              </button>
             </div>
           </div>
 
@@ -87,6 +115,91 @@ export function PriceTracker() {
               <Centered>Couldn't load live prices. Retrying…</Centered>
             ) : !d ? (
               <Centered>Loading live prices…</Centered>
+            ) : view === "share" ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={d.share_series ?? d.series} margin={{ top: 12, right: 24, left: 4, bottom: 0 }}>
+                  <CartesianGrid stroke="#262321" strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="date"
+                    stroke="#716b67"
+                    fontSize={11}
+                    tickFormatter={(v: string) => v.slice(5)}
+                    minTickGap={20}
+                  />
+                  <YAxis
+                    stroke="#716b67"
+                    fontSize={11}
+                    domain={[65, 120]}
+                    tickFormatter={(v: number) => `$${v}`}
+                    width={46}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      background: "#161413",
+                      border: "1px solid #38332f",
+                      borderRadius: 10,
+                      boxShadow: "0 10px 25px -5px rgba(0,0,0,0.5)",
+                    }}
+                    formatter={(v: number, name: string) => [
+                      `$${v.toFixed(2)} / share ($${((v * FD_SHARES_B) / 1000).toFixed(2)}T FDV)`,
+                      name === "stock" ? "Nasdaq: ANT (Close)" : "Hyperliquid xyz:ANT ($/sh)",
+                    ]}
+                  />
+                  <ReferenceLine
+                    y={FINAL_IPO_PX}
+                    stroke="#da7756"
+                    strokeDasharray="4 4"
+                    label={{
+                      value: `IPO Price: $83.00/sh ($1.51T FDV)`,
+                      position: "insideBottomRight",
+                      fill: "#da7756",
+                      fontSize: 11,
+                    }}
+                  />
+                  <ReferenceLine
+                    y={firstDayOpen}
+                    stroke="#34d399"
+                    strokeDasharray="2 4"
+                    label={{
+                      value: `Day 1 Open: $${firstDayOpen.toFixed(2)} (High $${firstDayHigh.toFixed(2)})`,
+                      position: "insideTopRight",
+                      fill: "#34d399",
+                      fontSize: 11,
+                    }}
+                  />
+                  <ReferenceLine
+                    x={listingDate}
+                    stroke="#34d399"
+                    strokeDasharray="2 4"
+                    label={{
+                      value: `Nasdaq Debut ${fmtDate(listingDate)}`,
+                      position: "insideTopLeft",
+                      fill: "#34d399",
+                      fontSize: 11,
+                    }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="perp_share"
+                    name="perp_share"
+                    stroke="#da7756"
+                    strokeWidth={2.2}
+                    dot={{ r: 2.5, fill: "#da7756" }}
+                    connectNulls
+                    isAnimationActive={false}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="stock"
+                    name="stock"
+                    stroke="#34d399"
+                    strokeWidth={3}
+                    dot={{ r: 4, fill: "#34d399" }}
+                    connectNulls
+                    isAnimationActive={false}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
             ) : (
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={d.series} margin={{ top: 12, right: 24, left: 4, bottom: 0 }}>
@@ -116,8 +229,8 @@ export function PriceTracker() {
                       boxShadow: "0 10px 25px -5px rgba(0,0,0,0.5)",
                     }}
                     formatter={(v: number, name: string) => [
-                      `$${v.toFixed(1)} ($${(v / 1000).toFixed(3)}T FDV · ~$${(v / FD_SHARES_B).toFixed(2)}/sh)`,
-                      name === "stock_val" ? "ANT Stock (Nasdaq)" : "io:ANTH Perp (Hyperliquid)",
+                      `$${v.toFixed(1)}B ($${(v / 1000).toFixed(3)}T FDV · ~$${(v / FD_SHARES_B).toFixed(2)}/sh)`,
+                      name === "stock_val" ? "ANT Stock Implied FDV (Nasdaq)" : "io:ANTH Perp (Hyperliquid)",
                     ]}
                   />
                   <ReferenceLine
@@ -125,7 +238,7 @@ export function PriceTracker() {
                     stroke="#da7756"
                     strokeDasharray="4 4"
                     label={{
-                      value: `Final IPO Pricing: $${target} ($1.50T @ $83/sh)`,
+                      value: `Final IPO Pricing: $1,505B ($83.00/sh)`,
                       position: "insideTopRight",
                       fill: "#da7756",
                       fontSize: 11,
@@ -136,7 +249,7 @@ export function PriceTracker() {
                     stroke="#71717a"
                     strokeDasharray="3 3"
                     label={{
-                      value: `Series H: $${seriesH} ($965B · ~$53.4/sh)`,
+                      value: `Series H: $${seriesH}B (~$53.4/sh)`,
                       position: "insideBottomRight",
                       fill: "#a1a1aa",
                       fontSize: 11,
@@ -147,7 +260,7 @@ export function PriceTracker() {
                     stroke="#34d399"
                     strokeDasharray="2 4"
                     label={{
-                      value: `Lists ${fmtDate(listingDate)}`,
+                      value: `Listed ${fmtDate(listingDate)}`,
                       position: "insideTopLeft",
                       fill: "#34d399",
                       fontSize: 11,
@@ -168,8 +281,8 @@ export function PriceTracker() {
                     dataKey="stock_val"
                     name="stock_val"
                     stroke="#34d399"
-                    strokeWidth={2.5}
-                    dot={false}
+                    strokeWidth={3}
+                    dot={{ r: 3.5, fill: "#34d399" }}
                     connectNulls
                     isAnimationActive={false}
                   />
@@ -180,69 +293,53 @@ export function PriceTracker() {
 
           <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-zinc-400">
             <span className="inline-flex items-center gap-1.5">
-              <span className="h-0.5 w-4 rounded bg-[#da7756]" /> Pre-IPO perp (Hyperliquid io:ANTH)
-            </span>
-            <span className="inline-flex items-center gap-1.5">
               <span className="h-0.5 w-4 rounded bg-emerald-400" /> Listed stock (Nasdaq: ANT)
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <span className="h-0.5 w-4 rounded border-t border-dashed border-[#da7756]" /> $1.50T Final IPO ($83.00/sh)
+              <span className="h-0.5 w-4 rounded bg-[#da7756]" />{" "}
+              {view === "share" ? "Hyperliquid xyz:ANT ($/share perp)" : "Hyperliquid io:ANTH ($B valuation perp)"}
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <span className="h-0.5 w-4 rounded border-t border-dashed border-zinc-500" /> $965B Series H
+              <span className="h-0.5 w-4 rounded border-t border-dashed border-[#da7756]" /> $83.00/sh IPO ($1.51T FDV)
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="h-0.5 w-4 rounded border-t border-dashed border-emerald-400" /> Day 1 Open $111.50 / High $115.10 / Close $97.17
             </span>
           </div>
         </Card>
 
         {/* Live stats sidebar */}
         <div className="space-y-3.5 lg:col-span-4">
-          {/* Nasdaq ANT Spot Card (SpaceX style) */}
+          {/* Nasdaq ANT Spot Card */}
           <Card className="border-l-4 border-l-emerald-400 bg-gradient-to-br from-emerald-500/[0.08] via-[#171514] to-[#100e0d]">
             <Stat
               label="ANT · Nasdaq Global Select"
               value={listed ? `$${stock!.toFixed(2)} / sh` : `IPO Cross · $${indicativeBid.toFixed(2)}`}
-              accent={listed ? "text-emerald-400" : "text-amber-400"}
+              accent="text-emerald-400"
               sub={
                 listed ? (
                   <span className="flex flex-wrap items-center gap-2 mt-1">
                     {stockDay != null && (
                       <span className={stockDay >= 0 ? "text-emerald-400 font-semibold" : "text-red-400 font-semibold"}>
-                        {stockDay >= 0 ? "+" : ""}{stockDay.toFixed(1)}% today
+                        {stockDay >= 0 ? "+" : ""}
+                        {stockDay.toFixed(1)}% today
                       </span>
                     )}
                     {stockVsIpo != null && (
                       <span className="text-emerald-400 font-mono">
-                        {stockVsIpo >= 0 ? "+" : ""}{stockVsIpo.toFixed(1)}% vs $83 IPO
+                        {stockVsIpo >= 0 ? "+" : ""}
+                        {stockVsIpo.toFixed(1)}% vs $83 IPO
                       </span>
                     )}
+                    <span className="text-zinc-400 font-mono">
+                      · ${(((stock! * FD_SHARES_B) / 1000)).toFixed(2)}T FDV
+                    </span>
                   </span>
                 ) : (
                   <span className="flex flex-wrap items-center gap-1.5 mt-1 text-xs">
                     <span className="text-zinc-300 font-mono">Indicative Bid/Ask (+{indicativeVsIpo.toFixed(1)}% vs $83 IPO)</span>
-                    <span className="text-zinc-500">·</span>
-                    <span className="text-zinc-400">Awaiting first trade ({fmtDate(listingDate)})</span>
                   </span>
                 )
-              }
-            />
-          </Card>
-
-          <Card className="bg-gradient-to-br from-[#da7756]/10 via-[#171514] to-[#100e0d]">
-            <Stat
-              label="io:ANTH (Valuation Perp) → Share Price"
-              value={`~$${impliedSharePriceFD.toFixed(2)} / sh`}
-              accent="text-[#da7756]"
-              sub={
-                <span className="flex flex-wrap items-center gap-1.5 mt-1">
-                  <span className="font-mono text-zinc-200 font-semibold">${price.toFixed(1)} idx (${impliedCapT.toFixed(3)}T)</span>
-                  <span className="text-zinc-500">·</span>
-                  <span className={`inline-flex items-center gap-0.5 font-semibold ${isUp ? "text-emerald-400" : "text-red-400"}`}>
-                    {isUp ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
-                    {isUp ? "+" : ""}{dayChange.toFixed(2)}%
-                  </span>
-                  <span className="text-zinc-500">·</span>
-                  <span className="text-emerald-400 font-mono">+{vsIpoPct.toFixed(1)}% vs $83 IPO</span>
-                </span>
               }
             />
           </Card>
@@ -258,7 +355,8 @@ export function PriceTracker() {
                   <span className="text-zinc-500">·</span>
                   <span className={`inline-flex items-center gap-0.5 font-semibold ${xyzIsUp ? "text-emerald-400" : "text-red-400"}`}>
                     {xyzIsUp ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
-                    {xyzIsUp ? "+" : ""}{xyzChange.toFixed(2)}%
+                    {xyzIsUp ? "+" : ""}
+                    {xyzChange.toFixed(2)}%
                   </span>
                   <span className="text-zinc-500">·</span>
                   <span className="text-emerald-400 font-mono">+{xyzVsIpoPct.toFixed(1)}% vs $83 IPO</span>
@@ -267,22 +365,43 @@ export function PriceTracker() {
             />
           </Card>
 
+          <Card className="bg-gradient-to-br from-[#da7756]/10 via-[#171514] to-[#100e0d]">
+            <Stat
+              label="io:ANTH (Valuation Perp) → Share Price"
+              value={`~$${impliedSharePriceFD.toFixed(2)} / sh`}
+              accent="text-[#da7756]"
+              sub={
+                <span className="flex flex-wrap items-center gap-1.5 mt-1">
+                  <span className="font-mono text-zinc-200 font-semibold">${price.toFixed(1)} idx (${impliedCapT.toFixed(3)}T)</span>
+                  <span className="text-zinc-500">·</span>
+                  <span className={`inline-flex items-center gap-0.5 font-semibold ${isUp ? "text-emerald-400" : "text-red-400"}`}>
+                    {isUp ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
+                    {isUp ? "+" : ""}
+                    {dayChange.toFixed(2)}%
+                  </span>
+                  <span className="text-zinc-500">·</span>
+                  <span className="text-emerald-400 font-mono">+{vsIpoPct.toFixed(1)}% vs $83 IPO</span>
+                </span>
+              }
+            />
+          </Card>
+
           <div className="grid grid-cols-2 gap-2.5">
-            <a
-              href={HL_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-1.5 rounded-xl bg-[#da7756] py-2.5 px-3 text-xs font-semibold text-[#0d0c0b] transition hover:bg-[#e0896b] shadow-lg shadow-[#da7756]/20"
-            >
-              Trade io:ANTH <ExternalLink size={12} />
-            </a>
             <a
               href={HL_XYZ_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-1.5 rounded-xl border border-[#3a3532] bg-[#191716] py-2.5 px-3 text-xs font-semibold text-zinc-100 transition hover:border-[#da7756]/50"
+              className="flex items-center justify-center gap-1.5 rounded-xl bg-[#da7756] py-2.5 px-3 text-xs font-semibold text-[#0d0c0b] transition hover:bg-[#e0896b] shadow-lg shadow-[#da7756]/20"
             >
               Trade xyz:ANT <ExternalLink size={12} />
+            </a>
+            <a
+              href={HL_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-1.5 rounded-xl border border-[#3a3532] bg-[#191716] py-2.5 px-3 text-xs font-semibold text-zinc-100 transition hover:border-[#da7756]/50"
+            >
+              Trade io:ANTH <ExternalLink size={12} />
             </a>
           </div>
         </div>
@@ -293,9 +412,9 @@ export function PriceTracker() {
         <Card className="lg:col-span-7 overflow-x-auto">
           <div className="flex items-center justify-between border-b border-[#262321] pb-3 mb-4">
             <div className="flex items-center gap-2 text-xs font-mono uppercase text-[#da7756]">
-              <ArrowLeftRight size={15} /> Nasdaq & Hyperliquid → Implied IPO Share Price Conversion Table
+              <ArrowLeftRight size={15} /> Nasdaq & Hyperliquid → Share Price & Valuation Matrix
             </div>
-            <span className="text-[11px] font-mono text-zinc-500">18.07B FD · 13.23B Basic</span>
+            <span className="text-[11px] font-mono text-zinc-500">18.14B FD · 13.22B Basic (424B4)</span>
           </div>
 
           <table className="w-full text-left text-xs border-collapse">
@@ -305,7 +424,7 @@ export function PriceTracker() {
                 <th className="py-2 px-2">Contract Quote</th>
                 <th className="py-2 px-2">Implied ANT / Sh</th>
                 <th className="py-2 px-2">Implied FDV Cap</th>
-                <th className="py-2 pl-2 text-right">vs. $83 IPO (vs. $74 S-1/A Mid)</th>
+                <th className="py-2 pl-2 text-right">vs. $83 IPO (vs. $74 Mid)</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#221f1d] text-zinc-300">
@@ -313,11 +432,11 @@ export function PriceTracker() {
                 <td className="py-3 pr-3">
                   <div className="font-semibold text-zinc-100">ANT · Nasdaq Spot</div>
                   <div className="text-[10px] text-zinc-500 font-mono">
-                    {listed ? "Yahoo Finance / NasdaqGS" : "Nasdaq Pre-Open IPO Cross"}
+                    {listed ? "Yahoo Finance / NasdaqGS" : "Nasdaq IPO Cross"}
                   </div>
                 </td>
                 <td className="py-3 px-2 font-mono font-semibold text-emerald-400 tabular">
-                  {listed ? `$${stock!.toFixed(2)}` : `$${indicativeBid.toFixed(2)} Bid/Ask`}
+                  {listed ? `$${stock!.toFixed(2)}` : `$${indicativeBid.toFixed(2)}`}
                 </td>
                 <td className="py-3 px-2 font-mono font-bold text-emerald-400 tabular">
                   {listed ? `$${stock!.toFixed(2)} / sh` : `~$${indicativeBid.toFixed(2)} / sh`}
@@ -333,8 +452,29 @@ export function PriceTracker() {
                     +{(listed ? stockVsIpo! : indicativeVsIpo).toFixed(1)}%
                   </span>
                   <div className="text-[10px] text-zinc-400">
-                    {listed ? "Live Nasdaq Trade" : "Indicative Cross"}
+                    Day 1 Close ${firstDayClose.toFixed(2)} (+17.1%)
                   </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td className="py-3 pr-3">
+                  <div className="font-semibold text-zinc-100">xyz:ANT (Trade.xyz)</div>
+                  <div className="text-[10px] text-zinc-500 font-mono">Direct Per-Share ($ / sh)</div>
+                </td>
+                <td className="py-3 px-2 font-mono font-semibold text-cyan-400 tabular">
+                  ${xyzPrice.toFixed(2)}
+                </td>
+                <td className="py-3 px-2 font-mono font-bold text-cyan-400 tabular">
+                  ${xyzPrice.toFixed(2)} / sh
+                </td>
+                <td className="py-3 px-2 font-mono text-zinc-200 tabular">
+                  ${xyzFdvT.toFixed(3)}T
+                  <div className="text-[10px] text-zinc-500">${xyzBasicCapT.toFixed(2)}T basic</div>
+                </td>
+                <td className="py-3 pl-2 text-right font-mono tabular">
+                  <span className="text-emerald-400 font-semibold">+{xyzVsIpoPct.toFixed(1)}%</span>
+                  <div className="text-[10px] text-zinc-400">+{xyzVsMidPct.toFixed(1)}% vs $74 mid</div>
                 </td>
               </tr>
 
@@ -361,39 +501,38 @@ export function PriceTracker() {
 
               <tr>
                 <td className="py-3 pr-3">
-                  <div className="font-semibold text-zinc-100">xyz:ANT (Trade.xyz)</div>
-                  <div className="text-[10px] text-zinc-500 font-mono">Direct Per-Share ($ / sh)</div>
+                  <div className="font-semibold text-zinc-100">Day 1 Nasdaq Open / High</div>
+                  <div className="text-[10px] text-zinc-500 font-mono">Nov 19 Debut (857.3M vol)</div>
                 </td>
-                <td className="py-3 px-2 font-mono font-semibold text-cyan-400 tabular">
-                  ${xyzPrice.toFixed(2)}
+                <td className="py-3 px-2 font-mono text-zinc-300 tabular">
+                  $111.50 / $115.10
                 </td>
-                <td className="py-3 px-2 font-mono font-bold text-cyan-400 tabular">
-                  ${xyzPrice.toFixed(2)} / sh
+                <td className="py-3 px-2 font-mono font-semibold text-zinc-100 tabular">
+                  $111.50 / sh
                 </td>
                 <td className="py-3 px-2 font-mono text-zinc-200 tabular">
-                  ${xyzFdvT.toFixed(3)}T
-                  <div className="text-[10px] text-zinc-500">${xyzBasicCapT.toFixed(2)}T basic</div>
+                  $2.022T
+                  <div className="text-[10px] text-zinc-500">$1.474T basic</div>
                 </td>
-                <td className="py-3 pl-2 text-right font-mono tabular">
-                  <span className="text-emerald-400 font-semibold">+{xyzVsIpoPct.toFixed(1)}%</span>
-                  <div className="text-[10px] text-zinc-400">+{xyzVsMidPct.toFixed(1)}% vs $74 mid</div>
+                <td className="py-3 pl-2 text-right font-mono text-emerald-400 tabular">
+                  +34.3% Open (+38.7% High)
                 </td>
               </tr>
 
               <tr>
                 <td className="py-3 pr-3">
                   <div className="font-semibold text-zinc-100">Final IPO Pricing (Nov 18)</div>
-                  <div className="text-[10px] text-zinc-500 font-mono">Nasdaq: ANT (980M sh · $81.34B)</div>
+                  <div className="text-[10px] text-zinc-500 font-mono">Form 424(b)(4) · 980M sh</div>
                 </td>
                 <td className="py-3 px-2 font-mono text-zinc-300 tabular">
-                  1,500.0 idx
+                  1,505.4 idx
                 </td>
                 <td className="py-3 px-2 font-mono font-semibold text-zinc-100 tabular">
                   $83.00 / sh
                 </td>
                 <td className="py-3 px-2 font-mono text-zinc-200 tabular">
-                  $1.500T
-                  <div className="text-[10px] text-zinc-500">$1.098T basic</div>
+                  $1.505T
+                  <div className="text-[10px] text-zinc-500">$1.097T basic</div>
                 </td>
                 <td className="py-3 pl-2 text-right font-mono text-zinc-400 tabular">
                   Official IPO Price
@@ -404,7 +543,8 @@ export function PriceTracker() {
 
           <p className="mt-3 text-[11px] text-zinc-500 leading-relaxed">
             <strong className="text-zinc-300">Conversion Formula:</strong>{" "}
-            <code className="text-[#da7756]">Implied ANT Share Price = io:ANTH Price ($B) ÷ 18.07B fully diluted shares</code>. The emerald line on the chart plots official Nasdaq: ANT closes as soon as the first secondary-market trade prints.
+            <code className="text-[#da7756]">Implied ANT Share Price = FD Valuation ($B) ÷ 18.138B fully diluted shares</code>{" "}
+            (per Form 424(b)(4) p. 25: 13.220B basic post-IPO Class A + Class N shares plus 4.918B RSUs, options & warrants).
           </p>
         </Card>
 
@@ -420,16 +560,16 @@ export function PriceTracker() {
                 onClick={() => setCustomPerpVal(null)}
                 className="text-[10px] font-mono text-zinc-400 hover:text-[#da7756] underline"
               >
-                Reset to Live (${price.toFixed(1)})
+                Reset to Live (${defaultValB.toFixed(1)}B)
               </button>
             </div>
 
             <div className="space-y-4">
               <div>
                 <div className="flex justify-between text-xs mb-1.5">
-                  <span className="font-mono uppercase text-zinc-400">io:ANTH Index / Implied FDV ($B)</span>
+                  <span className="font-mono uppercase text-zinc-400">Implied FDV / io:ANTH Index ($B)</span>
                   <span className="font-mono font-bold text-[#da7756] tabular">
-                    ${activePerpVal.toFixed(1)} (${(activePerpVal / 1000).toFixed(3)}T)
+                    ${activePerpVal.toFixed(1)}B (${(activePerpVal / 1000).toFixed(3)}T)
                   </span>
                 </div>
                 <input
@@ -442,10 +582,10 @@ export function PriceTracker() {
                   className="w-full accent-[#da7756]"
                 />
                 <div className="mt-1 flex justify-between text-[10px] font-mono text-zinc-500">
-                  <span>$1,337 ($74/sh)</span>
-                  <span>$1,500 ($83 IPO)</span>
-                  <span>$1,834 (Live)</span>
-                  <span>$2,500 ($138/sh)</span>
+                  <span>$1,342B ($74/sh)</span>
+                  <span>$1,505B ($83 IPO)</span>
+                  <span>$2,022B ($111.5 Open)</span>
+                  <span>$2,500B ($138/sh)</span>
                 </div>
               </div>
 
@@ -456,32 +596,34 @@ export function PriceTracker() {
                     ${activeSharePx.toFixed(2)}
                   </div>
                   <div className="mt-0.5 text-[10px] font-mono text-zinc-400">
-                    at 18.07B FD shares
+                    at 18.14B FD shares
                   </div>
                 </div>
 
                 <div className="rounded-xl border border-[#2a2624] bg-[#12100f] p-3.5">
-                  <div className="text-[10px] font-mono uppercase text-zinc-500">Pop vs. $83.00 IPO</div>
+                  <div className="text-[10px] font-mono uppercase text-zinc-500">vs. $83.00 IPO Price</div>
                   <div className={`mt-1 text-2xl font-bold font-mono tabular ${activePopVs83 >= 0 ? "text-[#da7756]" : "text-red-400"}`}>
-                    {activePopVs83 >= 0 ? "+" : ""}{activePopVs83.toFixed(1)}%
+                    {activePopVs83 >= 0 ? "+" : ""}
+                    {activePopVs83.toFixed(1)}%
                   </div>
                   <div className="mt-0.5 text-[10px] font-mono text-zinc-400">
-                    ({activePopVs74 >= 0 ? "+" : ""}{activePopVs74.toFixed(1)}% vs $74 S-1/A mid)
+                    ({activePopVs74 >= 0 ? "+" : ""}
+                    {activePopVs74.toFixed(1)}% vs $74 S-1/A mid)
                   </div>
                 </div>
               </div>
 
               <div className="rounded-xl border border-[#262321] bg-[#12100f] p-3 text-xs space-y-1.5">
                 <div className="flex justify-between">
-                  <span className="text-zinc-500">Basic Market Cap (13.23B sh):</span>
+                  <span className="text-zinc-500">Basic Market Cap (13.22B sh):</span>
                   <span className="font-mono text-zinc-200 tabular">${(activeBasicCapB / 1000).toFixed(3)} Trillion</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-zinc-500">Fully Diluted Cap (18.07B sh):</span>
+                  <span className="text-zinc-500">Fully Diluted Cap (18.14B sh):</span>
                   <span className="font-mono text-zinc-200 tabular">${(activePerpVal / 1000).toFixed(3)} Trillion</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-zinc-500">EV / Oct 2026 ARR ($81B):</span>
+                  <span className="text-zinc-500">FDV / Oct 2026 Run-Rate ($81B):</span>
                   <span className="font-mono text-[#da7756] tabular">{(activePerpVal / 81.0).toFixed(1)}× ARR</span>
                 </div>
               </div>

@@ -11,14 +11,17 @@ from fastapi.staticfiles import StaticFiles
 
 app = FastAPI(title="ANT · Anthropic IPO, charted & traded")
 
-# --- Live price tracker: pre-IPO perps (Hyperliquid) vs. listed stock (Nasdaq: ANT) ---
+# --- Live price tracker: Nasdaq listed stock (ANT) vs. Hyperliquid perps (io:ANTH & xyz:ANT) ---
 IPO_PRICE = 83.0  # $83.00 final IPO price (priced Nov 18, 2026)
-TARGET_IPO_VALUATION_T = 1.50  # $1.50 Trillion fully diluted at $83.00/sh
+TARGET_IPO_VALUATION_T = 1.505  # $1.51 Trillion fully diluted at $83.00/sh (18.14B FD shares)
+BASIC_IPO_VALUATION_T = 1.097  # $1.10 Trillion basic market cap at $83.00/sh (13.22B basic shares)
 TARGET_SHARE_PRICE = IPO_PRICE
 MIDPOINT_SHARE_PRICE = 74.0  # $74.00 midpoint of initial $70–$78 S-1/A range
 LISTING_DATE = "2026-11-19"
-SHARES_OUTSTANDING = 18_070_000_000  # ~18.07B fully-diluted shares ($83.00/sh = $1.50T FDV)
-BASIC_SHARES_OUTSTANDING = 13_230_000_000  # ~13.23B post-IPO Class A + Class N shares
+# 424B4 p. 25 fully-diluted share count (incl. net options, RSUs, Amazon rollover notes, vested donation match)
+SHARES_OUTSTANDING = 18_137_587_875
+# 424B4 basic shares outstanding post-IPO & concurrent private placement (7.58B Class A + 5.64B Class N + Class T/F)
+BASIC_SHARES_OUTSTANDING = 13_219_642_276
 SERIES_H_VALUATION_T = 0.965  # $965B post-money valuation (Series H, May 2026)
 
 PERP_COIN = "io:ANTH"
@@ -85,31 +88,37 @@ def _fetch_perp_candles(coin: str = PERP_COIN, days: int = 180) -> list[dict]:
     return out
 
 
-def _fetch_stock() -> dict[str, float]:
-    """Daily close of the listed Nasdaq stock ANT (empty until first trade executes)."""
+def _fetch_stock() -> dict[str, dict]:
+    """Daily candles of the listed Nasdaq stock ANT (from LISTING_DATE onward)."""
     res = _http_json(YF_URL.format(symbol=STOCK_SYMBOL))
-    out: dict[str, float] = {}
+    out: dict[str, dict] = {}
     try:
         r = res["chart"]["result"][0]
         meta = r.get("meta") or {}
-        # Before the Nasdaq IPO Cross prints its first trade, Yahoo seeds the
-        # $83.00 IPO offer price with firstTradeDate=None and volume=0.
         first_trade = meta.get("firstTradeDate")
         ts = r.get("timestamp") or []
         quote = (r.get("indicators", {}).get("quote") or [{}])[0]
         closes = quote.get("close") or []
-        volumes = quote.get("volume") or []
-        for idx, (t, c) in enumerate(zip(ts, closes)):
+        opens = quote.get("open") or [None] * len(ts)
+        highs = quote.get("high") or [None] * len(ts)
+        lows = quote.get("low") or [None] * len(ts)
+        volumes = quote.get("volume") or [None] * len(ts)
+        for idx, (t, c, o, h, l) in enumerate(zip(ts, closes, opens, highs, lows)):
             if c is None:
                 continue
             vol = volumes[idx] if idx < len(volumes) else None
             date = time.strftime("%Y-%m-%d", time.gmtime(t))
             if date < LISTING_DATE:
                 continue
-            # Skip pre-cross placeholder quotes where volume is 0 and firstTradeDate is None
             if first_trade is None and (vol is None or vol <= 0):
                 continue
-            out[date] = round(float(c), 2)
+            out[date] = {
+                "close": round(float(c), 2),
+                "open": round(float(o), 2) if o is not None else round(float(c), 2),
+                "high": round(float(h), 2) if h is not None else round(float(c), 2),
+                "low": round(float(l), 2) if l is not None else round(float(c), 2),
+                "volume": int(vol) if vol is not None else 0,
+            }
     except (KeyError, IndexError, TypeError):
         pass
     return out
@@ -126,7 +135,7 @@ def _parse_usd(raw: str | None) -> float | None:
 
 
 def _fetch_nasdaq_quote() -> dict:
-    """Fetch live Nasdaq quote & pre-open IPO Cross bid/ask for ANT."""
+    """Fetch live Nasdaq quote for ANT."""
     try:
         res = _http_json(NASDAQ_QUOTE_URL.format(symbol=STOCK_SYMBOL))
         data = (res.get("data") or {}) if isinstance(res, dict) else {}
@@ -148,27 +157,27 @@ def _fetch_nasdaq_quote() -> dict:
         return {
             "symbol": STOCK_SYMBOL,
             "exchange": "NASDAQ-GS",
-            "market_status": "Pre-Open IPO Cross",
+            "market_status": "Listed",
             "last_sale": None,
-            "bid": 100.0,
-            "ask": 100.0,
+            "bid": None,
+            "ask": None,
             "volume": None,
-            "is_trading": False,
+            "is_trading": True,
         }
 
 
 def _fetch_orderbook() -> dict:
-    body = {"type": "l2Book", "coin": PERP_COIN}
+    body = {"type": "l2Book", "coin": XYZ_PERP_COIN}
     raw = _http_json(HL_URL, method="POST", body=body)
     levels = raw.get("levels", [[], []]) if isinstance(raw, dict) else [[], []]
     bids = [{"px": float(x["px"]), "sz": float(x["sz"]), "n": x.get("n", 1)} for x in levels[0][:10]]
     asks = [{"px": float(x["px"]), "sz": float(x["sz"]), "n": x.get("n", 1)} for x in levels[1][:10]]
     best_bid = bids[0]["px"] if bids else 0.0
     best_ask = asks[0]["px"] if asks else 0.0
-    spread = round(best_ask - best_bid, 2) if (best_bid and best_ask) else 0.0
-    mid = round((best_bid + best_ask) / 2, 2) if (best_bid and best_ask) else best_bid or best_ask
+    spread = round(best_ask - best_bid, 3) if (best_bid and best_ask) else 0.0
+    mid = round((best_bid + best_ask) / 2, 3) if (best_bid and best_ask) else best_bid or best_ask
     return {
-        "coin": PERP_COIN,
+        "coin": XYZ_PERP_COIN,
         "best_bid": best_bid,
         "best_ask": best_ask,
         "mid": mid,
@@ -182,7 +191,7 @@ def _fetch_orderbook() -> dict:
 def _build_price_payload() -> dict:
     candles: list[dict] = []
     xyz_candles: list[dict] = []
-    stock_by_date: dict[str, float] = {}
+    stock_by_date: dict[str, dict] = {}
     try:
         candles = _fetch_perp_candles(PERP_COIN, 180)
     except Exception:
@@ -197,15 +206,20 @@ def _build_price_payload() -> dict:
         pass
     nasdaq_q = _fetch_nasdaq_quote()
 
-    # If Nasdaq live quote reports a real last_sale before Yahoo Finance's daily bar updates,
-    # include today's date in stock_by_date.
     if nasdaq_q.get("last_sale") is not None:
         today = time.strftime("%Y-%m-%d", time.gmtime())
         if today >= LISTING_DATE and today not in stock_by_date:
-            stock_by_date[today] = float(nasdaq_q["last_sale"])
+            px = float(nasdaq_q["last_sale"])
+            stock_by_date[today] = {
+                "close": px,
+                "open": px,
+                "high": px,
+                "low": px,
+                "volume": 0,
+            }
 
-    fd_shares_b = SHARES_OUTSTANDING / 1e9  # 18.07B
-    basic_shares_b = BASIC_SHARES_OUTSTANDING / 1e9  # 13.23B
+    fd_shares_b = SHARES_OUTSTANDING / 1e9  # 18.138B
+    basic_shares_b = BASIC_SHARES_OUTSTANDING / 1e9  # 13.220B
 
     xyz_by_date = {c["date"]: c["perp"] for c in xyz_candles}
     candle_by_date = {c["date"]: c for c in candles}
@@ -217,7 +231,8 @@ def _build_price_payload() -> dict:
         perp_val = c["perp"] if c else None
         perp_sh = round(perp_val / fd_shares_b, 2) if perp_val is not None else None
         xyz_sh = xyz_by_date.get(d)
-        st_sh = stock_by_date.get(d)
+        st_obj = stock_by_date.get(d)
+        st_sh = st_obj["close"] if st_obj else None
         st_val = round(st_sh * fd_shares_b, 2) if st_sh is not None else None
         series.append(
             {
@@ -227,6 +242,10 @@ def _build_price_payload() -> dict:
                 "xyz": xyz_sh,
                 "stock": st_sh,
                 "stock_val": st_val,
+                "stock_open": st_obj["open"] if st_obj else None,
+                "stock_high": st_obj["high"] if st_obj else None,
+                "stock_low": st_obj["low"] if st_obj else None,
+                "stock_volume": st_obj["volume"] if st_obj else None,
                 "open": c["open"] if c else None,
                 "high": c["high"] if c else None,
                 "low": c["low"] if c else None,
@@ -234,36 +253,46 @@ def _build_price_payload() -> dict:
             }
         )
 
-    latest_close = candles[-1]["perp"] if candles else 1830.50
+    share_series = [pt for pt in series if pt["xyz"] is not None or pt["stock"] is not None]
+
+    latest_close = candles[-1]["perp"] if candles else 1542.80
     prev_close = candles[-2]["perp"] if len(candles) > 1 else latest_close
     day_change_pct = round(((latest_close - prev_close) / prev_close) * 100, 2) if prev_close else 0.0
     implied_valuation_t = round(latest_close / 1000.0, 3)
     implied_share_price_fd = round(latest_close / fd_shares_b, 2)
 
-    xyz_close = xyz_candles[-1]["perp"] if xyz_candles else 104.13
+    xyz_close = xyz_candles[-1]["perp"] if xyz_candles else 87.60
     xyz_prev = xyz_candles[-2]["perp"] if len(xyz_candles) > 1 else xyz_close
     xyz_change_pct = round(((xyz_close - xyz_prev) / xyz_prev) * 100, 2) if xyz_prev else 0.0
     xyz_fdv_t = round((xyz_close * fd_shares_b) / 1000.0, 3)
     xyz_basic_cap_t = round((xyz_close * basic_shares_b) / 1000.0, 3)
 
     stock_vals = [pt["stock"] for pt in series if pt["stock"] is not None]
-    stock_last = stock_vals[-1] if stock_vals else None
-    stock_prev = stock_vals[-2] if len(stock_vals) > 1 else None
+    stock_last = float(stock_vals[-1]) if stock_vals else 87.60
+    stock_prev = float(stock_vals[-2]) if len(stock_vals) > 1 else 97.17
+    stock_day_pct = round(((stock_last - stock_prev) / stock_prev) * 100, 2) if stock_prev else 0.0
+    stock_vs_ipo_pct = round(((stock_last - IPO_PRICE) / IPO_PRICE) * 100, 2)
+    stock_fdv_t = round((stock_last * fd_shares_b) / 1000.0, 3)
+    stock_basic_cap_t = round((stock_last * basic_shares_b) / 1000.0, 3)
 
     return {
         "coin": PERP_COIN,
+        "xyz_coin": XYZ_PERP_COIN,
+        "stock_symbol": STOCK_SYMBOL,
         "ipo_price": IPO_PRICE,
         "listing_date": LISTING_DATE,
-        "source": "Hyperliquid Pre-IPO Perps (io:ANTH & xyz:ANT) + Nasdaq: ANT",
-        "perp_source": "Hyperliquid · io:ANTH & xyz:ANT",
-        "stock_source": "Nasdaq · ANT (via Yahoo Finance & Nasdaq Live)",
+        "source": "Nasdaq: ANT + Hyperliquid Perps (xyz:ANT & io:ANTH)",
+        "perp_source": "Hyperliquid · xyz:ANT & io:ANTH",
+        "stock_source": "Nasdaq Global Select Market · ANT (via Yahoo Finance)",
         "target_valuation_t": TARGET_IPO_VALUATION_T,
+        "basic_ipo_valuation_t": BASIC_IPO_VALUATION_T,
         "target_share_price": TARGET_SHARE_PRICE,
         "midpoint_share_price": MIDPOINT_SHARE_PRICE,
         "series_h_valuation_t": SERIES_H_VALUATION_T,
         "shares_outstanding": SHARES_OUTSTANDING,
         "basic_shares_outstanding": BASIC_SHARES_OUTSTANDING,
         "series": series,
+        "share_series": share_series,
         "latest": {
             "price": latest_close,
             "prev_close": prev_close,
@@ -275,6 +304,13 @@ def _build_price_payload() -> dict:
             "vs_s1a_mid_pct": round(((implied_share_price_fd - MIDPOINT_SHARE_PRICE) / MIDPOINT_SHARE_PRICE) * 100, 1),
             "stock": stock_last,
             "stock_prev": stock_prev,
+            "stock_day_change_pct": stock_day_pct,
+            "stock_vs_ipo_pct": stock_vs_ipo_pct,
+            "stock_fdv_t": stock_fdv_t,
+            "stock_basic_cap_t": stock_basic_cap_t,
+            "first_day_open": 111.50,
+            "first_day_high": 115.10,
+            "first_day_close": 97.17,
         },
         "nasdaq_quote": nasdaq_q,
         "xyz_ant": {
@@ -286,9 +322,11 @@ def _build_price_payload() -> dict:
             "implied_basic_cap_t": xyz_basic_cap_t,
             "vs_s1a_top_pct": round(((xyz_close - TARGET_SHARE_PRICE) / TARGET_SHARE_PRICE) * 100, 1),
             "vs_s1a_mid_pct": round(((xyz_close - MIDPOINT_SHARE_PRICE) / MIDPOINT_SHARE_PRICE) * 100, 1),
+            "basis_vs_stock_pct": round(((xyz_close - stock_last) / stock_last) * 100, 2),
             "trade_url": "https://app.hyperliquid.xyz/trade/xyz:ANT",
         },
-        "trade_url": "https://app.hyperliquid.xyz/trade/io:ANTH",
+        "trade_url": "https://app.hyperliquid.xyz/trade/xyz:ANT",
+        "io_trade_url": "https://app.hyperliquid.xyz/trade/io:ANTH",
         "updated": int(time.time()),
     }
 
@@ -316,11 +354,11 @@ def orderbook() -> JSONResponse:
         except Exception:
             if _orderbook_cache["data"] is None:
                 _orderbook_cache["data"] = {
-                    "coin": PERP_COIN,
-                    "best_bid": 1830.4,
-                    "best_ask": 1830.6,
-                    "mid": 1830.5,
-                    "spread": 0.2,
+                    "coin": XYZ_PERP_COIN,
+                    "best_bid": 87.60,
+                    "best_ask": 87.61,
+                    "mid": 87.605,
+                    "spread": 0.01,
                     "bids": [],
                     "asks": [],
                     "updated": int(now),
@@ -333,9 +371,60 @@ SEC_CIK = "0002130357"
 SEC_SUBMISSIONS_URL = f"https://data.sec.gov/submissions/CIK{SEC_CIK}.json"
 SEC_UA = "anthropic.algoentropy.com filings tracker (cliff.xuan@gresearch.co.uk)"
 FILINGS_TTL = 600.0  # seconds
-FILINGS_LIMIT = 14
+FILINGS_LIMIT = 16
 
 _filings_cache: dict[str, object] = {"ts": 0.0, "data": None}
+
+_DOC_DESCRIPTIONS: dict[str, tuple[str, str]] = {
+    "anthropicpbc-424b4.htm": (
+        "Final IPO Prospectus (Rule 424(b)(4)): 980M Class A shares priced at $83.00/sh ($81.34B IPO + $26B Class N private placement = $104.8B net proceeds).",
+        "Final Prospectus · $83.00/sh",
+    ),
+    "anthropicpbc-fwppricing.htm": (
+        "Issuer Free Writing Prospectus — Final IPO Pricing Term Sheet ($83.00/sh, Nasdaq: ANT, settled Nov 20, 2026).",
+        "Final Term Sheet · Rule 433",
+    ),
+    "anthropicpbc-sx8resale.htm": (
+        "Form S-8 Resale Prospectus — Employee Equity Incentive Plan Shares.",
+        "Effective",
+    ),
+    "anthropicpbc-formsx8.htm": (
+        "Form S-8 — Registration of 2026 Equity Incentive Plan & ESPP Shares.",
+        "Effective",
+    ),
+    "anthropic-sx1mef.htm": (
+        "Rule 462(b) Upsizing Registration Statement (File No. 333-300148) increasing offering size to 980M Class A shares ($83.00/sh).",
+        "Effective · Upsized Offering",
+    ),
+    "ANT_8A_Cert_0002130357.pdf": (
+        "Nasdaq Global Select Market Exchange Certification approving Class A Common Stock listing under ticker ANT.",
+        "Nasdaq Certified",
+    ),
+    "anthropic-8xa12b.htm": (
+        "Registration of Class A Common Stock under Section 12(b) of the Securities Exchange Act for Nasdaq listing.",
+        "Effective",
+    ),
+    "anthropicpbc-sx1ax3.htm": (
+        "Form S-1/A (Amendment No. 3) — Upgraded Preliminary Prospectus ($70.00–$78.00 range & $26B Class N agreements).",
+        "Amendment No. 3",
+    ),
+    "anthropicpbc-fwpipowebsi.htm": (
+        "Issuer FWP — IPO Website, Q3'26 Financial Highlights Factsheet (~$81B Oct Run-Rate) & 7 Co-Founders' Letter.",
+        "Factsheet & Founders' Letter",
+    ),
+    "anthropicpbc-sx1ax2.htm": (
+        "Form S-1/A (Amendment No. 2) — Preliminary Prospectus & Institutional Roadshow Launch.",
+        "Amendment No. 2",
+    ),
+    "anthropicpbc-sx1ax1.htm": (
+        "Form S-1/A (Amendment No. 1) — Q3 2026 Interim Financials ($16.96B Q3 revenue) & Material Contracts.",
+        "Amendment No. 1",
+    ),
+    "anthropicpbc-sx1.htm": (
+        "Initial Public Form S-1 Registration Statement ($33.24B 9M 2026 revenue, +$4.08B Adj. Operating Income, Class A/F/T/N/E governance).",
+        "Public S-1",
+    ),
+}
 
 _FORM_DESCRIPTIONS: dict[str, tuple[str, str]] = {
     "424B4": (
@@ -347,7 +436,7 @@ _FORM_DESCRIPTIONS: dict[str, tuple[str, str]] = {
         "Effective · Upsized Offering",
     ),
     "EFFECT": (
-        "SEC Notice of Effectiveness declaring Anthropic PBC's Form S-1 Registration Statement effective.",
+        "SEC Notice of Effectiveness declaring Anthropic PBC's Form S-1 Registration Statement (File No. 333-299633) effective.",
         "Declared Effective",
     ),
     "CERT": (
@@ -367,7 +456,7 @@ _FORM_DESCRIPTIONS: dict[str, tuple[str, str]] = {
         "Filed with SEC",
     ),
     "3": (
-        "Initial Statement of Beneficial Ownership of Securities (Insider Form 3 — Officer/Director/10% Owner).",
+        "Initial Statements of Beneficial Ownership of Securities (8 Executive, Co-Founder & Director Form 3 Filings).",
         "Insider Disclosure",
     ),
     "S-1/A": (
@@ -375,17 +464,25 @@ _FORM_DESCRIPTIONS: dict[str, tuple[str, str]] = {
         "Amended Registration",
     ),
     "S-1": (
-        "Initial Public Form S-1 Registration Statement ($4.59B FY25 revenue, $16.29B H1 2026 revenue, Class A/F/T/N governance).",
+        "Initial Public Form S-1 Registration Statement ($4.59B FY25 revenue, $33.24B 9M 2026 revenue, Class A/F/T/N governance).",
         "Public S-1",
     ),
     "DRS/A": (
-        "Amended Confidential Draft Registration Statement submitted under JOBS Act review.",
+        "Amended Confidential Draft Registration Statements (5 DRS/A Filings, Jul–Oct 2026) submitted under JOBS Act review.",
         "Unsealed on EDGAR",
     ),
     "DRS": (
         "Initial Confidential Draft Registration Statement submitted June 1, 2026 under Section 6(e) of the JOBS Act.",
         "Unsealed on EDGAR",
     ),
+}
+
+_SKIP_DOCS: set[str] = {
+    "anthropicpbc-fwpjapanprospa.htm",
+    "anthropicpbc-fwpjapanamend.htm",
+    "anthropicpbc-fwpxeeaprospea.htm",
+    "anthropicpbc-fwpauswrapcap.htm",
+    "anthropicpbc-fwpukmaterials.htm",
 }
 
 
@@ -396,24 +493,36 @@ def _fetch_filings() -> dict:
     descriptions = recent.get("primaryDocDescription") or [""] * n
     filings = []
     seen_form_dates: set[tuple[str, str]] = set()
+    drs_a_seen = False
+
     for i in range(n):
         form = recent["form"][i]
         filed = recent["filingDate"][i]
         doc = recent["primaryDocument"][i]
-        # Collapse duplicate Form 3s or FWPs filed on the same date so the feed shows rich variety
-        if form in ("3", "FWP") and (form, filed) in seen_form_dates:
+        base_doc = doc.split("/")[-1]
+
+        if base_doc in _SKIP_DOCS:
             continue
+        if form == "3" and (form, filed) in seen_form_dates:
+            continue
+        if form == "DRS/A":
+            if drs_a_seen:
+                continue
+            drs_a_seen = True
         seen_form_dates.add((form, filed))
 
         accession = recent["accessionNumber"][i].replace("-", "")
         url = f"https://www.sec.gov/Archives/edgar/data/{int(SEC_CIK)}/{accession}/{doc}"
         raw_desc = descriptions[i] if i < len(descriptions) else ""
-        fallback_desc, status = _FORM_DESCRIPTIONS.get(
-            form,
-            (raw_desc or f"SEC Form {form} filing ({doc})", "EDGAR Public"),
-        )
-        # If EDGAR's raw description is empty or just repeats the form code, use our detailed description
-        desc = fallback_desc if (not raw_desc or raw_desc.strip() == form) else f"{raw_desc} — {fallback_desc}"
+        if base_doc in _DOC_DESCRIPTIONS:
+            desc, status = _DOC_DESCRIPTIONS[base_doc]
+        else:
+            fallback_desc, status = _FORM_DESCRIPTIONS.get(
+                form,
+                (raw_desc or f"SEC Form {form} filing ({doc})", "EDGAR Public"),
+            )
+            desc = fallback_desc if (not raw_desc or raw_desc.strip() == form) else f"{raw_desc} — {fallback_desc}"
+
         filings.append(
             {
                 "form": form,

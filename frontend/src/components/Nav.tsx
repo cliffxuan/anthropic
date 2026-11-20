@@ -28,11 +28,11 @@ export function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const price = px?.latest.price ?? 1784.6;
-  const impliedSharePx = px?.latest.implied_share_price_fd ?? Number((price / 18.05).toFixed(2));
-  const xyzPrice = px?.xyz_ant?.price ?? 102.78;
-  const change = px?.latest.day_change_pct ?? 0.0;
-  const isUp = change >= 0;
+  const stock = px?.latest.stock ?? px?.xyz_ant?.price ?? 87.6;
+  const vsIpo = px?.latest.stock_vs_ipo_pct ?? ((stock - 83.0) / 83.0) * 100;
+  const isUp = vsIpo >= 0;
+  const fdvT = px?.latest.stock_fdv_t ?? (stock * 18.138) / 1000;
+  const xyzPrice = px?.xyz_ant?.price ?? stock;
 
   return (
     <header
@@ -50,7 +50,7 @@ export function Nav() {
               <Sparkles size={16} className="text-[#0d0c0b]" />
             </div>
             <span className="font-semibold tracking-tight text-zinc-100 flex items-center gap-1.5 whitespace-nowrap">
-              ANT <span className="text-[11px] font-normal text-zinc-400">· Anthropic IPO</span>
+              ANT <span className="text-[11px] font-normal text-zinc-400">· Nasdaq Listed</span>
             </span>
           </a>
 
@@ -59,14 +59,16 @@ export function Nav() {
             className="hidden md:inline-flex items-center gap-1.5 rounded-full border border-[#2a2624] bg-[#161413] px-3 py-1 text-xs transition hover:border-[#da7756]/50 whitespace-nowrap shrink-0"
           >
             <span className="h-2 w-2 shrink-0 rounded-full bg-emerald-400 pulse-dot" />
-            <span className="font-mono text-zinc-400">io:ANTH</span>
-            <span className="font-semibold tabular text-zinc-100">${price.toFixed(1)}</span>
+            <span className="font-mono text-zinc-400">NASDAQ: ANT</span>
+            <span className="font-semibold tabular text-zinc-100">${stock.toFixed(2)}</span>
             <span className={`font-mono text-[11px] ${isUp ? "text-emerald-400" : "text-red-400"}`}>
-              (~${impliedSharePx.toFixed(0)}/sh)
+              ({isUp ? "+" : ""}
+              {vsIpo.toFixed(1)}% vs $83 IPO)
             </span>
             <span className="hidden 2xl:inline text-zinc-600">·</span>
             <span className="hidden 2xl:inline font-mono text-zinc-400">xyz:ANT</span>
-            <span className="hidden 2xl:inline font-semibold tabular text-emerald-400">${xyzPrice.toFixed(2)}/sh</span>
+            <span className="hidden 2xl:inline font-semibold tabular text-cyan-400">${xyzPrice.toFixed(2)}</span>
+            <span className="hidden 2xl:inline text-zinc-500 font-mono text-[11px]">~${fdvT.toFixed(2)}T</span>
           </a>
         </div>
 
@@ -86,13 +88,13 @@ export function Nav() {
         {/* Action Button */}
         <div className="hidden sm:flex items-center gap-3 shrink-0">
           <a
-            href="https://app.hyperliquid.xyz/trade/io:ANTH"
+            href="https://app.hyperliquid.xyz/trade/xyz:ANT"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 rounded-lg bg-[#da7756] px-3.5 py-1.5 text-xs font-medium text-[#0d0c0b] transition hover:bg-[#e0896b] shadow-sm shadow-[#da7756]/20 whitespace-nowrap shrink-0"
           >
             <TrendingUp size={13} className="shrink-0" />
-            <span>Trade io:ANTH</span>
+            <span>Trade xyz:ANT</span>
             <ExternalLink size={11} className="opacity-70 shrink-0" />
           </a>
         </div>
@@ -118,11 +120,15 @@ export function Nav() {
             >
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-emerald-400 pulse-dot" />
-                <span className="font-mono text-zinc-300">io:ANTH / xyz:ANT</span>
+                <span className="font-mono text-zinc-300">NASDAQ: ANT</span>
               </div>
-              <span className="font-semibold tabular text-zinc-100">
-                ~${impliedSharePx.toFixed(1)}–${xyzPrice.toFixed(1)}/sh
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="font-semibold tabular text-zinc-100">${stock.toFixed(2)}</span>
+                <span className={`font-mono ${isUp ? "text-emerald-400" : "text-red-400"}`}>
+                  {isUp ? "+" : ""}
+                  {vsIpo.toFixed(1)}% vs IPO
+                </span>
+              </div>
             </a>
             {NAV_ITEMS.map((item) => (
               <a
@@ -135,12 +141,12 @@ export function Nav() {
               </a>
             ))}
             <a
-              href="https://app.hyperliquid.xyz/trade/io:ANTH"
+              href="https://app.hyperliquid.xyz/trade/xyz:ANT"
               target="_blank"
               rel="noopener noreferrer"
               className="mt-2 flex items-center justify-center gap-2 rounded-lg bg-[#da7756] py-2 text-xs font-semibold text-[#0d0c0b]"
             >
-              <TrendingUp size={14} /> Trade on Hyperliquid
+              <TrendingUp size={14} /> Trade xyz:ANT on Hyperliquid
             </a>
           </div>
         </div>
